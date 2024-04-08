@@ -1,0 +1,30 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+body{
+    height: 100vh;
+}
+.formulario{
+    height: 50%;
+    width: 80%;
+    max-width: 800px;
+    max-height: 1000px;
+    background-color: rgba(51, 0, 51, 0.373);
+    margin: 0 auto;
+    border-radius: 10px;
+    padding: 2%;
+    font-size: 100%;
+    display: flex;
+    justify-content: center;
+    color: black;
+    border: 1px solid black;
+    
+}
+.formulario input{
+    border-radius: 10px;
+    outline: none;
+    padding: 0.5rem;
+    width: 80%;
+}
