@@ -5,143 +5,93 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" href="{{ asset('css/registro.css') }}">
-        <link rel="stylesheet" href="{{ asset('css/estilos.css') }}">
-        <link rel="stylesheet" href="{{ asset('css/estructura.css') }}">
-        <link rel="stylesheet" href="{{ asset('css/navegador.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/registro.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/estilos.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/estructura.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/navegador.css') }}">
+    <style>
+        /* Hacemos un grid de 3 columnas para que las imagenes se ordenen en filas de 3 en 3 */
+        .contenedor_imagenes {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+        }
 
-        <style>
-            .contenedor {
-                display: inline-block;
-                width: 100%;
-                height: 100%;
-                justify-content: center;
-                align-items: center;
-                text-align: center;
-            }
-            .apartado_imagenes {
-                width: 100%;
-                justify-content: center;
-                align-items: center;
-                text-align: center;
-            }
+        /* Las imagenes tendras un tamaño de 1/3 del ancho de la pantalla y serán cuadradas */
+        .imagen img {
+            width: calc(100vw / 3);
+            height: calc(100vw / 3);
+            object-fit: cover;
+            transition: all 0.3s ease; /* Agregamos una transición para que el cambio sea gradual */
+        }
 
-            .publicacion {
-                margin: 0 auto;
-                border: 1px solid red;
-                max-width: 600px;
-                width: 100%;
-                height: 100%;
-                justify-content: center;
-                align-items: center;
-                text-align: center;
-                margin-bottom: 20px;
-            }
-            .publicacion img{
-                max-width: 600px;
-                width: 100%;
-                height: auto;
-                aspect-ratio: 3/4;
-                object-fit: cover;
-            }
+        .imagen:hover {
+            transform: scale(1.1);
+            border-radius: 10px;
+            position: relative;
+            z-index: 1;
+        }
 
-            
-            .publicacion .botonEliminar {
-                background-color: #f44336;
-                color: white;
-                padding: 14px 20px;
-                border: none;
-                cursor: pointer;
-                width: 100%;
-            }
-            .publicacion .botonEliminar:hover {
-                background-color: #f44326;
-            }
+        .imagen:not(:hover) {
+            transform: scale(1); /* Volvemos al estado original */
+            position: static;
+            z-index: auto;
+        }
 
-            .publicacion .botonEditar {
-                background-color: #4CAF50;
-                color: white;
-                padding: 14px 20px;
-                border: none;
-                cursor: pointer;
-                width: 100%;
-            }
-            .publicacion .botonEditar:hover {
-                background-
-                color: #4CAF40;
-            }
+        .botonesFoto{
+            display: flex;
+            color: white;
+        }
 
-            .publicacion .botonLike {
-                background-color: #008CBA;
-                color: white;
-                padding: 14px 20px;
-                border: none;
-                cursor: pointer;
-                width: 100%;
-            }
-            .publicacion .botonLike:hover {
-                background-color: #008CBB;
-            }
+        .botonesFoto a{
+            color: white;
+            text-decoration: none;
+            padding: 10px;
+            width: 33.33%;
+            text-align: center;
+        }
 
+        .botonesFoto .editarFoto{
+            background-color: #4CAF50;
+        }
 
+        .botonesFoto .eliminarFoto{
+            background-color: #f44336;
+        }
 
-            .botones {
-                display: flex;
-                // Agrupamos los botones a la izquierda
-                justify-content: flex-start;
-
-            }
-
-            h1{
-                text-align: center;
-                color: white;
-            }
-            h3
-            {
-                color: white;
-                background-color: #333;
-            }
-
-        </style>
+        .botonesFoto .compartirFoto{
+            background-color: #2196F3;
+        }
+    </style>
 </head>
 <body>
-<div class="apartado_imagenes">
 @include('nav.navbar')
 
-<h1>Mis imagenes</h1>
+<div class="contenedor_imagenes">
+    @foreach ($fotos as $foto)
+        <div class="imagen">
+            <img src="{{ $foto->ruta }}" alt="imagen">
+            <div class="botonesFoto">
+                <a href="#" class="editarFoto">X</a>
+                <a href="#" class="eliminarFoto">X</a>
+                <a href="#" class="compartirFoto">X</a>
+            </div>
 
-            @foreach ($fotos as $foto)
-                <div class="publicacion">
-                    <img src="{{ ($foto->ruta) }}" alt="imagen">
-                    <h3> {{$foto->titulo}} </h3>
-                    <p> {{$foto->descripcion}} </p>
-
-                    <div class="botones">
-                        <!-- boton de eliminar -->
-                    <form action="eliminarFoto/{{$foto->id_foto}}" method="post">
-                        @csrf
-                        <button type="submit" class="botonEliminar">Eliminar</button>
-                    </form>
-                        <!-- boton de editar -->
-                        <form action="editarFoto/{{$foto->id_foto}}" method="post">
-                            @csrf
-                            <button type="submit" class="botonEditar">Editar</button>
-                        </form>
-
-                        <!-- boton de like -->
-                        <form action="like/{{$foto->id_foto}}" method="post">
-                            @csrf
-                            <button type="submit" class="botonLike">Like</button>
-                        </form>
-
-                    </div>
-
-
-                </div>
-            @endforeach
         </div>
+    @endforeach
+</div>
+
+<script>
+     // Asignamos un eventlistener a cada imagen para que al hacer click en ella se abra en una nueva pestaña
+    document.querySelectorAll('.imagen img').forEach((imagen, index) => {
+        imagen.addEventListener('click', () => {
+            
+
+            
+            
+            
+        });
+    });
+
+</script>
 </body>
 </html>
-
-
-

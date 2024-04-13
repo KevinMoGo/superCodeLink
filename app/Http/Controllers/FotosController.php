@@ -32,7 +32,7 @@ public function subirFoto(Request $request)
             $foto->fecha = date('Y-m-d H:i:s');
             $foto->save();
             // Redirigir al usuario a la página de inicio
-            return redirect()->route('inicio');
+            return redirect()->route('misimagenes');
 
 
             
