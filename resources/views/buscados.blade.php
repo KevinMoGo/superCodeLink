@@ -4,6 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Resultados de la búsqueda</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ asset('css/registro.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/estilos.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/estructura.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/navegador.css') }}">
+
     <style>
         * {
             margin: 0;
@@ -20,7 +27,7 @@
             height: 100vh;
         }
 
-        .container {
+        .custom-container {
             width: 80%;
             max-width: 600px;
             margin: auto;
@@ -30,18 +37,18 @@
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
 
-        h1 {
+        .custom-title {
             text-align: center;
             margin-bottom: 20px;
         }
 
-        ul {
+        .custom-list {
             list-style: none;
             padding: 0;
             margin-top: 20px;
         }
 
-        li {
+        .custom-item {
             background-color: #fff;
             padding: 15px;
             border-radius: 8px;
@@ -52,18 +59,18 @@
             align-items: center;
         }
 
-        .info {
+        .custom-info {
             display: flex;
             align-items: center;
         }
 
-        .name {
+        .custom-name {
             margin-right: 20px;
             font-size: 18px;
             color: #333;
         }
 
-        button {
+        .custom-button {
             padding: 10px 20px;
             border: none;
             border-radius: 5px;
@@ -74,11 +81,11 @@
             background-color: #007bff;
         }
 
-        button:hover {
+        .custom-button:hover {
             background-color: #0056b3;
         }
 
-        a {
+        .custom-link {
             display: block;
             text-align: center;
             margin-top: 20px;
@@ -87,29 +94,40 @@
             font-size: 16px;
         }
 
-        a:hover {
+        .custom-link:hover {
             text-decoration: underline;
+        }
+
+        .custom-info img {
+            width: 50px; /* Ajusta el ancho de la imagen según tus necesidades */
+            height: auto; /* Mantenemos la relación de aspecto */
+            border-radius: 50%; /* Esto es opcional, para redondear la imagen */
+            margin-right: 20px; /* Ajusta el espacio entre la imagen y el nombre */
+            border: 1px solid #ccc; /* Añadimos un borde a la imagen */
         }
     </style>
 </head>
-<body>
-    <div class="container">
-        <h1>Resultados de la búsqueda</h1>
 
-        <ul>
+<body>
+@include('nav.navbar')
+
+    <div class="custom-container">
+        <h1 class="custom-title">Resultados de la búsqueda</h1>
+
+        <ul class="custom-list">
             @foreach ($usuarios as $usuario)
-                <li>
-                    <div class="info">
-                        <a href="#"><img src="{{ asset('svg/usuario_defecto.svg') }}" alt="default" class="default"></a>
-                        <p class="name">{{ $usuario->nombre }}</p>
+                <li class="custom-item">
+                    <div class="custom-info">
+                        <a href="#"><img src="{{ asset('svg/usuario_defecto.svg') }}" alt="default" class="custom-default"></a>
+                        <p class="custom-name">{{ $usuario->nombre }}</p>
                         <form method="POST" action="/agregar-solicitud/{{ $usuario->id }}">
                             @csrf
                             @if ($solicitudes->contains('usuario_receptor_id', $usuario->id))
-                                <button disabled>Solicitud enviada</button>
+                                <button class="custom-button" disabled>Solicitud enviada</button>
                             @elseif ($amigos->contains('usuario1_id', $usuario->id) || $amigos->contains('usuario2_id', $usuario->id))
-                                <button disabled>Amigo</button>
+                                <button class="custom-button" disabled>Amigo</button>
                             @else
-                                <button type="submit">Enviar solicitud</button>
+                                <button class="custom-button" type="submit">Enviar solicitud</button>
                             @endif
                         </form>
                     </div>
@@ -117,7 +135,7 @@
             @endforeach
         </ul>
         
-        <a href="/inicio">Volver al inicio</a>
+        <a href="/inicio" class="custom-link">Volver al inicio</a>
     </div>
 </body>
 </html>

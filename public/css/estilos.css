@@ -5,22 +5,40 @@
     font-family: 'consolas';
 }
 body{
-    background-color: #2F3652;
+    background-color: #ffffff;
 }
-
 
 /* BUSCADOR */
-.buscar input{
-    font-size: 100%;
-    border: 1px solid #fd213d;
-    outline: none;
-    border-radius: 5px 0 0 5px;
+.buscar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
 }
-.buscar button{
+
+.buscar input {
+    font-size: 16px;
+    padding: 10px;
+    border: 1px solid #fd213d;
+    border-radius: 5px 0 0 5px;
+    outline: none;
+}
+
+.buscar button {
     background-color: #fd213d;
     color: white;
-    text-decoration: none;
-    text-align: center;
-    display: block;
     border: none;
+    border-radius: 0 5px 5px 0;
+    cursor: pointer;
+    padding: 10px 20px;
+    font-size: 1rem; /* Tamaño de fuente relativo */
+    max-width: 150px; /* Ancho máximo del botón */
+    white-space: nowrap; /* Evitar que el texto se ajuste automáticamente */
+    overflow: hidden; /* Ocultar texto que exceda el ancho del botón */
+    text-overflow: ellipsis; /* Mostrar puntos suspensivos cuando el texto se recorte */
+    transition: background-color 0.3s ease;
+}
+
+.buscar button:hover {
+    background-color: #ff3f58;
 }
