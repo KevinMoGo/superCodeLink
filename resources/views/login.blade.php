@@ -89,7 +89,7 @@
             @csrf
             <div>
                 <label for="nombre">Nombre:</label>
-                <input type="text" id="nombre" name="nombre">
+                <input type="text" id="nombre" name="nombre" autofocus>
             </div>
             <div>
                 <label for="contrasena">Contraseña:</label>

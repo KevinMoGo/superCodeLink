@@ -3,28 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Resultados de la búsqueda</title>
+    <title>Registro de usuarios</title>
     <style>
-        * {
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: Arial, sans-serif;
-        }
-        
-        body {
-            background-color: #f0f2f5;
             display: flex;
             justify-content: center;
             align-items: center;
-            min-height: 100vh;
-            flex-direction: column;
+            height: 100vh;
         }
 
         .container {
-            width: 80%;
             max-width: 600px;
-            margin-top: 20px;
             padding: 20px;
             background-color: #fff;
             border-radius: 8px;
@@ -32,113 +26,69 @@
         }
 
         h1 {
+            font-size: 24px;
             text-align: center;
             margin-bottom: 20px;
         }
 
-        ul {
-            list-style: none;
-            padding: 0;
-            margin-top: 20px;
+        form {
+            display: flex;
+            flex-direction: column;
         }
 
-        li {
-            background-color: #fff;
-            padding: 15px;
-            border-radius: 8px;
+        label {
             margin-bottom: 10px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+            width: 100px;
+            display: inline-block;
         }
 
-        .info {
-            display: flex;
-            align-items: center;
+        input[type="text"], input[type="password"], button {
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 16px;
+            transition: border-color 0.3s ease;
         }
 
-        .name {
-            margin-right: 20px;
-            font-size: 18px;
-            color: #333;
+        input[type="text"]:focus, input[type="password"]:focus {
+            border-color: #007bff;
+            outline: none;
         }
 
         button {
-            padding: 10px 20px;
-            border: none;
-            border-radius: 5px;
-            font-size: 16px;
+            background-color: #007bff;
             color: #fff;
+            border: none;
             cursor: pointer;
             transition: background-color 0.3s ease;
-            background-color: #007bff;
         }
 
         button:hover {
             background-color: #0056b3;
         }
-
-        a {
-            display: block;
-            text-align: center;
-            margin-top: 20px;
-            color: #007bff;
-            text-decoration: none;
-            font-size: 16px;
-        }
-
-        a:hover {
-            text-decoration: underline;
-        }
-
-        .title {
-            margin-bottom: 20px;
-            font-size: 24px;
-        }
-
-        .image-container {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-
-        .user-image {
-            width: 10px; /* Ajusta el tamaño del ancho de la imagen */
-            height: 10px; /* Ajusta el tamaño del alto de la imagen */
-            border-radius: 50%;
-            border: 2px solid #007bff;
-        }
     </style>
 </head>
 <body>
-    <h1 class="title">Resultados de la búsqueda</h1>
-
-    <div class="image-container">
-        <a href="#"><img src="{{ asset('svg/usuario_defecto.svg') }}" alt="default" class="user-image"></a>
-    </div>
-
     <div class="container">
-        <ul>
-            @foreach ($usuarios as $usuario)
-                <li>
-                    <div class="info">
-                        <p class="name">{{ $usuario->nombre }}</p>
-                        <form method="POST" action="/agregar-solicitud/{{ $usuario->id }}">
-                            @csrf
-                            @if ($solicitudes->contains('usuario_receptor_id', $usuario->id))
-                                <button disabled>Solicitud enviada</button>
-                            @elseif ($amigos->contains('usuario1_id', $usuario->id) || $amigos->contains('usuario2_id', $usuario->id))
-                                <button disabled>Amigo</button>
-                            @else
-                                <button type="submit">Enviar solicitud</button>
-                            @endif
-                        </form>
-                    </div>
-                </li>
-            @endforeach
-        </ul>
+        <h1>Registro de usuarios</h1>
         
-        <a href="/inicio">Volver al inicio</a>
+        <form method="POST" action="/creaUsuario">
+            @csrf
+            <div>
+                <label for="nombre">Nombre:</label>
+                <input type="text" id="nombre" name="nombre" autofocus>
+            </div>
+            <div>
+                <label for="usuario">Usuario:</label>
+                <input type="text" id="usuario" name="usuario">
+            </div>
+            <div>
+                <label for="contrasena">Contraseña:</label>
+                <input type="password" id="contrasena" name="contrasena">
+            </div>
+            <button type="submit">Registrarse</button>
+        </form>
     </div>
 </body>
 </html>
