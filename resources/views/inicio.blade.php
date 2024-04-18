@@ -99,6 +99,7 @@
     </head>
 
     <body>
+        <!-- yeees -->
         @include('nav.navbar')
         <form action="buscador" method="post">
             @csrf
