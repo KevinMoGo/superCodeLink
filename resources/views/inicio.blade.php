@@ -1,116 +1,93 @@
 <!DOCTYPE html>
 <html lang="en">
-    @include('head.header')
 
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" href="{{ asset('css/registro.css') }}">
-        <link rel="stylesheet" href="{{ asset('css/estilos.css') }}">
-        <link rel="stylesheet" href="{{ asset('css/estructura.css') }}">
-        <link rel="stylesheet" href="{{ asset('css/navegador.css') }}">
+@include('head.header')
+@include('menu.menu')
 
-        <style>
-            .contenedor {
-                display: inline-block;
-                width: 100%;
-                height: 100%;
-                justify-content: center;
-                align-items: center;
-                text-align: center;
-            }
-            .apartado_imagenes {
-                width: 100%;
-                justify-content: center;
-                align-items: center;
-                text-align: center;
-            }
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ asset('css/registro.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/estilos.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/estructura.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/navegador.css') }}">
 
-            .publicacion {
-                margin: 0 auto;
-                border: 1px solid red;
-                max-width: 600px;
-                width: 100%;
-                height: 100%;
-                justify-content: center;
-                align-items: center;
-                text-align: center;
-                margin-bottom: 20px;
-            }
-            .publicacion img{
-                max-width: 600px;
-                width: 100%;
-                height: auto;
-                aspect-ratio: 3/4;
-                object-fit: cover;
-            }
+    <style>
+        /* Estilos específicos para la página */
+        .buscar {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
 
-            
-            .publicacion .botonEliminar {
-                background-color: #f44336;
-                color: white;
-                padding: 14px 20px;
-                border: none;
-                cursor: pointer;
-                width: 100%;
-            }
-            .publicacion .botonEliminar:hover {
-                background-color: #f44326;
-            }
+        input.buscador {
+            width: 80%;
+            height: 50px;
+            border-radius: 20px;
+            border: 1px solid #000;
+            padding: 0 20px;
+            margin: 20px 0;
+        }
 
-            .publicacion .botonEditar {
-                background-color: #4CAF50;
-                color: white;
-                padding: 14px 20px;
-                border: none;
-                cursor: pointer;
-                width: 100%;
-            }
-            .publicacion .botonEditar:hover {
-                background-
-                color: #4CAF40;
-            }
+        button#boton-buscar {
+            width: 50px;
+            height: 50px;
+            border: none;
+            background-color: #004EE1;
+            margin-left: 10px;
+            cursor: pointer;
+            padding: 0;
+            border-radius: 20px;
+        }
 
-            .publicacion .botonLike {
-                background-color: #008CBA;
-                color: white;
-                padding: 14px 20px;
-                border: none;
-                cursor: pointer;
-                width: 100%;
-            }
-            .publicacion .botonLike:hover {
-                background-color: #008CBB;
-            }
+        img.lupa {
+            width: 20px;
+            height: 20px;
+        }
 
+        /* Reset de estilos */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
+        /* Estilos generales */
+        body {
+            font-family: Arial, sans-serif;
+        }
 
-            .botones {
-                display: flex;
-                // Agrupamos los botones a la izquierda
-                justify-content: flex-start;
+        /* Otros estilos... */
+    </style>
 
-            }
+    <title>Inicio</title>
+</head>
 
-        </style>
+<body>
+    <!-- Encabezado -->
+    @include('nav.navbar')
 
+    <!-- Contenedor principal -->
+    <main class="container">
+        <!-- Formulario de búsqueda -->
+        <section class="busqueda-section">
+            <form id="formulario" action="buscador" method="post">
+                @csrf
+                <div class="buscar">
+                    <input type="text" id="buscador" name="buscador" class="buscador" placeholder="Buscar...">
+                    <button type="submit" id="boton-buscar">
+                        <img src="{{ asset('svg/buscar.svg') }}" alt="Buscar" class="lupa">
+                    </button>
+                </div>
+            </form>
+        </section>
 
-        <title>Document</title>
-    </head>
+        <!-- Contenido principal -->
+        <section class="main-content">
+            <h1>Holaaa github</h1>
+            <!-- Otro contenido... -->
+        </section>
+    </main>
+</body>
 
-    <body>
-        <!-- yeees -->
-        @include('nav.navbar')
-        <form action="buscador" method="post">
-            @csrf
-            <div class="buscar">
-                <input type="text" id="buscador" name="buscador" class="buscador">
-                <button type="submit">Buscar</button>
-            </div>
-        </form>
-
-        <h1>Holaaa github</h1>
-
-
-    </body>
 </html>

@@ -85,6 +85,15 @@
             background-color: #0056b3;
         }
 
+        .custom-button.sent {
+            background-color: orange;
+        }
+
+        .custom-button.friend {
+            background-color: green;
+        }
+
+
         .custom-link {
             display: block;
             text-align: center;
@@ -115,24 +124,25 @@
         <h1 class="custom-title">Resultados de la búsqueda</h1>
 
         <ul class="custom-list">
-            @foreach ($usuarios as $usuario)
-                <li class="custom-item">
-                    <div class="custom-info">
-                        <a href="#"><img src="{{ asset('svg/usuario_defecto.svg') }}" alt="default" class="custom-default"></a>
-                        <p class="custom-name">{{ $usuario->nombre }}</p>
-                        <form method="POST" action="/agregar-solicitud/{{ $usuario->id }}">
-                            @csrf
-                            @if ($solicitudes->contains('usuario_receptor_id', $usuario->id))
-                                <button class="custom-button" disabled>Solicitud enviada</button>
-                            @elseif ($amigos->contains('usuario1_id', $usuario->id) || $amigos->contains('usuario2_id', $usuario->id))
-                                <button class="custom-button" disabled>Amigo</button>
-                            @else
-                                <button class="custom-button" type="submit">Enviar solicitud</button>
-                            @endif
-                        </form>
-                    </div>
-                </li>
-            @endforeach
+        @foreach ($usuarios as $usuario)
+    <li class="custom-item">
+        <div class="custom-info">
+            <a href="#"><img src="{{ asset('svg/usuario_defecto.svg') }}" alt="default" class="custom-default"></a>
+            <p class="custom-name">{{ $usuario->nombre }}</p>
+            <form method="POST" action="/agregar-solicitud/{{ $usuario->id }}">
+                @csrf
+                @if ($solicitudes->contains('usuario_receptor_id', $usuario->id))
+                    <button class="custom-button sent" disabled>Solicitud enviada</button>
+                @elseif ($amigos->contains('usuario1_id', $usuario->id) || $amigos->contains('usuario2_id', $usuario->id))
+                    <button class="custom-button friend" disabled>Amigo</button>
+                @else
+                    <button class="custom-button" type="submit">Enviar solicitud</button>
+                @endif
+            </form>
+        </div>
+    </li>
+@endforeach
+
         </ul>
         
         <a href="/inicio" class="custom-link">Volver al inicio</a>

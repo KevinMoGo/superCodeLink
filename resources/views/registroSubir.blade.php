@@ -11,6 +11,7 @@
 
     <style>
         body {
+            overflow-y: hidden;
             font-family: Arial, sans-serif;
             background-color: #f8f9fa;
             margin: 0;
@@ -19,13 +20,15 @@
         }
 
         .container {
-            max-width: 600px;
-            margin: 50px auto;
+            
+            max-width: calc(100% - 20px);
+            margin: 0 auto;
             padding: 20px;
             background-color: #fff;
             border-radius: 8px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
+
 
         h1 {
             font-size: 24px;
@@ -67,11 +70,22 @@
         button:hover {
             background-color: #0056b3;
         }
+
+        .subbody {
+            /* Todo su contenido se centrara vertical y horizontamlente */
+            align-items: center;
+            margin-top: 12vh;
+            display: flex;
+            justify-content: center;
+            height: 88vh;
+            overflow-y: hidden;
+        }
     </style>
 </head>
 <body>
     @include('nav.navbar')
 
+    <div class="subbody">
     <div class="container">
         <h1>Subir Imagen</h1>
         <form action="/subir" method="post" enctype="multipart/form-data">
@@ -86,6 +100,7 @@
 
             <button type="submit">Subir</button>
         </form>
+    </div>
     </div>
 </body>
 </html>
