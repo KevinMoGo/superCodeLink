@@ -36,6 +36,8 @@ Route::get('amigos', [AmistadesController::class, 'MostrarAmigos']);
 
 Route::post('subir', [FotosController::class, 'subirFoto']);
 
-Route::post('eliminarFoto/{id_foto}', [FotosController::class, 'eliminarFoto']);
 Route::get('misimagenes', [UsuariosController::class, 'mostrarMisImagenes'])->name('misimagenes');
 Route::get('inicio', [UsuariosController::class, 'mostrarInicio'])->name('inicio');
+
+
+Route::post('/eliminar-imagen', [FotosController::class, 'eliminarImagen']);

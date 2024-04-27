@@ -23,7 +23,6 @@ public function subirFoto(Request $request)
         $request->foto->move(public_path('/assets/fotos'), $filename);
     }
 
-         // Ahora guardamos en la base de datos en los campos id_foto y al ser autoincrementable se guarda solo. id_foto, id_usuario, titulo, ruta y fecha que es un varchar
             $foto = new Fotos();
             $foto->id_usuario = session('user_id');
             $foto->titulo = $request->titulo;
@@ -31,25 +30,17 @@ public function subirFoto(Request $request)
             $foto->ruta = $filename;
             $foto->fecha = date('Y-m-d H:i:s');
             $foto->save();
-            // Redirigir al usuario a la página de inicio
             return redirect()->route('misimagenes');
 
 
             
 }
 
-public function eliminarFoto($id_foto)
+public function eliminarImagen(Request $request)
     {
-        // Buscamos la foto por su ID y la eliminamos
-        $foto = Fotos::find($id_foto);
-        if ($foto) {
-            $foto->delete();
-        }
-
-        // permanecemos en la misma página
-        return redirect()->route('misimagenes');
-        
-
+        $idImagen = $request->id;
+        Fotos::find($idImagen)->delete();
+        return response()->json(['success' => true]);
     }
 
 

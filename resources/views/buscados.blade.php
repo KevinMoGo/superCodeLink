@@ -108,11 +108,11 @@
         }
 
         .custom-info img {
-            width: 50px; /* Ajusta el ancho de la imagen según tus necesidades */
-            height: auto; /* Mantenemos la relación de aspecto */
-            border-radius: 50%; /* Esto es opcional, para redondear la imagen */
-            margin-right: 20px; /* Ajusta el espacio entre la imagen y el nombre */
-            border: 1px solid #ccc; /* Añadimos un borde a la imagen */
+            width: 50px;
+            height: auto;
+            border-radius: 50%;
+            margin-right: 20px;
+            border: 1px solid #ccc;
         }
     </style>
 </head>

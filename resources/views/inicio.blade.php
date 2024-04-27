@@ -14,6 +14,15 @@
 
     <style>
         /* Estilos específicos para la página */
+
+        body {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            margin-top: 12vh;
+            font-family: Arial, sans-serif;
+        }
+
         .buscar {
             display: flex;
             justify-content: center;
@@ -24,9 +33,10 @@
             width: 80%;
             height: 50px;
             border-radius: 20px;
-            border: 1px solid #000;
+            border: 1px solid #004EE1;
             padding: 0 20px;
             margin: 20px 0;
+            outline: none;
         }
 
         button#boton-buscar {
@@ -45,19 +55,30 @@
             height: 20px;
         }
 
-        /* Reset de estilos */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+
+
+        .imagen {
+            position: relative;
+            overflow: hidden;
         }
 
-        /* Estilos generales */
-        body {
-            font-family: Arial, sans-serif;
+        .imagen img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* Cubrir completamente el contenedor */
+            transition: transform 0.3s ease;
         }
 
-        /* Otros estilos... */
+        .imagen:hover img {
+            transform: scale(1.1);
+        }
+
+        /* Media query para dispositivos móviles */
+        @media screen and (max-width: 991px) {
+            .container {
+                grid-template-columns: repeat(2, 1fr); /* Cambiar a 1 columna en dispositivos móviles */
+            }
+        }
     </style>
 
     <title>Inicio</title>
@@ -82,12 +103,9 @@
             </form>
         </section>
 
-        <!-- Contenido principal -->
-        <section class="main-content">
-            <h1>Holaaa github</h1>
-            <!-- Otro contenido... -->
-        </section>
     </main>
 </body>
 
 </html>
+
+
