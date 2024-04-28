@@ -38,9 +38,9 @@ class UsuariosController extends Controller
 
     public function mostrarMisImagenes()
     {
-        //cargamos todas las fotos del usuario logueado
         $fotos = Fotos::where('id_usuario', session('user_id'))->get();
         return view('misimagenes', ['fotos' => $fotos]);
+
     }
 
     public function mostrarInicio(){

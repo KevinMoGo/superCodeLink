@@ -40,4 +40,10 @@ Route::get('misimagenes', [UsuariosController::class, 'mostrarMisImagenes'])->na
 Route::get('inicio', [UsuariosController::class, 'mostrarInicio'])->name('inicio');
 
 
-Route::post('/eliminar-imagen', [FotosController::class, 'eliminarImagen']);
+
+Route::delete('/delete_post/{id}', [FotosController::class, 'delete_post']);
+
+
+Route::post('editar_foto', [FotosController::class, 'editar_foto']);
+
+Route::get('coger_datos/{id}', [FotosController::class, 'coger_datos']);

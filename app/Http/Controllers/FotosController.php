@@ -35,13 +35,40 @@ public function subirFoto(Request $request)
 
             
 }
-
-public function eliminarImagen(Request $request)
+public function delete_post($id)
     {
-        $idImagen = $request->id;
-        Fotos::find($idImagen)->delete();
+        $foto = Fotos::find($id);
+        $foto->delete();
         return response()->json(['success' => true]);
     }
 
+public function editar_foto(Request $request)
+    {
+        // Obtenemos los valores de la petición
+        $id = $request->id_fotoEdit;
+        $titulo = $request->titulo;
+        $descripcion = $request->descripcion;
+        // Buscamos la foto por su id
+        $foto = Fotos::find($id);
+        // Actualizamos los valores
+        $foto->titulo = $titulo;
+        $foto->descripcion = $descripcion;
+        // Guardamos los cambios
+        $foto->save();
+        // Mandamos un success
+        return response()->json(['success' => true]);
+
+
+    }
+
+public function coger_datos($id)
+    {
+        // Buscamos la foto por su id
+        $foto = Fotos::find($id);
+        // Devolvemos la foto en formato json
+        return response()->json($foto);
+    }
+
+    
 
 }
