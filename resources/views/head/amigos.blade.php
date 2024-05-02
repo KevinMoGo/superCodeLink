@@ -29,12 +29,6 @@
         .friend-info {
             display: flex;
             align-items: center;
-            justify-content: space-between; /* Alinear elementos a lo largo del eje principal */
-            flex-grow: 1; /* Hace que este div ocupe todo el espacio restante */
-        }
-        .friend-info2 {
-            display: flex;
-            align-items: center;
         }
         .friend-name {
             margin-right: 20px;
@@ -70,16 +64,16 @@
             @forelse ($amigos as $amigo)
             <li class="friend-container">
                 <div class="friend-info">
-                    <div class="friend-info2">
                     <img src="{{ asset('svg/usuario_defecto.svg') }}" alt="default" class="custom-default">
-                    <div class="datosAmigo">
-                        <p class="friend-username">{{ '@' . $amigo->username }}</p>
-                        <p class="friend-name">{{ $amigo->nombre }}</p>
-                    </div>
-                    </div>
-                    <div class="botonesAmigo">
-                        <a href="#"><img src="{{ asset('svg/mensaje.svg') }}" alt="menu" class="iconoAmigo"></a>
-                        <a href="#"><img src="{{ asset('svg/borrarAmigo.svg') }}" alt="menu" class="iconoAmigo"></a>
+                    <div>
+                        <div class="datosAmigo">
+                            <p class="friend-username">{{ '@' . $amigo->username }}</p>
+                            <p class="friend-name">{{ $amigo->nombre }}</p>
+                        </div>
+                        <div class="botonesAmigo">
+                            <a href="#"><img src="{{ asset('svg/mensaje.svg') }}" alt="menu" class="iconoAmigo"></a>
+                            <a href="#"><img src="{{ asset('svg/borrarAmigo.svg') }}" alt="menu" class="iconoAmigo"></a>
+                        </div>
                     </div>
                 </div>
             </li>

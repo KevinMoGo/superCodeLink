@@ -25,10 +25,11 @@ nav ul li a{
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 60%;;
+    height: 100%; /* Ajuste de la altura al 100% */
     margin: auto 0;
 }
 nav ul li a img{
-    width: 60%;
+    width: 50%;
     max-width: 100px;
+    max-height: 100%; /* Ajuste de la altura al 100% */
 }
