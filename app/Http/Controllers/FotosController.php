@@ -42,7 +42,7 @@ public function subirFotoPerfil(Request $request)
        $filename = "";
        if ($request->hasFile('fotoPerfil')) {
         // El nombre del archivo será la ruta de la foto
-        $filename = '/assets/fotos/'. $request->fotoPerfil->getClientOriginalName();
+        $filename = '/assets/fotosPerfil/'. $request->fotoPerfil->getClientOriginalName();
         $request->fotoPerfil->move(public_path('/assets/fotosPerfil'), $filename);
 
         // Extraemos el id del usuario y guardamos la ruta de la foto en la base de datos
