@@ -35,6 +35,28 @@ public function subirFoto(Request $request)
 
             
 }
+
+public function subirFotoPerfil(Request $request)
+    {
+
+       $filename = "";
+       if ($request->hasFile('fotoPerfil')) {
+        // El nombre del archivo será la ruta de la foto
+        $filename = '/assets/fotos/'. $request->fotoPerfil->getClientOriginalName();
+        $request->fotoPerfil->move(public_path('/assets/fotosPerfil'), $filename);
+
+        // Extraemos el id del usuario y guardamos la ruta de la foto en la base de datos
+        $usuario = Usuarios::find(session('user_id'));
+        $usuario->PP = $filename;
+        $usuario->save();
+    }
+
+
+            return redirect()->route('misimagenes');
+
+
+            
+}
 public function delete_post($id)
     {
         $foto = Fotos::find($id);
@@ -67,6 +89,11 @@ public function coger_datos($id)
         $foto = Fotos::find($id);
         // Devolvemos la foto en formato json
         return response()->json($foto);
+    }
+
+public function aSubirFotoPerfil()
+    {
+        return view('subirFotoPerfil');
     }
 
     

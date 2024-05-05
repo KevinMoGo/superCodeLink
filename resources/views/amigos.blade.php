@@ -10,84 +10,50 @@
     <link rel="stylesheet" href="{{ asset('css/navegador.css') }}">
     @include('head.header')
     <style>
+        body{
+            margin-top: 12vh;
+        }
         div.containerAmigos {
             margin-top: 12vh;
         }
-        .friend-list {
-            list-style: none;
-            padding: 0;
-        }
-        .friend-container {
-            background-color: #fff;
-            padding: 15px;
-            border-radius: 8px;
-            margin-bottom: 10px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            display: flex;
-            align-items: center;
-        }
-        .friend-info {
-            display: flex;
-            align-items: center;
-            justify-content: space-between; /* Alinear elementos a lo largo del eje principal */
-            flex-grow: 1; /* Hace que este div ocupe todo el espacio restante */
-        }
-        .friend-info2 {
-            display: flex;
-            align-items: center;
-        }
-        .friend-name {
-            margin-right: 20px;
-            font-size: 18px;
-            color: #333; /* Cambiado a un color más oscuro para mayor contraste */
-        }
-        .custom-default {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            margin-right: 10px;
-        }
-        .botonesAmigo {
-            display: flex;
-        }
-        .botonesAmigo a {
-            margin-right: 10px;
-        }
-        .iconoAmigo {
-            width: 24px; /* Ajustado el tamaño de los íconos */
-            height: 24px;
-        }
-        .no-amigos {
-            margin-top: 10px;
-            color: #666; /* Color de texto más claro */
-        }
+
     </style>
 </head>
 <body>
-    @include('nav.navbar')
-    <div class="containerAmigos">
-        <ul class="friend-list">
-            @forelse ($amigos as $amigo)
-            <li class="friend-container">
-                <div class="friend-info">
-                    <div class="friend-info2">
-                    <img src="{{ asset('svg/usuario_defecto.svg') }}" alt="default" class="custom-default">
-                    <div class="datosAmigo">
-                        <p class="friend-username">{{ '@' . $amigo->username }}</p>
-                        <p class="friend-name">{{ $amigo->nombre }}</p>
-                    </div>
-                    </div>
-                    <div class="botonesAmigo">
-                        <a href="#"><img src="{{ asset('svg/mensaje.svg') }}" alt="menu" class="iconoAmigo"></a>
-                        <a href="#"><img src="{{ asset('svg/borrarAmigo.svg') }}" alt="menu" class="iconoAmigo"></a>
-                    </div>
-                </div>
-            </li>
-            @empty
-            <li class="no-amigos">No tienes amigos todavía.</li>
-            @endforelse
-        </ul>
-        <a href="/inicio">Volver al inicio</a>
-    </div>
+        @include('nav.navbar')
+        <p class="userID">
+        {{ session('user_id') }}
+        </p>
+        <div class="containerAmigos">
+            
+        </div>
+    
+
 </body>
 </html>
+
+<script>
+    var userID = document.querySelector('.userID').textContent;
+    function getAmigos(id){
+        fetch('/apiAmigos/' + id)
+        .then(response => response.json())
+        // Extraemos los datos de la respuesta uno por uno y los mostramos en la consola
+        .then(data => {
+            console.log(data);
+            var containerAmigos = document.querySelector('.containerAmigos');
+            data.forEach(amigo => {
+                var div = document.createElement('div');
+                div.innerHTML = `
+                    <p>${amigo.nombre}</p>
+                    
+                `;
+                containerAmigos.appendChild(div);
+            });
+        });
+    }
+
+    getAmigos(userID);
+</script>
+
+
+

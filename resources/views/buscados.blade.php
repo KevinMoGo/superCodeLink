@@ -30,7 +30,7 @@
 
         .custom-container {
             width: 100%;
-            max-width: 600px;
+            max-width: 1200px;
             margin: auto;
             padding: 20px;
             background-color: #fff;
@@ -53,10 +53,12 @@
         }
 
         .custom-item {
+            width: 100%;
             background-color: #fff;
             padding: 15px;
             margin-bottom: 10px;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            
         }
 
         .custom-info {
@@ -69,31 +71,54 @@
             margin-right: 20px;
             font-size: 18px;
             color: #333;
-            min-width: 100px;
-            max width: 100px;
+            width: 100px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            border: 1px solid transparent;
+
         }
 
-        .custom-button {
+        .custom-button{
+            // Le damos un ancho fijo para que no se expanda ni se contraiga
+            mix-width: 100px;
             padding: 10px 20px;
             border: none;
             font-size: 16px;
             color: #fff;
             cursor: pointer;
             transition: background-color 0.3s ease;
-            background-color: #007bff;
+            background-color: black;
+            text-overflow: ellipsis;
         }
 
         .custom-button:hover {
-            background-color: #0056b3;
+            background-color: white;
+            color: black;
+            border: 1px solid black;
         }
 
         .custom-button.sent {
             background-color: orange;
+            width: 100px;
+            border: 1px solid white;
+            color: white;
         }
 
         .custom-button.friend {
-            background-color: green;
+            min-width: 100px;
+            background-color: white;
+            color: green;
+            border: 1px solid green;
+            
         }
+
+        .custom-button.enviar {
+            min-width: 100px;
+
+            
+        }
+
 
         .custom-link {
             display: block;
@@ -113,17 +138,21 @@
         }
 
         .custom-info img {
-            width: 50px;
-            height: auto;
+            width: 75px;
+            height: 75px;
             margin-right: 20px;
             border: 1px solid transparent;
             border-image: linear-gradient(135deg, #000, #fff, #fff, #000);
             border-image-slice: 1;
+            object-fit: cover;
+
         }
         .custom-user {
             display: flex;
             align-items: center;
+            width: auto;
         }
+
 
         form {
             display: flex;
@@ -132,6 +161,13 @@
         }
 
         @media screen and (min-width: 768px) {
+
+            .custom-info img {
+            width: 115px;
+            height: 115px;
+            
+
+        }
     .custom-container {
         width: 80%; /* Cambiado para hacerlo responsive */
     }
@@ -140,11 +176,19 @@
         flex-direction: row; /* Alinea los elementos en fila en pantallas más grandes */
     }
 
-    .custom-name {
-        min-width: auto; /* Elimina el ancho mínimo para el nombre */
-        max-width: none; /* Elimina el ancho máximo para el nombre */
-        margin-right: 20px; /* Ajusta el margen */
+    .custom-button.friend {
+        width: 150px;
     }
+
+    .custom-button.sent {
+        width: 150px;
+    }
+
+    .custom-button {
+        width: 150px;
+    }
+
+
 }
 
 
@@ -161,17 +205,18 @@
                 <li class="custom-item">
                     <div class="custom-info">
                         <div class="custom-user">
-                        <a href="#"><img src="{{ asset('svg/usuario_defecto.svg') }}" alt="default" class="custom-default"></a>
+                        <a href="#"><img src="{{ $usuario->PP }}" alt="default" class="custom-image"></a>
                         <p class="custom-name">{{ $usuario->nombre }}</p>
+                        
                         </div>
                         <form method="POST" action="/agregar-solicitud/{{ $usuario->id }}">
                             @csrf
                             @if ($solicitudes->contains('usuario_receptor_id', $usuario->id))
-                                <button class="custom-button sent" disabled>Solicitud enviada</button>
+                                <button class="custom-button sent" disabled>Enviada</button>
                             @elseif ($amigos->contains('usuario1_id', $usuario->id) || $amigos->contains('usuario2_id', $usuario->id))
                                 <button class="custom-button friend" disabled>Amigo</button>
                             @else
-                                <button class="custom-button" type="submit">Enviar solicitud</button>
+                                <button class="custom-button enviar" type="submit">Enviar</button>
                             @endif
                         </form>
                     </div>
@@ -179,7 +224,7 @@
             @endforeach
         </ul>
         
-        <a href="/inicio" class="custom-link">Volver al inicio</a>
+        
     </div>
 </body>
 </html>

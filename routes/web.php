@@ -38,6 +38,7 @@ Route::post('rechazar-solicitud/{id}', [AmistadesController::class, 'rechazarSol
 Route::get('amigos', [AmistadesController::class, 'MostrarAmigos']);
 
 Route::post('subir', [FotosController::class, 'subirFoto']);
+Route::post('subirPerfil', [FotosController::class, 'subirFotoPerfil']);
 
 Route::get('misimagenes', [UsuariosController::class, 'mostrarMisImagenes'])->name('misimagenes');
 Route::get('inicio', [UsuariosController::class, 'mostrarInicio'])->name('inicio');
@@ -50,3 +51,5 @@ Route::delete('/delete_post/{id}', [FotosController::class, 'delete_post']);
 Route::post('editar_foto', [FotosController::class, 'editar_foto']);
 
 Route::get('coger_datos/{id}', [FotosController::class, 'coger_datos']);
+Route::get('apiAmigos/{id}', [AmistadesController::class, 'apiAmigos']);
+Route::get('aSubirFotoPerfil', [FotosController::class, 'aSubirFotoPerfil']);

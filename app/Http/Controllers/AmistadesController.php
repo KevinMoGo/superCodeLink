@@ -57,4 +57,32 @@ class AmistadesController extends Controller
 
         return view('amigos', ['amigos' => $amigos]);
     }
+
+    public function apiAmigos($id)
+    {
+        $amigos = Amistades::where('usuario1_id', $id)
+        ->orWhere('usuario2_id', $id)
+        ->get();
+
+        // Inicializamos una variable para almacenar los IDs de los amigos
+        $ids_amigos = [];
+
+        // Iteramos sobre las amistades para obtener los IDs de los amigos
+        foreach ($amigos as $amigo) {
+        // Verificamos si el usuario logueado es usuario1_id o usuario2_id
+        if ($amigo->usuario1_id == $id) {
+        $ids_amigos[] = $amigo->usuario2_id;
+        } else {
+        $ids_amigos[] = $amigo->usuario1_id;
+        }
+        }
+
+        // Convertimos los IDs de amigos en una colección y eliminamos duplicados
+        $ids_amigos = collect($ids_amigos)->unique();
+
+        //Ahora extraemos los datos de los amigos
+        $amigos = Usuarios::whereIn('id', $ids_amigos)->get();
+
+        return response()->json($amigos);
+    }
 }

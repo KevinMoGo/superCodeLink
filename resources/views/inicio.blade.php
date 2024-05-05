@@ -109,6 +109,9 @@
     </main>
 
     <a href="/tailwind">A Tailwind</a>
+    <a href="/aSubirFotoPerfil">
+        Subir foto de perfil
+    </a>
 </body>
 
 </html>
