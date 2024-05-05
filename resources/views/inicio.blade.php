@@ -30,24 +30,27 @@
         }
 
         input.buscador {
-            width: 80%;
-            height: 50px;
-            border-radius: 20px;
-            border: 1px solid #004EE1;
-            padding: 0 20px;
-            margin: 20px 0;
-            outline: none;
-        }
+    width: 80%;
+    height: 50px;
+    
+    padding: 0 20px;
+    margin: 20px 0;
+    outline: none;
+    border: 1px solid transparent; /* Eliminar el borde predeterminado */
+    border-image: linear-gradient(270deg, #fff, #000); /* Establecer el gradiente */
+    border-image-slice: 1; /* Hacer que el gradiente se muestre completamente */
+}
+
 
         button#boton-buscar {
             width: 50px;
             height: 50px;
             border: none;
-            background-color: #004EE1;
+            background-color: black;
             margin-left: 10px;
             cursor: pointer;
             padding: 0;
-            border-radius: 20px;
+            
         }
 
         img.lupa {

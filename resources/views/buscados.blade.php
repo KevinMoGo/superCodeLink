@@ -25,16 +25,20 @@
             justify-content: center;
             align-items: center;
             height: 100vh;
+            position: relative; /* Establece el cuerpo como un elemento de posición relativa */
         }
 
         .custom-container {
-            width: 80%;
+            width: 100%;
             max-width: 600px;
             margin: auto;
             padding: 20px;
             background-color: #fff;
-            border-radius: 8px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            position: fixed; /* Fija el contenedor en la ventana del navegador */
+            top: 50%; /* Lo coloca en el centro vertical */
+            left: 50%; /* Lo coloca en el centro horizontal */
+            transform: translate(-50%, -50%); /* Lo ajusta al centro exacto */
         }
 
         .custom-title {
@@ -51,29 +55,27 @@
         .custom-item {
             background-color: #fff;
             padding: 15px;
-            border-radius: 8px;
             margin-bottom: 10px;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
         }
 
         .custom-info {
             display: flex;
             align-items: center;
+            justify-content: space-between;
         }
 
         .custom-name {
             margin-right: 20px;
             font-size: 18px;
             color: #333;
+            min-width: 100px;
+            max width: 100px;
         }
 
         .custom-button {
             padding: 10px 20px;
             border: none;
-            border-radius: 5px;
             font-size: 16px;
             color: #fff;
             cursor: pointer;
@@ -93,7 +95,6 @@
             background-color: green;
         }
 
-
         .custom-link {
             display: block;
             text-align: center;
@@ -101,6 +102,10 @@
             color: #007bff;
             text-decoration: none;
             font-size: 16px;
+            position: absolute; /* Fija el enlace en la ventana del navegador */
+            bottom: 20px; /* Lo coloca en la parte inferior */
+            left: 50%; /* Lo coloca en el centro horizontal */
+            transform: translateX(-50%); /* Lo ajusta al centro exacto */
         }
 
         .custom-link:hover {
@@ -110,39 +115,68 @@
         .custom-info img {
             width: 50px;
             height: auto;
-            border-radius: 50%;
             margin-right: 20px;
-            border: 1px solid #ccc;
+            border: 1px solid transparent;
+            border-image: linear-gradient(135deg, #000, #fff, #fff, #000);
+            border-image-slice: 1;
         }
+        .custom-user {
+            display: flex;
+            align-items: center;
+        }
+
+        form {
+            display: flex;
+            align-items: center;
+            
+        }
+
+        @media screen and (min-width: 768px) {
+    .custom-container {
+        width: 80%; /* Cambiado para hacerlo responsive */
+    }
+
+    .custom-info {
+        flex-direction: row; /* Alinea los elementos en fila en pantallas más grandes */
+    }
+
+    .custom-name {
+        min-width: auto; /* Elimina el ancho mínimo para el nombre */
+        max-width: none; /* Elimina el ancho máximo para el nombre */
+        margin-right: 20px; /* Ajusta el margen */
+    }
+}
+
+
     </style>
 </head>
 
 <body>
-@include('nav.navbar')
+    @include('nav.navbar')
 
     <div class="custom-container">
-        <h1 class="custom-title">Resultados de la búsqueda</h1>
 
         <ul class="custom-list">
-        @foreach ($usuarios as $usuario)
-    <li class="custom-item">
-        <div class="custom-info">
-            <a href="#"><img src="{{ asset('svg/usuario_defecto.svg') }}" alt="default" class="custom-default"></a>
-            <p class="custom-name">{{ $usuario->nombre }}</p>
-            <form method="POST" action="/agregar-solicitud/{{ $usuario->id }}">
-                @csrf
-                @if ($solicitudes->contains('usuario_receptor_id', $usuario->id))
-                    <button class="custom-button sent" disabled>Solicitud enviada</button>
-                @elseif ($amigos->contains('usuario1_id', $usuario->id) || $amigos->contains('usuario2_id', $usuario->id))
-                    <button class="custom-button friend" disabled>Amigo</button>
-                @else
-                    <button class="custom-button" type="submit">Enviar solicitud</button>
-                @endif
-            </form>
-        </div>
-    </li>
-@endforeach
-
+            @foreach ($usuarios as $usuario)
+                <li class="custom-item">
+                    <div class="custom-info">
+                        <div class="custom-user">
+                        <a href="#"><img src="{{ asset('svg/usuario_defecto.svg') }}" alt="default" class="custom-default"></a>
+                        <p class="custom-name">{{ $usuario->nombre }}</p>
+                        </div>
+                        <form method="POST" action="/agregar-solicitud/{{ $usuario->id }}">
+                            @csrf
+                            @if ($solicitudes->contains('usuario_receptor_id', $usuario->id))
+                                <button class="custom-button sent" disabled>Solicitud enviada</button>
+                            @elseif ($amigos->contains('usuario1_id', $usuario->id) || $amigos->contains('usuario2_id', $usuario->id))
+                                <button class="custom-button friend" disabled>Amigo</button>
+                            @else
+                                <button class="custom-button" type="submit">Enviar solicitud</button>
+                            @endif
+                        </form>
+                    </div>
+                </li>
+            @endforeach
         </ul>
         
         <a href="/inicio" class="custom-link">Volver al inicio</a>

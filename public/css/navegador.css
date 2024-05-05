@@ -5,8 +5,8 @@ nav {
     position: fixed;
     z-index: 1000;
     top: 0;
-    background-color: #004EE1;
-    box-shadow: 0 0 10px #004EE1;
+    background-color: black;
+    
 }
 
 nav ul {
@@ -20,6 +20,8 @@ nav ul li{
     width: 100%;
     display: flex;
     justify-content: center;
+    transition: background-color 0.2s;
+    
 }
 nav ul li a{
     display: flex;

@@ -11,7 +11,6 @@
 
     <style>
         body {
-            overflow-y: hidden;
             font-family: Arial, sans-serif;
             background-color: #f8f9fa;
             margin: 0;
@@ -20,15 +19,12 @@
         }
 
         .container {
-            
-            max-width: calc(100% - 20px);
-            margin: 0 auto;
+            max-width: 600px;
+            margin: auto;
             padding: 20px;
             background-color: #fff;
-            border-radius: 8px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
-
 
         h1 {
             font-size: 24px;
@@ -49,9 +45,9 @@
             padding: 10px;
             margin-bottom: 20px;
             border: 1px solid #ccc;
-            border-radius: 4px;
             font-size: 16px;
             transition: border-color 0.3s ease;
+            width: 100%; /* Ancho completo */
         }
 
         input[type="text"]:focus, input[type="file"]:focus {
@@ -60,25 +56,32 @@
         }
 
         button {
-            background-color: #007bff;
-            color: #fff;
-            border: none;
+            background-color: black;
+            color: white;
+            border: 1px solid black;
             cursor: pointer;
             transition: background-color 0.3s ease;
+            width: 100%; /* Ancho completo */
         }
 
         button:hover {
-            background-color: #0056b3;
+            background-color: white;
+            color: black;
+            border: 1px solid black;
         }
 
+        /* Estilos para hacer el formulario responsive */
         .subbody {
-            /* Todo su contenido se centrara vertical y horizontamlente */
-            align-items: center;
-            margin-top: 12vh;
             display: flex;
             justify-content: center;
-            height: 88vh;
-            overflow-y: hidden;
+            align-items: center;
+            height: 100vh;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                max-width: 90%;
+            }
         }
     </style>
 </head>
@@ -86,21 +89,19 @@
     @include('nav.navbar')
 
     <div class="subbody">
-    <div class="container">
-        <h1>Subir Imagen</h1>
-        <form action="/subir" method="post" enctype="multipart/form-data">
-            @csrf
-            <label for="titulo">Titulo</label>
-            <input type="text" name="titulo" id="titulo">
-            <label for="descripcion">Descripción</label>
-            <input type="text" name="descripcion" id="descripcion">
-
-            <label for="foto">Seleccionar imagen</label>
-            <input type="file" name="foto" id="foto">
-
-            <button type="submit">Subir</button>
-        </form>
-    </div>
+        <div class="container">
+            <h1>Subir Imagen</h1>
+            <form action="/subir" method="post" enctype="multipart/form-data">
+                @csrf
+                <label for="titulo">Titulo</label>
+                <input type="text" name="titulo" id="titulo">
+                <label for="descripcion">Descripción</label>
+                <input type="text" name="descripcion" id="descripcion">
+                <label for="foto">Seleccionar imagen</label>
+                <input type="file" name="foto" id="foto">
+                <button type="submit">SUBIR</button>
+            </form>
+        </div>
     </div>
 </body>
 </html>
