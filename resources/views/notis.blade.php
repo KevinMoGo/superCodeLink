@@ -12,99 +12,79 @@
         body {
             margin: 0;
             padding: 0;
+            width: 100%;
             font-family: Arial, sans-serif;
-
+            justify-content: center;
+            margin-top: 12vh;
             background-color: #f9f9f9;
         }
 
         .cuerpoPagina {
-            margin-top: 12vh;
+            
             padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
         }
 
         .notificacion {
             display: flex;
-            justify-content: space-between;
+            
             align-items: center;
             border: 1px solid #ddd;
             background-color: #fff;
             padding: 15px;
             margin-bottom: 10px;
-            
-            
         }
 
-        .notificacion:hover {
-            
-        }
-
-        .notificacion h3 {
-            margin: 0;
-            font-size: 18px;
-            color: #333;
+        .notificacion img {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            margin-right: 20px;
         }
 
         .botonesAmigos {
+            margin-top: 20px;
             display: flex;
+            width: 100%;
+            gap: 10px;
+            justify-content: center;
         }
-
-        .botonesAmigos button {
-            margin-left: 10px;
-            padding: 8px 16px;
-            border: none;
-            
-            cursor: pointer;
-            transition: background-color 0.3s;
+        .contenidoUsuario {
+            width: 100%;
         }
-
-        .botonesAmigos button.aceptar {
-            border: 1px solid black;
+        form{
+            width: 50%;
+        }
+        button.aceptarSolicitud {
             background-color: transparent;
-            color: black;
+            color: green;
+            padding: 10px;
+            outline: none;
+            border: 1px solid green;
+            width: 100%;
+            transition: all 0.3s;
         }
 
-        .botonesAmigos button.rechazar {
-            background-color: transparent;
-            color: red;
-            border: 1px solid red;
-        }
-
-        .botonesAmigos button.aceptar:hover {
-            background-color: black;
+        button.aceptarSolicitud:hover {
+            background-color: green;
             color: white;
         }
+        button.rechazarSolicitud {
+            background-color: transparent;
+            color: red;
+            padding: 10px;
+            outline: none;
+            border: 1px solid red;
+            width: 100%;
+            transition: all 0.3s;
+        }
 
-        .botonesAmigos button.rechazar:hover {
+        button.rechazarSolicitud:hover {
             background-color: red;
             color: white;
         }
 
-
-        .notificaciones {
-            padding: 0;
-            
-            max-height: 300px;
-            
-            
-            background-color: #fff;
-            
-            scrollbar-width: thin;
-            scrollbar-color: #999 #f9f9f9;
-        }
-
-        .notificaciones::-webkit-scrollbar {
-            width: 10px;
-        }
-
-        .notificaciones::-webkit-scrollbar-track {
-            background: #f9f9f9;
-        }
-
-        .notificaciones::-webkit-scrollbar-thumb {
-            background-color: #999;
-            
-            
-        }
     </style>
 </head>
 @include('nav.navbar')
@@ -112,20 +92,29 @@
     <div class="cuerpoPagina">
         <h1>Notificaciones</h1>
         <ul class="notificaciones">
-            @foreach ($solicitudes as $index => $solicitud)
+            @foreach ($usuarios as $usuario)
                 <li class="notificacion">
-                    <h3>{{ $nombres[$index] }}</h3>
+                    <img src="{{ $usuario->PP }}" alt="default">
+
+                    <div class="contenidoUsuario">
+                    <h3>{{ $usuario->nombre }}</h3>
+
                     <div class="botonesAmigos">
-                        <form method="POST" action="/aceptar-solicitud/{{ $ids[$index] }}">
+                        <form action="aceptar-solicitud/{{ $usuario->id }}" method="post">
                             @csrf
-                            <button class="aceptar" type="submit">Aceptar</button>
+                            <button type="submit" class="aceptarSolicitud">Aceptar</button>
                         </form>
-                        <form method="POST" action="/rechazar-solicitud/{{ $ids[$index] }}">
+                        <form action="rechazar-solicitud/{{ $usuario->id }}" method="post">
                             @csrf
-                            <button class="rechazar" type="submit">Rechazar</button>
+                            <button type="submit" class="rechazarSolicitud">Rechazar</button>
                         </form>
                     </div>
+                    </div>
+
+
+
                 </li>
+                
             @endforeach
         </ul>
     </div>
