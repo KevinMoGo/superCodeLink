@@ -112,12 +112,12 @@
         <form method="POST" action="/login">
             @csrf
             <div>
-                <label for="nombre">Nombre:</label>
-                <input type="text" id="nombre" name="nombre" autofocus>
+                <label for="nombre">Username:</label>
+                <input type="text" id="username" name="username" autofocus autocomplete="off">
             </div>
             <div>
                 <label for="contrasena">Contraseña:</label>
-                <input type="password" id="contrasena" name="contrasena">
+                <input type="password" id="contrasena" name="contrasena" autocomplete="new-password">
             </div>
             <button type="submit">Ingresar</button>
         </form>

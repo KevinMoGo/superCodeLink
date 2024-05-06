@@ -40,7 +40,8 @@
             width: 100px;
             height: 100px;
             margin-right: 20px;
-             
+            object-fit: cover;
+            border: 1px solid black;
         }
 
         .botonesAmigos {

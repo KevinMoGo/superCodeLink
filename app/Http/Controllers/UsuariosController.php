@@ -15,23 +15,79 @@ class UsuariosController extends Controller
     {
         //
     }
+
+
+
+
+
+//     <script type="text/javascript">
+//     function registroUsuario(){
+//         let nombre = document.getElementById('nombre').value;
+//         let usuario = document.getElementById('usuario').value;
+//         let contrasena = document.getElementById('contrasena').value;
+
+//         if(nombre == '' || usuario == '' || contrasena == ''){
+//             document.querySelector('.mensajeError1').style.display = 'block';
+//             document.querySelector('.mensajeError2').style.display = 'none';
+//         }
+//         else{
+//             fetch('creaUsuario', {
+//                 method: 'POST',
+//                 headers: {
+//                     'Content-Type': 'application/json',
+//                     'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+//                 },
+//                 body: JSON.stringify({
+//                     nombre: nombre,
+//                     usuario: usuario,
+//                     contrasena: contrasena
+//                 })
+//             })
+//         }
+//     }
+// </script>
     public function creaUsuario()
     {
-        $usuario = new Usuarios();
-        $usuario->nombre = request('nombre');
-        $usuario->username = request('usuario');
-        $usuario->contrasena = request('contrasena');
-        $usuario->save();
-        return redirect('/');
+
+        // Primero se comprueba si el usuario ya existe
+        // Recogemos del json que nos llega los datos del usuario desde el fetch
+        $datos = request()->json()->all();
+        // Comprobamos si el usuario ya existe
+        $usuario = Usuarios::where('username', $datos['usuario'])->first();
+        // Si el usuario no existe, lo creamos
+        if (!$usuario) {
+            $usuario = new Usuarios();
+            $usuario->nombre = $datos['nombre'];
+            $usuario->username = $datos['usuario'];
+            $usuario->contrasena = hash('sha256', $datos['contrasena']);
+            $usuario->save();
+            // retorna un json con un success
+            return response()->json(['success' => 'Usuario creado']);
+        }
+        // Si el usuario ya existe, retornamos un json con un error
+        return response()->json(['error' => 'El usuario ya existe']);
+
+        
     }
 
     public function login()
     {
-        $usuario = Usuarios::where('username', request('nombre'))->where('contrasena', request('contrasena'))->first();
-        if($usuario){
-            session(['user_id' => $usuario->id]);
-            return redirect('inicio');
-        }else{
+        // $usuario = Usuarios::where('username', request('nombre'))->where('contrasena', request('contrasena'))->first();
+        // if($usuario){
+        //     session(['user_id' => $usuario->id]);
+        //     return redirect('inicio');
+        // }else{
+        //     return redirect('/');
+        // }
+        $usuario = Usuarios::where('username', request('username'))->first();
+        if ($usuario) {
+            if (hash('sha256', request('contrasena')) == $usuario->contrasena) {
+                session(['user_id' => $usuario->id]);
+                return redirect('inicio');
+            } else {
+                return redirect('/');
+            }
+        } else {
             return redirect('/');
         }
     }

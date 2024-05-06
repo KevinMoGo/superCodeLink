@@ -9,6 +9,10 @@ Route::get('/', function () {
     return view('login');
 });
 
+Route::get('/login', function () {
+    return view('login');
+});
+
 Route::get('/registro', function () {
     return view('registro');
 });
@@ -27,7 +31,12 @@ Route::get('tailwind', function () {
 
 
 
-Route::post('creaUsuario', [UsuariosController::class, 'creaUsuario']);
+Route::post('/creaUsuario', [UsuariosController::class, 'creaUsuario']);
+
+
+
+
+
 Route::post('login', [UsuariosController::class, 'login']);
 Route::post('buscador', [UsuariosController::class, 'buscador']);
 

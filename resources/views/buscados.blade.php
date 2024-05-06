@@ -17,18 +17,20 @@
         body {
             background-color: #f0f2f5;
             display: flex;
-
+            margin-top: 12vh;
             height: 88vh;
+            overflow: hidden;
         }
 
         .custom-container {
             width: 100%;
+            max-height: 100%;
+            overflow-y: scroll;
             max-width: 1200px;
-            padding: 20px;
+            padding: 0 20px 20px 20px;
             background-color: #fff;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            top: 50%; /* Lo coloca en el centro vertical */
-            left: 50%; /* Lo coloca en el centro horizontal */
+            margin: 0 auto;
             
         }
 
