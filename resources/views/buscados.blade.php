@@ -12,33 +12,24 @@
     <link rel="stylesheet" href="{{ asset('css/navegador.css') }}">
 
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: Arial, sans-serif;
-        }
+
         
         body {
             background-color: #f0f2f5;
             display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            position: relative; /* Establece el cuerpo como un elemento de posición relativa */
+
+            height: 88vh;
         }
 
         .custom-container {
             width: 100%;
             max-width: 1200px;
-            margin: auto;
             padding: 20px;
             background-color: #fff;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            position: fixed; /* Fija el contenedor en la ventana del navegador */
             top: 50%; /* Lo coloca en el centro vertical */
             left: 50%; /* Lo coloca en el centro horizontal */
-            transform: translate(-50%, -50%); /* Lo ajusta al centro exacto */
+            
         }
 
         .custom-title {
@@ -73,7 +64,7 @@
             color: #333;
             width: 100px;
             white-space: nowrap;
-            overflow: hidden;
+            
             text-overflow: ellipsis;
             border: 1px solid transparent;
 

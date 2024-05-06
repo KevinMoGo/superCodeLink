@@ -31,14 +31,14 @@
             width: 100%;
             justify-content: space-between;
         }
-        div.amigo img{
-            width: 75px;
-            height: 75px;
-            border-image: linear-gradient(135deg, #000, #fff, #fff, #000);
-            border-image-slice: 1;
-            margin-right: 10px;
-            object-fit: cover;
-        }
+        div.amigo img {
+    width: 75px;
+    height: 75px;
+    border: 1px solid black;
+    margin-right: 10px;
+    object-fit: cover;
+}
+
 
         div.gestionAmigos{
             display: flex;
@@ -52,26 +52,33 @@
             align-items: center;
         }
 
-        .eliminarAmigo{
-            background-color: transparent;
-            color: red;
-            
-            padding: 5px;
-        }
-        .eliminarAmigo:hover{
-            background-color: red;
-            color: white;
+        div.amigo img.eliminarAmigo{
+            border: none;
+            width: 50px;
+            height: 50px;
+            object-fit: cover;
+            cursor: pointer;
+            transition: all 0.2s;
         }
 
-        .escribirAmigo{
-            background-color: transparent;
-            color: blue;
-            border: 1px solid blue;
-            padding: 5px;
+        div.amigo .escribirAmigo{
+            border: none;
+            width: 50px;
+            height: 50px;
+            cursor: pointer;
+            transition: all 0.2s;
         }
-        .escribirAmigo:hover{
-            background-color: blue;
-            color: white;
+
+
+        .datosAmigo{
+            display: flex;
+            flex-direction: column;
+            height: 75px;
+            justify-content: space-around;
+        }
+        .username{
+            
+            color: grey;
         }
 
         @media screen and (min-width: 768px) {
@@ -79,7 +86,17 @@
                 width: 115px;
                 height: 115px;
             }
+            div.amigo img.eliminarAmigo{
+                width: 75px;
+                height: 75px;
+            }
+
+            div.amigo .escribirAmigo{
+                width: 75px;
+                height: 75px;
+            }
         }
+
 
     </style>
 </head>
@@ -126,28 +143,47 @@
                 var spanAmigo = document.createElement('span');
                 spanAmigo.textContent = amigo.nombre;
 
+                var spanUsername = document.createElement('span');
+                spanUsername.textContent = '@'+amigo.username;
+                // le damos una clase al span para poder darle estilos
+                spanUsername.classList.add('username');
+
+                // Creamos un div datosAmigo que contenga el span con el nombre y el span con el username
+                var divDatosAmigo = document.createElement('div');
+                divDatosAmigo.classList.add('datosAmigo');
+                divDatosAmigo.appendChild(spanAmigo);
+
+                divDatosAmigo.appendChild(spanUsername);
+
                 // metemos la imagen y el span dentro dentro de un nuevo div cuya clase es "fotoNombre"
                 var divFotoNombre = document.createElement('div');
                 divFotoNombre.classList.add('fotoNombre');
                 divFotoNombre.appendChild(imgAmigo);
-                divFotoNombre.appendChild(spanAmigo);
+                divFotoNombre.appendChild(divDatosAmigo);
                 divAmigo.appendChild(divFotoNombre);
 
                 containerAmigos.appendChild(divAmigo);
 
-                // Creamos un elemento a que tenga como dato interno el id del amigo y cuando cliquemos en el muestre un alert con el id del amigo
-                var aEliminar = document.createElement('a');
-                aEliminar.href = "javascript:void(0)";
-                aEliminar.textContent = "Eliminar";
-                aEliminar.classList.add('escribirAmigo');
-
-                // Funcion flecha que muestra un alert con el id del amigo
-                aEliminar.onclick = () => {
+                // Creamos una imagen para el botón de eliminar que apunte a assets/svg/borrarAmigo.svg
+                var aEliminar = document.createElement('img');
+                aEliminar.src = "{{ asset('svg/borrarAmigo.svg') }}";
+                aEliminar.alt = "Eliminar amigo";
+                aEliminar.classList.add('eliminarAmigo');
+                aEliminar.addEventListener('click', function(){
                     eliminarAmigo(amigo.id);
-                }
+                });
+                
+
+                // Creamos un enlace para el botón de escribir que apunte a /chat/{idAmigo}
+                var aEscribir = document.createElement('img');
+                aEscribir.src = "{{ asset('svg/mensaje.svg') }}";
+                aEscribir.alt = "Enviar mensaje";
+                aEscribir.classList.add('escribirAmigo');
+
                 var gestionAmigos = document.createElement('div');
                 gestionAmigos.classList.add('gestionAmigos');
                 gestionAmigos.appendChild(aEliminar);
+                gestionAmigos.appendChild(aEscribir);
 
                 divAmigo.appendChild(gestionAmigos);
 
