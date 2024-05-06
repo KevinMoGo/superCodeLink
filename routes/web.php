@@ -46,7 +46,7 @@ Route::get('inicio', [UsuariosController::class, 'mostrarInicio'])->name('inicio
 
 
 Route::delete('/delete_post/{id}', [FotosController::class, 'delete_post']);
-
+Route::delete('/delete_amigo/{id}', [AmistadesController::class, 'delete_amigo']);
 
 Route::post('editar_foto', [FotosController::class, 'editar_foto']);
 

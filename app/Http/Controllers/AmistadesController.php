@@ -85,4 +85,13 @@ class AmistadesController extends Controller
 
         return response()->json($amigos);
     }
+
+    public function delete_amigo($id)
+    {
+        // Eliminamos la amistad
+        Amistades::where('usuario1_id', $id)->where('usuario2_id', session('user_id'))->delete();
+        Amistades::where('usuario2_id', $id)->where('usuario1_id', session('user_id'))->delete();
+
+        return response()->json(['success' => true]);
+    }
 }
