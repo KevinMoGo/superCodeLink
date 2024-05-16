@@ -5,13 +5,19 @@ use App\Http\Controllers\UsuariosController;
 use App\Http\Controllers\SolicitudController;
 use App\Http\Controllers\AmistadesController;
 use App\Http\Controllers\FotosController;
+
+// -----------------------------------INICIO-----------------------------------
 Route::get('/', function () {
     return view('login');
 });
 
-Route::get('/login', function () {
-    return view('login');
-});
+Route::post('/registroUsername', [UsuariosController::class, 'registroUsername']);
+Route::post('/auth', [UsuariosController::class, 'auth']);
+
+
+
+
+
 
 Route::get('/registro', function () {
     return view('registro');
@@ -62,3 +68,5 @@ Route::post('editar_foto', [FotosController::class, 'editar_foto']);
 Route::get('coger_datos/{id}', [FotosController::class, 'coger_datos']);
 Route::get('apiAmigos/{id}', [AmistadesController::class, 'apiAmigos']);
 Route::get('aSubirFotoPerfil', [FotosController::class, 'aSubirFotoPerfil']);
+
+Route::post('/Auth', [UsuariosController::class, 'auth']);
