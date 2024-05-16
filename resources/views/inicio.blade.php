@@ -2,7 +2,7 @@
 <html lang="en">
 
 @include('head.header')
-@include('menu.menu')
+@include('barraLateral.barraLateral')
 
 <head>
     <meta charset="UTF-8">

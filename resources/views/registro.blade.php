@@ -5,210 +5,125 @@
     <meta name="csrf-token" content="{{ csrf_token() }}" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registro de usuarios</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #333;
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            width: 100%;
-        }
-
-        .container {
-            border: 1px solid #ccc;
-            max-width: 1200px;
-            min-height: 360px;
-            padding: 20px;
-            background-color: #fff;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-
-        h1 {
-            font-size: 24px;
-            text-align: center;
-            margin-bottom: 20px;
-        }
-
-        form {
-            display: flex;
-            flex-direction: column;
-        }
-
-        label {
-            margin-bottom: 10px;
-            width: 100px;
-            display: inline-block;
-        }
-
-        input[type="text"], input[type="password"], .botonRegistro {
-            padding: 10px;
-            margin-bottom: 20px;
-            border: 1px solid #ccc;
-            
-            font-size: 16px;
-            transition: border-color 0.3s ease;
-        }
-
-        input[type="text"]:focus, input[type="password"]:focus {
-            border-color: black;
-            outline: none;
-        }
-
-        .botonRegistro {
-            background-color: black;
-            color: white;
-            border: 1px solid black;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-            text-decoration: none;
-            text-align: center;
-        }
-
-        botonRegistro:hover {
-            background-color: transparent;
-            color: black;
-
-        }
-
-        .mensajeError1{
-            display: none;
-            color: red;
-        }
-
-        .mensajeError2{
-            display: none;
-            color: red;
-        }
-
-        .mensajeSuccess{
-            display: none;
-            color: green;
-        }
-
-    </style>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 </head>
-<body>
-    <div class="container">
-        <h1>Registro de usuarios</h1>
-        
-        <form autocomplete="off">
+<body class="bg-gray-800 flex justify-center items-center h-screen">
+
+    <!-- Div para el formulario de nombre de usuario -->
+    <div class="container max-w-lg w-full p-8 bg-white shadow-md rounded-md md:border-l md:border-r md:rounded-lg" style="margin: 0 20px;" id="usernameDiv">
+        <h1 class="text-center text-3xl mb-8 text-gray-800">Registro de usuarios</h1>
+        <form autocomplete="off" class="space-y-4" id="usernameForm">
             @csrf
             <div>
-                <label for="nombre">Nombre:</label>
-                <input type="text" id="nombre" name="nombre" autofocus autocomplete="off">
+                <label for="username" class="text-gray-800">Nombre de usuario:</label>
+                <input type="text" id="usernameID" name="usernameID" autocomplete="off" class="w-full px-4 py-2 border rounded-md focus:outline-none focus:border-black">
             </div>
-            <div>
-                <label for="usuario">Usuario:</label>
-                <input type="text" id="usuario" name="usuario" autocomplete="off">
-            </div>
-            <div>
-                <label for="contrasena">Contraseña:</label>
-                <input type="password" id="contrasena" name="contrasena" autocomplete="new-password">
-            </div>
-            <a href="javascript:void(0)" class="botonRegistro" onclick="registroUsuario()" >Regístrate</a>
+            <button type="button" class="w-full px-4 py-2 bg-black text-white rounded-md transition duration-300 hover:bg-gray-900" onclick="registrarUsername()">Guardar</button>
         </form>
-        <p class="mensajeError1">
-            Rellene todos los campos
-        </p>
-        <p class="mensajeError2">
-            <!-- El usuario ya existe -->
-        </p>
-        <p class="mensajeSuccess">
-            <!-- Usuario registrado correctamente -->
-        </p>
+        <p id="mensajeUsername" class="mensajeError1 text-red-500 hidden">Este nombre ya existe</p>
+        <p id="mensajeSuccessUsername" class="mensajeSuccess text-green-500 hidden">Nombre guardado</p>
+    </div>
 
+    <!-- Div para el formulario de datos adicionales -->
+    <div class="container max-w-lg w-full p-8 bg-white shadow-md rounded-md md:border-l md:border-r md:rounded-lg hidden" style="margin: 0 20px;">
+        <form autocomplete="off" class="space-y-4">
+            <div>
+                <label for="nombre" class="text-gray-800">Nombre:</label>
+                <input type="text" id="nombre" name="nombre" autofocus autocomplete="off" class="w-full px-4 py-2 border rounded-md focus:outline-none focus:border-black">
+            </div>
+            <div>
+                <label for="edad" class="text-gray-800">Edad:</label>
+                <input type="number" id="edad" name="edad" class="w-full px-4 py-2 border rounded-md focus:outline-none focus:border-black">
+            </div>
+            <div>
+                <label for="genero" class="text-gray-800">Género:</label>
+                <select id="genero" name="genero" class="w-full px-4 py-2 border rounded-md focus:outline-none focus:border-black">
+                    <option value="masculino">Masculino</option>
+                    <option value="femenino">Femenino</option>
+                    <option value="otro">Otro</option>
+                </select>
+            </div>
+            <div>
+                <label for="pais" class="text-gray-800">País:</label>
+                <select id="pais" name="pais" class="w-full px-4 py-2 border rounded-md focus:outline-none focus:border-black">
+                    <!-- Los países serán agregados por una API -->
+                </select>
+            </div>
+            <div>
+                <label for="contrasena" class="text-gray-800">Contraseña:</label>
+                <input type="password" id="contrasena" name="contrasena" autocomplete="new-password" class="w-full px-4 py-2 border rounded-md focus:outline-none focus:border-black">
+            </div>
+            <button type="button" class="w-full px-4 py-2 bg-black text-white rounded-md transition duration-300 hover:bg-gray-900" onclick="registroUsuario()">Regístrate</button>
+        </form>
+        <p class="mensajeError1 text-red-500 hidden">Rellene todos los campos</p>
+        <p class="mensajeError2 text-red-500 hidden"><!-- El usuario ya existe --></p>
+        <p class="mensajeSuccess text-green-500 hidden"><!-- Usuario registrado correctamente --></p>
     </div>
 </body>
 </html>
 
 
-<!-- <script type="text/javascript">
-    function eliminarAmigo(idAmigo){
-        if (confirm("¿Estás seguro de que deseas eliminar a este amigo?")) {
-            fetch('/delete_amigo/' + idAmigo, {
-                method: 'DELETE',
-                headers: {
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-                }
-            })
+<script>
+    function recogerPaises() {
+        // Array para almacenar los nombres de los países
+        let paisesArray = [];
+
+        // Hacemos una petición a la API de países
+        fetch('https://restcountries.com/v3.1/all')
             .then(response => response.json())
-            .then(result => {
-                if (result) {
-                    // Find the image container with the corresponding id and remove it
-                    document.querySelector('#imagen' + idAmigo).remove();
-                }
+            .then(data => {
+                // Extraemos solo el nombre de los países en español y los agregamos al array
+                data.forEach(pais => {
+                    paisesArray.push(pais.translations.spa.common);
+                });
+
+                // Ordenamos el array alfabéticamente
+                paisesArray.sort();
+
+                // Llenamos el select con los países ordenados
+                let select = document.getElementById('pais');
+                paisesArray.forEach(pais => {
+                    select.innerHTML += `<option value="${pais}">${pais}</option>`;
+                });
+            })
+            .catch(error => {
+                console.error('Hubo un problema al obtener los países:', error);
             });
-        }
     }
-</script> -->
+    // Llamamos a la función
+    recogerPaises();
 
-<script type="text/javascript">
-    function registroUsuario(){
-        // Reinicializamos los mensajes de error y éxito con display none
-        document.querySelector('.mensajeError1').style.display = 'none';
-        document.querySelector('.mensajeError2').style.display = 'none';
-        document.querySelector('.mensajeSuccess').style.display = 'none';
+</script>
 
-        let nombre = document.getElementById('nombre').value;
-        let usuario = document.getElementById('usuario').value;
-        let contrasena = document.getElementById('contrasena').value;
 
-        if(nombre == '' || usuario == '' || contrasena == ''){
-            document.querySelector('.mensajeError1').style.display = 'block';
-            document.querySelector('.mensajeError2').style.display = 'none';
-        }
-        else{
-            fetch('/creaUsuario', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-                },
-                body: JSON.stringify({
-                    nombre: nombre,
-                    usuario: usuario,
-                    contrasena: contrasena
-                })
-            })
-            // Recibimos la respuesta en formato JSON y si es success mostramos el mensaje de éxito que nos devuelve el servidor, si es un error mostramos el mensaje de error
-            .then(response => response.json())
-            .then(result => {
-                if (result.success) {
-                    document.querySelector('.mensajeSuccess').style.display = 'block';
-                    document.querySelector('.mensajeSuccess').textContent = result.success;
+<script>
+    function registrarUsername() {
+        // Obtenemos el valor del input
+        let usernameID = document.getElementById('usernameID').value;
+        console.log(usernameID);
+        
 
-                    // Cuenta atrásd de 5 segundos para redirigir al usuario a la página de login
-                    let segundos = 5;
-                    setInterval(function(){
-                        segundos--;
-                        if(segundos == 0){
-                            window.location.href = '/login';
-                        }
-                    }, 1000);
-                }
-                else if (result.error) {
-                    document.querySelector('.mensajeError2').style.display = 'block';
-                    document.querySelector('.mensajeError2').textContent = result.error;
-                    // Hacemos un focus en el campo de usuario para que el usuario pueda corregirlo
-                    document.getElementById('usuario').focus();
-                    // Ponemos hacemos que su borde al estar focuseado sea de color rojo, cuando pulse otro campo volverá a su color original
-                    document.getElementById('usuario').style.borderColor = 'red';
-                    document.getElementById('usuario').addEventListener('focusout', function(){
-                        document.getElementById('usuario').style.borderColor = '#ccc';
-                    });
-                    // Ahora cuando el usuario pulse en el campo de usuario, el borde volverá a ser black
-                    document.getElementById('usuario').addEventListener('focus', function(){
-                        document.getElementById('usuario').style.borderColor = 'black';
-                    });
+        // Hacemos una petición AJAX para enviar el nombre de usuario
+        $.ajax({
+            url: '/registroUsername',
+            type: 'POST',
+            data: {
+                _token: $('meta[name="csrf-token"]').attr('content'),
+            },
+            success: function (response) {
+                console.log(response);
+                
 
-                    
-                }
-            });
-        }
+                // if(respuesta == true){
+                //     //Mostrar mensaje de error
+                //     document.getElementById('mensajeUsername').classList.remove('hidden');
+                // }
+                // else{
+                //     console.log('Nombre guardado');
+
+                // }
+            }
+        });
     }
 </script>

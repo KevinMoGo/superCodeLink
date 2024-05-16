@@ -1,51 +1,58 @@
 <?php
 
 namespace App\Http\Controllers;
-
 use App\Models\Usuarios;
 use App\Models\Solicitudes;
 use App\Models\Amistades;
 use Illuminate\Http\Request;
 use App\Models\Fotos;
 
+use App\Http\Controllers\TokenController;
+
+
 class UsuariosController extends Controller
 {
 
-    public function index()
+    // Creamos una instancia de TokenController para poder usar sus métodos
+    private $tokenController;
+    public function __construct()
     {
-        //
+        $this->tokenController = new TokenController();
     }
 
 
+    public function registroUsername(Request $request)
+    {
+
+        // Extraemos el username del formulario
+        $usuario = $request->input('usernameID');
+        // Lo pasamos a string para evitar inyección de código
+        $usuarioStr = (string)$usuario;
+        
+        // Buscamos si el usuario ya existe en la base de datos
+        // $usuario = Usuarios::where('username', $usuario)->first();
+        // if ($usuario) {
+        //     return response()->json(['existe' => true]);
+        // }
+        // else{
+        //     $usuario = new Usuarios();
+        //     $usuario->username = $username;
+        //     $usuario->save();
+        //     return response()->json(['existe' => false]);
+        // }
+        $usuarioBuscado = Usuarios::where('username', $usuarioStr)->first();
+        if ($usuarioBuscado) {
+            return response()->json(['existe' => $usuarioStr]);
+        }
+        else{
+            return response()->json(['existe' => $usuarioStr]);
+        }
+    }
+    
+    
 
 
 
-//     <script type="text/javascript">
-//     function registroUsuario(){
-//         let nombre = document.getElementById('nombre').value;
-//         let usuario = document.getElementById('usuario').value;
-//         let contrasena = document.getElementById('contrasena').value;
-
-//         if(nombre == '' || usuario == '' || contrasena == ''){
-//             document.querySelector('.mensajeError1').style.display = 'block';
-//             document.querySelector('.mensajeError2').style.display = 'none';
-//         }
-//         else{
-//             fetch('creaUsuario', {
-//                 method: 'POST',
-//                 headers: {
-//                     'Content-Type': 'application/json',
-//                     'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-//                 },
-//                 body: JSON.stringify({
-//                     nombre: nombre,
-//                     usuario: usuario,
-//                     contrasena: contrasena
-//                 })
-//             })
-//         }
-//     }
-// </script>
     public function creaUsuario()
     {
 
@@ -61,47 +68,72 @@ class UsuariosController extends Controller
             $usuario->username = $datos['usuario'];
             $usuario->contrasena = hash('sha256', $datos['contrasena']);
             $usuario->save();
+            // Llama al método creaToken del TokenController para crear un token
+            $this->tokenController->creaToken($usuario);
+            
             // retorna un json con un success
             return response()->json(['success' => 'Usuario creado']);
         }
         // Si el usuario ya existe, retornamos un json con un error
-        return response()->json(['error' => 'El usuario ya existe']);
+        return response()->json(['error' => 'Error al crear el usuario']);
 
         
     }
 
-    public function login()
+    public function auth(Request $request)
     {
-        // $usuario = Usuarios::where('username', request('nombre'))->where('contrasena', request('contrasena'))->first();
-        // if($usuario){
-        //     session(['user_id' => $usuario->id]);
-        //     return redirect('inicio');
-        // }else{
-        //     return redirect('/');
-        // }
-        $usuario = Usuarios::where('username', request('username'))->first();
+        // Recogemos la data enviados por el formulario
+        $datos = $request->all();
+        // Buscamos el usuario en la base de datos
+        $usuario = Usuarios::where('username', $datos['username'])->where('contrasena', hash('sha256', $datos['contrasena']))->first();
+       // Usa el método creaToken del TokenController para crear un token
         if ($usuario) {
-            if (hash('sha256', request('contrasena')) == $usuario->contrasena) {
-                session(['user_id' => $usuario->id]);
+            // Compromos si el usuario tiene ya un token llamando al método compruebaToken del TokenController
+            if ($this->tokenController->compruebaToken($usuario)) {
+                // Lo borramos y creamos uno nuevo
+                $this->tokenController->eliminaToken();
+                $this->tokenController->creaToken($usuario);
                 return redirect('inicio');
-            } else {
-                return redirect('/');
             }
-        } else {
+            // Si no tiene un token, creamos uno nuevo
+            else{
+                $this->tokenController->creaToken($usuario);
+                return redirect('inicio');
+            }
+        }
+        else{
             return redirect('/');
         }
+
+        
+
+
     }
 
     public function mostrarMisImagenes()
     {
         $fotos = Fotos::where('id_usuario', session('user_id'))->get();
         return view('misimagenes', ['fotos' => $fotos]);
-
     }
 
     public function mostrarInicio(){
-        // Nos vamos a inicio.blade.php sin más
-        return view('inicio');
+        // Comprobamos si el usuario tiene un token en la cookie
+        if (isset($_COOKIE['tokenUsuarioCodeLink'])) {
+            // Si lo tiene, verificamos si es válido
+            if ($this->tokenController->compruebaToken()) {
+                // llamamos a la funcion prueba del TokenController
+                $this->tokenController->prueba();
+
+                return view('inicio');
+            }
+            else{
+                // Si no es válido, lo redirigimos al login
+                return redirect('/');
+            }
+        }
+        // Si no tiene un token, lo redirigimos al login
+        return redirect('inicio');
+        
     }
 
     public function buscador()
@@ -121,3 +153,4 @@ class UsuariosController extends Controller
 
 
 }
+

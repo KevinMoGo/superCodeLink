@@ -6,9 +6,16 @@ use App\Models\Solicitudes;
 use App\Models\Usuarios;
 use App\Models\Amistades;
 use Illuminate\Http\Request;
+use App\Http\Controllers\TokenController;
 
 class AmistadesController extends Controller
 {
+    // Creamos una instancia de TokenController para poder usar sus métodos
+    private $tokenController;
+    public function __construct()
+    {
+        $this->tokenController = new TokenController();
+    }
     public function aceptarSolicitud($id)
     {
         // Eliminamos la solicitud
@@ -32,7 +39,9 @@ class AmistadesController extends Controller
 
     public function MostrarAmigos()
     {
-        $amigos = Amistades::where('usuario1_id', session('user_id'))
+        // Verificamos el token del usuario
+        if ($this->tokenController->compruebaToken()) {
+            $amigos = Amistades::where('usuario1_id', session('user_id'))
         ->orWhere('usuario2_id', session('user_id'))
         ->get();
 
@@ -56,6 +65,9 @@ class AmistadesController extends Controller
         $amigos = Usuarios::whereIn('id', $ids_amigos)->get();
 
         return view('amigos', ['amigos' => $amigos]);
+        }
+        return redirect('/');
+        
     }
 
     public function apiAmigos($id)
