@@ -23,30 +23,20 @@ class UsuariosController extends Controller
 
     public function registroUsername(Request $request)
     {
+    $username = $request->json()->get('username');
+    $username = (string)$username;
 
-        // Extraemos el username del formulario
-        $usuario = $request->input('usernameID');
-        // Lo pasamos a string para evitar inyección de código
-        $usuarioStr = (string)$usuario;
-        
-        // Buscamos si el usuario ya existe en la base de datos
-        // $usuario = Usuarios::where('username', $usuario)->first();
-        // if ($usuario) {
-        //     return response()->json(['existe' => true]);
-        // }
-        // else{
-        //     $usuario = new Usuarios();
-        //     $usuario->username = $username;
-        //     $usuario->save();
-        //     return response()->json(['existe' => false]);
-        // }
-        $usuarioBuscado = Usuarios::where('username', $usuarioStr)->first();
-        if ($usuarioBuscado) {
-            return response()->json(['existe' => $usuarioStr]);
-        }
-        else{
-            return response()->json(['existe' => $usuarioStr]);
-        }
+    // Buscamos el usuario en la base de datos
+    $usuario = Usuarios::where('username', $username)->first();
+    if ($usuario) {
+        return response()->json(['error' => 'El usuario ya existe']);
+    }
+    else{
+        $nuevoUsuario = new Usuarios();
+        $nuevoUsuario->username = $username;
+        $nuevoUsuario->save();
+        return response()->json(['success' => 'Usuario creado']);
+    }
     }
     
     
