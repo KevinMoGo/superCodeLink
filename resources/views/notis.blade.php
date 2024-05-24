@@ -8,114 +8,30 @@
     <link rel="stylesheet" href="{{ asset('css/estilos.css') }}">
     <link rel="stylesheet" href="{{ asset('css/estructura.css') }}">
     <link rel="stylesheet" href="{{ asset('css/navegador.css') }}">
-    <style>
-        body {
-            margin: 0;
-            padding: 0;
-            width: 100%;
-            font-family: Arial, sans-serif;
-            justify-content: center;
-            margin-top: 12vh;
-            background-color: #f9f9f9;
-        }
-
-        .cuerpoPagina {
-            
-            padding: 20px;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .notificacion {
-            display: flex;
-            
-            align-items: center;
-            border: 1px solid #ddd;
-            background-color: #fff;
-            padding: 15px;
-            margin-bottom: 10px;
-        }
-
-        .notificacion img {
-            width: 100px;
-            height: 100px;
-            margin-right: 20px;
-            object-fit: cover;
-            border: 1px solid black;
-        }
-
-        .botonesAmigos {
-            margin-top: 20px;
-            display: flex;
-            width: 100%;
-            gap: 10px;
-            justify-content: center;
-        }
-        .contenidoUsuario {
-            width: 100%;
-        }
-        form{
-            width: 50%;
-        }
-        button.aceptarSolicitud {
-            background-color: transparent;
-            color: green;
-            padding: 10px;
-            outline: none;
-            border: 1px solid green;
-            width: 100%;
-            transition: all 0.3s;
-        }
-
-        button.aceptarSolicitud:hover {
-            background-color: green;
-            color: white;
-        }
-        button.rechazarSolicitud {
-            background-color: transparent;
-            color: red;
-            padding: 10px;
-            outline: none;
-            border: 1px solid red;
-            width: 100%;
-            transition: all 0.3s;
-        }
-
-        button.rechazarSolicitud:hover {
-            background-color: red;
-            color: white;
-        }
-
-    </style>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 </head>
+<body class="bg-gray-100 flex justify-center mt-48">
 @include('nav.navbar')
-<body>
-    <div class="cuerpoPagina">
-        <h1>Notificaciones</h1>
-        <ul class="notificaciones">
+    <div class="cuerpoPagina p-8 max-w-7xl w-full mx-auto bg-white shadow-md">
+
+        <ul class="notificaciones space-y-4">
             @foreach ($usuarios as $usuario)
-                <li class="notificacion">
-                    <img src="{{ $usuario->PP }}" alt="default">
-
-                    <div class="contenidoUsuario">
-                    <h3>{{ $usuario->nombre }}</h3>
-
-                    <div class="botonesAmigos">
-                        <form action="aceptar-solicitud/{{ $usuario->id }}" method="post">
-                            @csrf
-                            <button type="submit" class="aceptarSolicitud">Aceptar</button>
-                        </form>
-                        <form action="rechazar-solicitud/{{ $usuario->id }}" method="post">
-                            @csrf
-                            <button type="submit" class="rechazarSolicitud">Rechazar</button>
-                        </form>
+                <li class="notificacion flex items-center border border-gray-300 bg-white p-4 rounded-md shadow-sm">
+                    <img src="{{ $usuario->PP }}" alt="default" class="w-24 h-24 mr-5 object-cover border border-black rounded-full">
+                    <div class="contenidoUsuario w-full">
+                        <h3 class="text-xl font-semibold">{{ $usuario->nombre }}</h3>
+                        <div class="botonesAmigos mt-5 flex gap-4 justify-center">
+                            <form action="aceptar-solicitud/{{ $usuario->id }}" method="post" class="w-full">
+                                @csrf
+                                <button type="submit" class="aceptarSolicitud w-full py-2 text-green-600 border border-green-600 hover:bg-green-600 hover:text-white transition duration-300">Aceptar</button>
+                            </form>
+                            <form action="rechazar-solicitud/{{ $usuario->id }}" method="post" class="w-full">
+                                @csrf
+                                <button type="submit" class="rechazarSolicitud w-full py-2 text-red-600 border border-red-600 hover:bg-red-600 hover:text-white transition duration-300">Rechazar</button>
+                            </form>
+                        </div>
                     </div>
-                    </div>
-
-
-
                 </li>
-                
             @endforeach
         </ul>
     </div>

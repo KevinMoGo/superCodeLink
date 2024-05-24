@@ -2,16 +2,13 @@
 <html lang="en">
 <head>
 
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="csrf-token" content="{{ csrf_token() }}" />
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <title>Document</title>
-    <link rel="stylesheet" href="{{ asset('css/registro.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/estilos.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/estructura.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/navegador.css') }}">
     <style>
         * {
             margin: 0;
@@ -27,7 +24,7 @@
         .contenedor_imagenes {
             margin: 0 10px;
             display: grid;
-            grid-template-columns: repeat(2, 1fr);
+            grid-template-columns: repeat(1, 1fr);
             gap: 10px;
             
         }
@@ -119,71 +116,6 @@
             }
         }
 
-/* Estilos para la ventana flotante de editar */
-.ventanaEditar {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
-    /* Hacemos que sus hijos esten centrados horizontal y verticalmente */
-    display: none;
-    justify-content: center;
-    align-items: center;
-    
-}
-
-.contenedorEditar {
-    position: absolute;
-    margin: 0 10px;
-    background-color: white;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-    display: block;
-    width: 90%;
-    max-width: 500px;
-}
-
-.contenedorEditar h2 {
-    text-align: center;
-    margin-bottom: 10px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    color: #007bff;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-}
-
-.contenedorEditar h4 {
-    margin: 10px 0;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    color: black;
-}
-
-.contenedorEditar input[type="text"], .contenedorEditar textarea {
-    width: 100%;
-    padding: 5px;
-    margin: 5px 0;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-}
-
-.contenedorEditar input[type="button"] {
-    width: 100%;
-    padding: 10px;
-    margin: 10px 0;
-    border: none;
-    border-radius: 5px;
-    background-color: #007bff;
-    color: white;
-    cursor: pointer;
-}
-
 
 
 
@@ -198,157 +130,129 @@
 <body>
     @include('nav.navbar')
 
-    
-
     <div class="contenedor_imagenes">
         @foreach ($fotos as $foto)
-     
-        <!-- Le damos una id unica a cada contenedor para poder referenciarlo bien en el DOM -->
+            <div class="imagen" id="imagen{{ $foto->id_foto }}">
+                <img src="{{ $foto->ruta }}" alt="imagen">
+                <div class="botonesFoto">
+                    <!-- Botón de Editar -->
+                    <a href="javascript:void(0)" class="editarFoto" onclick="abrirEdit('{{ $foto->id_foto }}')">
+                        <img src="{{ asset('svg/editar.svg') }}" alt="Edit" class="editarImagen">
+                    </a>
+                    <!-- Botón de Eliminar -->
+                    <a href="javascript:void(0)" class="eliminarFoto" onclick="deletepost('{{ $foto->id_foto }}')">
+                        <img src="{{ asset('svg/eliminar.svg') }}" alt="Delete" class="eliminarImagen">
+                    </a>
+                    <!-- Botón de Compartir -->
+                    <a href="javascript:void(0)" class="compartirFoto">
+                        <img src="{{ asset('svg/compartir.svg') }}" alt="Share" class="compartirImagen">
+                    </a>
+                    
+                    <input type="hidden" name="id_foto" value="{{ $foto->id_foto }}">
+                </div>
+            </div> 
 
-
-        <div class="imagen" id="imagen{{ $foto->id_foto }}">
-
-            <img src="{{ $foto->ruta }}" alt="imagen">
-            <div class="botonesFoto">
             
-
-
-                <!-- Botón de Editar -->
-                <a href="javascript:void(0)" class="editarFoto" onclick="abrirEdit('{{ $foto->id_foto}}', '{{ $foto->titulo }}', '{{ $foto->descripcion }}')">
-                    <img src="{{ asset('svg/editar.svg') }}" alt="Edit" class="editarImagen">
-                </a>
-
-
-                <!-- Botón de Eliminar -->
-                <a href="javascript:void(0)" class="eliminarFoto" onclick="deletepost({{ $foto->id_foto }})">
-                    <img src="{{ asset('svg/eliminar.svg') }}" alt="Delete" class="eliminarImagen">
-                </a>
-
-
-                <!-- Botón de Compartir -->
-                <a href="javascript:void(0)" class="compartirFoto">
-                    <img src="{{ asset('svg/compartir.svg') }}" alt="Share" class="compartirImagen">
-                </a>
-
-
-
-
-            </div>
-        </div>
         @endforeach
     </div>
-
-    <div class="ventanaEditar">
-        <div class="contenedorEditar">
-            <h2>Editar foto</h2>
-            <form id="editpost">
-                @csrf
-                <input type="hidden" name="id_fotoEdit" id="id_fotoEdit">
-                <h4>Título:</h4>
-                <input type="text" name="titulo" id="titulo">
-                <h4>Descripición:</h4>
-                <textarea name="descripcion" id="descripcion" cols="30" rows="10"></textarea>
-                <input type="button" value="Enviar" class="enviarEdicion" onclick="editpost()">
-            </form>
-        </div>
-    </div>
-
-
-
+    <div class="fixed top-0 left-0 w-full h-full bg-gray-900 bg-opacity-50 flex justify-center items-center hidden z-50" id="contenedorEditar">
+                <div class="bg-white p-5 rounded-lg w-full max-w-3xl mx-4">
+                    <h2 class="text-center text-2xl font-bold">Editar Foto</h2>
+                    <div class="mt-5" id="formEditar">
+                        <div>
+                            
+                            <input type="hidden" name="id_foto" id="id_foto">
+                            <label for="titulo" class="block">Título</label>
+                            <input type="text" name="titulo" id="titulo" class="w-full border border-gray-300 rounded p-2 mb-3">
+                            <label for="descripcion" class="block">Descripción</label>
+                            <textarea name="descripcion" id="descripcion" class="w-full border border-gray-300 rounded p-2 mb-3"></textarea>
+                            <a href="javascript:void(0)" class="bg-blue-500 text-white px-4 py-2 rounded block text-center">Editar</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
 </body>
+
 </html>
 
 
 <script type="text/javascript">
-
-    function deletepost(id) {
-        if (confirm("¿Estás seguro de que deseas eliminar esta foto?")) {
-
-            $.ajaxSetup({
+    function deletepost(id_foto) {
+        if(confirm('¿Estás seguro de eliminar la foto?')) {
+            fetch('/deletepost', {
+                method: 'DELETE',
                 headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                }
-            });
-
-            $.ajax({
-                url: 'delete_post/'+id,
-                type: 'DELETE',
-                success: function (result) {
-                    if (result) {
-                        // Busca el contenedor de la imagen con la id correspondiente y lo elimina
-                        $('#imagen' + id).remove();
-                    }
-                    
-
-                }
-            });
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                },
+                body: JSON.stringify({
+                id_foto: id_foto
+                })
+        })
+        document.querySelector('#imagen' + id_foto).remove();
         }
+        // Eliminamos la foto del DOM
+        
     }
+
+    function abrirEdit(id_foto) {
+        
+        fetch('/getpost', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+            },
+            body: JSON.stringify({
+                id_foto: id_foto
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+
+        
+            document.querySelector('#contenedorEditar').classList.remove('hidden');
+            document.querySelector('#titulo').value = data.titulo;  
+            document.querySelector('#descripcion').value = data.descripcion;
+
+            // Al boton editar le añadimos una función onclick llamada editarFoto cuyo parámetro es el id de la foto entre '
+            document.querySelector('.bg-blue-500').setAttribute('onclick', 'editarFoto(\'' + id_foto + '\')');
+            
+            document.querySelector('#contenedorEditar').addEventListener('click', function(e) {
+                if(e.target.id === 'contenedorEditar') {
+                    document.querySelector('#contenedorEditar').classList.add('hidden');
+                }
+            })
+
+            // le agr
+
+        })
+        
+    }
+
+    function editarFoto(id_foto) {
+        // Recojo los valores de los inputs y los mostramos en consola
+        let titulo = document.querySelector('#titulo').value;
+        let descripcion = document.querySelector('#descripcion').value;
+        
+        fetch('/editpost', {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+            },
+            body: JSON.stringify({
+                id_foto: id_foto,
+                titulo: titulo,
+                descripcion: descripcion
+            })
+        })
+
+
+        
+    }
+
 
 
 </script>
 
-
-<script>
-    // Función para mostrar la ventana flotante y rellenar los campos con los datos de la foto
-    function abrirEdit(id, titulo, descripcion) {
-            // Llamaremos a la ruta coger_datos mandano el id de la foto que queremos editar y desde ahi devolveremos los datos de la foto y la colocaremos en los campos del formulario. De esta forma siempre estarán actualizados
-            $.ajax({
-            url: 'coger_datos/' + id,
-            type: 'GET',
-            success: function (result) {
-                $('#id_fotoEdit').val(result.id_foto);
-                $('#titulo').val(result.titulo);
-                $('#descripcion').val(result.descripcion);
-
-                // Hacemos la ventana flotante un poco mas pequeña mientras no se ve con un transform scale
-                $('.contenedorEditar').css('transform', 'scale(0.9)');
-                // Mostramos la ventana flotante con un efecto de fade in y flex
-                $('.ventanaEditar').fadeIn(300).css('display', 'flex');
-
-                
-
-            }
-        });
-
-        // Hacemos un addEventListener de modo que si se hace click fuera de la ventana flotante, esta se cierre
-        $('.ventanaEditar').click(function (e) {
-            if (e.target == this) {
-                $(this).css('display', 'none');
-                // Borramos los textos de los campos
-                $('#titulo').val('');
-                $('#descripcion').val('');
-                
-            }
-        });
-
-    }
-
-    // Función para cuando se pulse el submit del formulario de edición aparezca un alert con los datos
-    function editpost() {
-    // Hacer una petición AJAX para enviar los datos del formulario
-    $.ajax({
-        url: 'editar_foto',
-        type: 'POST',
-        data: $('#editpost').serialize(),
-        success: function (result) {
-            // Si la petición ha sido exitosa, actualizar los datos en la página
-            var id_foto = $('#id_foto').val();
-            var titulo = $('#titulo').val();
-            var descripcion = $('#descripcion').val();
-            $('#titulo' + id_foto).text(titulo);
-            $('#descripcion' + id_foto).text(descripcion);
-
-            // Ocultar la ventana de edición
-            $('.ventanaEditar').css('display', 'none');
-        }
-    });
-}
-
-
-
-
-
-
-
-</script>

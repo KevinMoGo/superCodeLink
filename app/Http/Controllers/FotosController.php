@@ -36,6 +36,40 @@ public function subirFoto(Request $request)
             
 }
 
+
+public function subirImagen(Request $request){
+       $filename = "";
+       if ($request->hasFile('foto')) {
+        // Ahora vamos a verificar la composición de la imagen de modo que sepamos si es una imagen o no. asi evitamos que introduzcan ejecutables con formato de imagen
+        $info = getimagesize($request->foto);
+        if ($info === FALSE) {
+            return response()->json(['error' => 'El archivo no es una imagen']);
+        }
+        else{
+            // $filename = '/assets/fotos/'. $request->foto->getClientOriginalName();
+            $uniqID = uniqid();
+            $filename = '/assets/fotos/'. $uniqID . '.' . $request->foto->getClientOriginalExtension();
+            
+            $request->foto->move(public_path('/assets/fotos'), $filename);
+            $foto = new Fotos();
+            $foto->id_foto = $uniqID;
+            $foto->id_usuario = session('user_id');
+            $foto->titulo = $request->titulo;
+            $foto->descripcion = $request->descripcion;
+            $foto->ruta = $filename;
+            $foto->fecha = date('Y-m-d H:i:s');
+            $foto->save();
+            // No hacemos nada, nos quedamos en la misma página
+            return view('registroSubir');
+        }
+                
+    
+    
+    }
+
+
+}
+
 public function subirFotoPerfil(Request $request)
     {
 
@@ -57,44 +91,55 @@ public function subirFotoPerfil(Request $request)
 
             
 }
-public function delete_post($id)
-    {
-        $foto = Fotos::find($id);
-        $foto->delete();
-        return response()->json(['success' => true]);
-    }
-
-public function editar_foto(Request $request)
-    {
-        // Obtenemos los valores de la petición
-        $id = $request->id_fotoEdit;
-        $titulo = $request->titulo;
-        $descripcion = $request->descripcion;
-        // Buscamos la foto por su id
-        $foto = Fotos::find($id);
-        // Actualizamos los valores
-        $foto->titulo = $titulo;
-        $foto->descripcion = $descripcion;
-        // Guardamos los cambios
-        $foto->save();
-        // Mandamos un success
-        return response()->json(['success' => true]);
 
 
-    }
 
-public function coger_datos($id)
-    {
-        // Buscamos la foto por su id
-        $foto = Fotos::find($id);
-        // Devolvemos la foto en formato json
-        return response()->json($foto);
-    }
 
 public function aSubirFotoPerfil()
     {
         return view('subirFotoPerfil');
     }
+
+
+
+
+
+
+
+
+
+
+
+    public function deletepost(Request $request)
+    {
+        $id = $request->input('id_foto'); // Obtener el id_foto del request
+        // Borramos la foto
+        Fotos::where('id_foto', $id)->delete();
+        
+    }
+
+    public function getpost(Request $request)
+    {
+        // Obtenemos el id de la foto
+        $id = $request->input('id_foto');
+        // Buscamos la foto en la base de datos y obtenemos el titulo y la descripción
+        $foto = Fotos::where('id_foto', $id)->first();
+        // Devolvemos el titulo y la descripción en formato JSON
+        return response()->json(['titulo' => $foto->titulo, 'descripcion' => $foto->descripcion, 'id_foto' => $foto->id_foto]);
+    }
+
+    public function editpost(Request $request)
+    {
+        // Recogemos el titulo y la descripción del request
+        $titulo = $request->input('titulo');
+        $descripcion = $request->input('descripcion');
+
+        
+        // Actualizamos la foto en la base de datos 
+        Fotos::where('id_foto', $request->input('id_foto'))->update(['titulo' => $titulo, 'descripcion' => $descripcion]);
+        
+    }
+    
 
     
 

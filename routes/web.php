@@ -6,61 +6,99 @@ use App\Http\Controllers\SolicitudController;
 use App\Http\Controllers\AmistadesController;
 use App\Http\Controllers\FotosController;
 
-// -----------------------------------INICIO-----------------------------------
-Route::get('/', function () {
-    return view('login');
-});
-
-Route::post('/registroUsername', [UsuariosController::class, 'registroUsername']);
-Route::post('/auth', [UsuariosController::class, 'auth']);
-
-
-
-
-
-
-Route::get('/registro', function () {
-    return view('registro');
-});
 
 
 Route::get('registroSubir', function () {
     return view('registroSubir');
 });
+
 Route::get('buscados', function () {
     return view('buscados');
 });
 
-Route::get('tailwind', function () {
-    return view('tailwind');
+
+
+// LOGIN  -------------------------------------------------------------------------------------------------------
+Route::get('/', function () {
+    return view('login');
 });
 
+Route::post('/login', [UsuariosController::class, 'login']);
+
+Route::get('/registro', function () {
+    return view('registro');
+});
+
+Route::get('/inicio', [UsuariosController::class, 'mostrarInicio']);
 
 
-Route::post('/creaUsuario', [UsuariosController::class, 'creaUsuario']);
+// REGISTRO  ----------------------------------------------------------------------------------------------------
+Route::get('/registro', function () {
+    return view('registro');
+});
+
+Route::post('/registroUsername', [UsuariosController::class, 'registroUsername']);
+
+Route::get('/cancelarRegistro', [UsuariosController::class, 'cancelarRegistro']);
+
+Route::post('/registroDatos', [UsuariosController::class, 'registroDatos']);
+
+
+// INICIO  ----------------------------------------------------------------------------------------------------
+
+Route::post('/buscar', [UsuariosController::class, 'buscar']);
+
+// BUSCADOS  ---------------------------------------------------------------------------------------------------
+
+Route::post('/enviar_solicitud', [AmistadesController::class, 'enviar_solicitud']);
+
+// IMAGENES  ---------------------------------------------------------------------------------------------------
+
+Route::post('/subirImagen', [FotosController::class, 'subirImagen']);
+
+// MIS IMAGENES  -----------------------------------------------------------------------------------------------
+
+Route::delete('/deletepost', [FotosController::class, 'deletepost']);
+Route::post('/getpost', [FotosController::class, 'getpost']);
+// Ruta para actualizar la foto de perfil
+Route::put('/editpost', [FotosController::class, 'editpost']);
+
+
+// NOTIFICACIONES  ---------------------------------------------------------------------------------------------
+
+Route::get('/api_amigos', [AmistadesController::class, 'api_amigos']);
+
+// AMIGOS  -----------------------------------------------------------------------------------------------------
+
+Route::get('amigos', [AmistadesController::class, 'MostrarAmigos']);
 
 
 
 
 
-Route::post('login', [UsuariosController::class, 'login']);
-Route::post('buscador', [UsuariosController::class, 'buscador']);
+
+
+
+
+
+
+
+
 
 Route::post('agregar-solicitud/{id}', [SolicitudController::class, 'agregarSolicitud']);
 Route::get('notis', [SolicitudController::class, 'MostrarSolicitudes']);
 Route::post('aceptar-solicitud/{id}', [AmistadesController::class, 'aceptarSolicitud']);
 Route::post('rechazar-solicitud/{id}', [AmistadesController::class, 'rechazarSolicitud']);
-Route::get('amigos', [AmistadesController::class, 'MostrarAmigos']);
+
 
 Route::post('subir', [FotosController::class, 'subirFoto']);
 Route::post('subirPerfil', [FotosController::class, 'subirFotoPerfil']);
 
 Route::get('misimagenes', [UsuariosController::class, 'mostrarMisImagenes'])->name('misimagenes');
-Route::get('inicio', [UsuariosController::class, 'mostrarInicio'])->name('inicio');
 
 
 
-Route::delete('/delete_post/{id}', [FotosController::class, 'delete_post']);
+
 Route::delete('/delete_amigo/{id}', [AmistadesController::class, 'delete_amigo']);
 
 Route::post('editar_foto', [FotosController::class, 'editar_foto']);

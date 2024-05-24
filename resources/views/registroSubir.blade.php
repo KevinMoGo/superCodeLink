@@ -3,105 +3,63 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token() }}" />
+    
     <title>Subir Imagen</title>
-    <link rel="stylesheet" href="{{ asset('css/registro.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/estilos.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/estructura.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/navegador.css') }}">
-
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f8f9fa;
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        .container {
-            max-width: 600px;
-            margin: auto;
-            padding: 20px;
-            background-color: #fff;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-
-        h1 {
-            font-size: 24px;
-            text-align: center;
-            margin-bottom: 20px;
-        }
-
-        form {
-            display: flex;
-            flex-direction: column;
-        }
-
-        label {
-            margin-bottom: 10px;
-        }
-
-        input[type="text"], input[type="file"], button {
-            padding: 10px;
-            margin-bottom: 20px;
-            border: 1px solid #ccc;
-            font-size: 16px;
-            transition: border-color 0.3s ease;
-            width: 100%; /* Ancho completo */
-        }
-
-        input[type="text"]:focus, input[type="file"]:focus {
-            border-color: #007bff;
-            outline: none;
-        }
-
-        button {
-            background-color: black;
-            color: white;
-            border: 1px solid black;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-            width: 100%; /* Ancho completo */
-        }
-
-        button:hover {
-            background-color: white;
-            color: black;
-            border: 1px solid black;
-        }
-
-        /* Estilos para hacer el formulario responsive */
-        .subbody {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-        }
-
-        @media (max-width: 768px) {
-            .container {
-                max-width: 90%;
-            }
-        }
-    </style>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 </head>
-<body>
+<body class="bg-gray-100">
     @include('nav.navbar')
-
     <div class="subbody">
-        <div class="container">
-            <h1>Subir Imagen</h1>
-            <form action="/subir" method="post" enctype="multipart/form-data">
+        <div class="container mx-auto py-8 px-4">
+            <h1 class="text-2xl font-bold mb-4">Subir Imagen</h1>
+            <form action="/subirImagen" method="POST" enctype="multipart/form-data">
                 @csrf
-                <label for="titulo">Titulo</label>
-                <input type="text" name="titulo" id="titulo">
-                <label for="descripcion">Descripción</label>
-                <input type="text" name="descripcion" id="descripcion">
-                <label for="foto">Seleccionar imagen</label>
-                <input type="file" name="foto" id="foto">
-                <button type="submit">SUBIR</button>
+                <div class="mb-4">
+                    <label for="titulo" class="block text-gray-700">Titulo</label>
+                    <input type="text" name="titulo" id="titulo" class="w-full border border-gray-300 rounded px-4 py-2">
+                </div>
+                <div class="mb-4">
+                    <label for="descripcion" class="block text-gray-700">Descripción</label>
+                    <input type="text" name="descripcion" id="descripcion" class="w-full border border-gray-300 rounded px-4 py-2">
+                </div>
+                <div class="mb-4">
+                    <label for="foto" class="block text-gray-700">Seleccionar imagen</label>
+                    <input type="file" name="foto" id="foto" class="w-full" accept=".jpg, .png">
+                </div>
+                <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded w-full">SUBIR</button>
+                <p id="mensajeError" class="text-red-500 mt-4 hidden">Rellena todos los campos</p>
             </form>
         </div>
     </div>
 </body>
 </html>
+
+<script>
+    // hacemos un prevent default para asegurarnos de que todos los campos estén llenos, si lo están continuamos con el submit, si no, mostramos un mensaje de error
+    document.querySelector('form').addEventListener('submit', function(e) {
+        if (document.querySelector('#titulo').value === '') {
+            e.preventDefault();
+            document.querySelector('#mensajeError').classList.remove('hidden');
+            document.querySelector('#titulo').classList.add('border-red-500');
+            setTimeout(() => {
+                document.querySelector('#titulo').classList.remove('border-red-500');
+            }, 2000);
+        } else if (document.querySelector('#descripcion').value === '') {
+            e.preventDefault();
+            document.querySelector('#mensajeError').classList.remove('hidden');
+            document.querySelector('#descripcion').classList.add('border-red-500');
+            setTimeout(() => {
+                document.querySelector('#descripcion').classList.remove('border-red-500');
+            }, 2000);
+        } else if (document.querySelector('#foto').value === '') {
+            e.preventDefault();
+            document.querySelector('#mensajeError').classList.remove('hidden');
+            // Hacemos el borde del boton de subir rojo para indicar que falta la imagen
+            document.querySelector('#foto').classList.add('border-red-500');
+            setTimeout(() => {
+                document.querySelector('#foto').classList.remove('border-red-500');
+            }, 2000);
+        }
+    });
+</script>
