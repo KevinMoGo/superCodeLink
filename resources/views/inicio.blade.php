@@ -10,6 +10,7 @@
 
 @include('nav.navbar')
 
+
 <body>
 
     <form action="/buscar" method="POST"  class="flex justify-center mt-10">

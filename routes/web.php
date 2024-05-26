@@ -16,6 +16,13 @@ Route::get('buscados', function () {
     return view('buscados');
 });
 
+Route::get('/datosBarra', [UsuariosController::class, 'datosBarra']);
+Route::post('/subirFotoPerfil', [FotosController::class, 'subirFotoPerfil']);
+
+// Ruta para guardar nuevo perfil
+Route::post('/guardarPerfil', [UsuariosController::class, 'guardarPerfil']);
+Route::get('/getDatosPerfil', [UsuariosController::class, 'getDatosPerfil']);
+
 
 
 // LOGIN  -------------------------------------------------------------------------------------------------------
@@ -105,6 +112,5 @@ Route::post('editar_foto', [FotosController::class, 'editar_foto']);
 
 Route::get('coger_datos/{id}', [FotosController::class, 'coger_datos']);
 Route::get('apiAmigos/{id}', [AmistadesController::class, 'apiAmigos']);
-Route::get('aSubirFotoPerfil', [FotosController::class, 'aSubirFotoPerfil']);
 
-Route::post('/Auth', [UsuariosController::class, 'auth']);
+

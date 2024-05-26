@@ -70,35 +70,34 @@ public function subirImagen(Request $request){
 
 }
 
+
 public function subirFotoPerfil(Request $request)
     {
 
        $filename = "";
        if ($request->hasFile('fotoPerfil')) {
         // El nombre del archivo será la ruta de la foto
-        $filename = '/assets/fotosPerfil/'. $request->fotoPerfil->getClientOriginalName();
+        $uniqID = uniqid();
+        $filename = '/assets/fotosPerfil/'. $uniqID . '.' . $request->fotoPerfil->getClientOriginalExtension();
         $request->fotoPerfil->move(public_path('/assets/fotosPerfil'), $filename);
 
-        // Extraemos el id del usuario y guardamos la ruta de la foto en la base de datos
-        $usuario = Usuarios::find(session('user_id'));
-        $usuario->PP = $filename;
-        $usuario->save();
+
+        // ahora hacemos un mime_content_type para comprobar que es una imagen
+        $mime = mime_content_type(public_path($filename));
+        // Si no es una imagen, eliminamos la foto de la carpeta y devolvemos un error
+        if (strpos($mime, 'image') === false) {
+            unlink(public_path($filename));
+            return response()->json(['error' => 'El archivo no es una imagen']);
+        }
+        else{
+            // Extraemos el id del usuario y guardamos la ruta de la foto en la base de datos
+            $usuario = Usuarios::find(session('user_id'));
+            $usuario->PP = $filename;
+            $usuario->save();
+            return response()->json(['success' => 'Foto de perfil subida correctamente']);
+        }
     }
-
-
-            return redirect()->route('misimagenes');
-
-
-            
 }
-
-
-
-
-public function aSubirFotoPerfil()
-    {
-        return view('subirFotoPerfil');
-    }
 
 
 

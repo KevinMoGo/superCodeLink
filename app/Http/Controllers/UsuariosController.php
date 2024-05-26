@@ -127,6 +127,38 @@ class UsuariosController extends Controller
         
     }
 
+    public function datosBarra(){
+        $usuario = Usuarios::where('id', session('user_id'))->first();
+        return response()->json(['nombre' => $usuario->nombre, 'username' => $usuario->username, 'PP' => $usuario->PP]);
+
+    }
+
+    public function getDatosPerfil(){
+        $usuario = Usuarios::where('id', session('user_id'))->first();
+        return response()->json(['nombre' => $usuario->nombre, 'username' => $usuario->username, 'edad' => $usuario->edad, 'sexo' => $usuario->sexo, 'pais' => $usuario->pais]);
+    }
+
+    public function guardarPerfil(Request $request){
+        $datos = $request->json()->all();
+        $nombre = (string)$datos['nombre'];
+        $username = (string)$datos['username'];
+        $edad = (string)$datos['edad'];
+        $sexo = (string)$datos['sexo'];
+        $pais = (string)$datos['pais'];
+
+        // Buscamos el usuario en la base de datos
+        $usuario = Usuarios::where('username', $username)->first();
+        if ($usuario) {
+            return response()->json(['error' => 'El usuario ya existe']);
+        }
+        else{
+            // actualizamos los datos del usuario y usamos la variable de session user_id para facilitar la busqueda
+            Usuarios::where('id', session('user_id'))->update(['nombre' => $nombre, 'username' => $username, 'edad' => $edad, 'sexo' => $sexo, 'pais' => $pais]);
+            return response()->json(['success' => 'Usuario actualizado']);
+            
+        }
+    }
+
 
 
 
