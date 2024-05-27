@@ -125,56 +125,7 @@
 
 
 
-        function getNuevosMensajes(){
-            fetch('/getMensajes', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-            },
-            body: JSON.stringify({
-                id: '{{ $usuario->id }}',
-                user_id: '{{ session('user_id') }}'
-            })
-        })
-        .then(response => response.json())
-        .then(data => {
 
-            if(data.length > numeroMensajesActual){
-                let MensajesNuevos = data.length - numeroMensajesActual;
-                // Hacemos un slice para obtener los mensajes nuevos
-                let mensajesNuevos = data.slice(-MensajesNuevos);
-                mensajesNuevos.forEach(mensaje => {
-                    if(mensaje.usuario1_id == '{{ session('user_id') }}'){
-                        var div = document.createElement('div');
-                        div.className = 'flex items-center justify-end';
-                        var div2 = document.createElement('div');
-                        div2.className = 'bg-gray-200 rounded-lg py-2 px-4 max-w-xs mensaje';
-                        var p = document.createElement('p');
-                        p.innerHTML = mensaje.mensaje;
-                        div2.appendChild(p);
-                        div.appendChild(div2);
-                        document.querySelector('.messages').appendChild(div);
-                    }
-                    else{
-                        var div = document.createElement('div');
-                        div.className = 'flex items-center justify-start';
-                        var div2 = document.createElement('div');
-                        div2.className = 'bg-blue-500 text-white rounded-lg py-2 px-4 max-w-xs mensaje';
-                        var p = document.createElement('p');
-                        p.innerHTML = mensaje.mensaje;
-                        div2.appendChild(p);
-                        div.appendChild(div2);
-                        document.querySelector('.messages').appendChild(div);
-                    }
-                });
-            }
-            numeroMensajesActual = data.length;
-        });
-        }
-
-        setInterval(getNuevosMensajes, 1000);
-        
 
 
 
