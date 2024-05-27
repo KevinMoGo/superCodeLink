@@ -138,43 +138,56 @@
         })
         .then(response => response.json())
         .then(data => {
+    if (data.length > numeroMensajesActual) {
+        let nuevosMensajes = data.length - numeroMensajesActual;
+        // Usamos un slice para obtener los mensajes nuevos
+        let mensajesNuevos = data.slice(-nuevosMensajes);
 
-            if(data.length > numeroMensajesActual){
-                let nuevosMensajes = data.length - numeroMensajesActual;
-                // Usamos un slice para obtener los mensajes nuevos
-                data.slice(-nuevosMensajes).forEach(mensaje => {
-                    if(mensaje.usuario1_id == '{{ session('user_id') }}'){
-                    var div = document.createElement('div');
-                    div.className = 'flex items-center justify-end';
-                    var div2 = document.createElement('div');
-                    div2.className = 'bg-gray-200 rounded-lg py-2 px-4 max-w-xs mensaje';
-                    var p = document.createElement('p');
-                    p.innerHTML = mensaje.mensaje;
-                    div2.appendChild(p);
-                    div.appendChild(div2);
-                    document.querySelector('.messages').appendChild(div);
+        // Si el último mensaje es del usuario actual, no lo incluimos en la lista de mensajes a mostrar
+        if (mensajesNuevos[mensajesNuevos.length - 1].usuario1_id == '{{ session('user_id') }}') {
+            mensajesNuevos.pop();
+        }
 
-                    }
-                    else{
-                    var div = document.createElement('div');
-                    div.className = 'flex items-center justify-start';
-                    var div2 = document.createElement('div');
-                    div2.className = 'bg-blue-500 text-white rounded-lg py-2 px-4 max-w-xs mensaje';
-                    var p = document.createElement('p');
-                    p.innerHTML = mensaje.mensaje;
-                    div2.appendChild(p);
-                    div.appendChild(div2);
-                    document.querySelector('.messages').appendChild(div);
-                    }
-                });
-                // Actualizamos el número de mensajes
-                numeroMensajesActual = data.length;
+        mensajesNuevos.forEach(mensaje => {
+            if (mensaje.usuario1_id == '{{ session('user_id') }}') {
+                var div = document.createElement('div');
+                div.className = 'flex items-center justify-end';
+                var div2 = document.createElement('div');
+                div2.className = 'bg-gray-200 rounded-lg py-2 px-4 max-w-xs mensaje';
+                var p = document.createElement('p');
+                p.innerHTML = mensaje.mensaje;
+                div2.appendChild(p);
+                div.appendChild(div2);
+                document.querySelector('.messages').appendChild(div);
 
+                // Nos movemos a la parte mas baja del contenedor de mensajes teniendo en cuenta que tiene un overflow-y: auto
+                document.querySelector('.messages').scrollTop = document.querySelector('.messages').scrollHeight;
+                
+            } else {
+                var div = document.createElement('div');
+                div.className = 'flex items-center justify-start';
+                var div2 = document.createElement('div');
+                div2.className = 'bg-blue-500 text-white rounded-lg py-2 px-4 max-w-xs mensaje';
+                var p = document.createElement('p');
+                p.innerHTML = mensaje.mensaje;
+                div2.appendChild(p);
+                div.appendChild(div);
+                document.querySelector('.messages').appendChild(div);
 
+                // Nos movemos a la parte mas baja del contenedor de mensajes teniendo en cuenta que tiene un overflow-y: auto
+                document.querySelector('.messages').scrollTop = document.querySelector('.messages').scrollHeight;
+                
             }
+        });
+
+        // Actualizamos el número de mensajes
+        numeroMensajesActual = data.length;
+    }
+});
+
             
 
-        });
+        
         }
 
         setInterval(getNuevosMensajes, 2000);
@@ -215,8 +228,7 @@
                 div.appendChild(div2);
                 document.querySelector('.messages').appendChild(div);
                 document.getElementById('mensaje').value = '';
-                // Scroll to the bottom
-                document.querySelector('.messages').scrollTop = document.querySelector('.messages').scrollHeight;
+                
             });
         }
     }
