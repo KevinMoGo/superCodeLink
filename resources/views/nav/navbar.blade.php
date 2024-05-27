@@ -17,7 +17,7 @@
         <!-- User Info -->
         <div class="flex items-center space-x-4 p-2">
             <div class="relative">
-                <img src="{{ asset('assets/fotos/664d0e3678b12.jpg') }}" alt="User Photo" class="h-16 w-16 rounded-full object-cover" id="fotoUsuarioBarra">
+                <img src="{{ asset('assets/fotosPerfil/usuario_defecto.svg') }}" alt="User Photo" class="h-16 w-16 rounded-full object-cover" id="fotoUsuarioBarra">
                 <a href="javascript:void(0)" class="absolute bottom-0 right-0 bg-blue-500 rounded-full p-1" id="botonEditarPPModal">
                     <img src="{{ asset('svg/editarFoto.svg') }}" alt="Editar Foto" class="h-4 w-4" id="editarPP">
                 </a>
