@@ -125,30 +125,31 @@
 
 
         function getNuevosMensajes(){
-            fetch('/getMensajes', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-            },
-            body: JSON.stringify({
-                id: '{{ $usuario->id }}',
-                user_id: '{{ session('user_id') }}'
-            })
+    fetch('/getMensajes', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+        },
+        body: JSON.stringify({
+            id: '{{ $usuario->id }}',
+            user_id: '{{ session('user_id') }}'
         })
-        .then(response => response.json())
-        .then(data => {
+    })
+    .then(response => response.json())
+    .then(data => {
+        if(data.length > numeroMensajesActual){
+            let nuevosMensajes = data.length - numeroMensajesActual;
+            let mensajesParaMostrar = data.slice(-nuevosMensajes);
 
-            if(data.length > numeroMensajesActual){
-                let nuevosMensajes = data.length - numeroMensajesActual;
+            // Si el último mensaje es del usuario actual, no lo incluimos en la lista de mensajes a mostrar
+            if(mensajesParaMostrar.length > 0 && mensajesParaMostrar[mensajesParaMostrar.length - 1].usuario1_id == '{{ session('user_id') }}'){
+                mensajesParaMostrar.pop();
+            }
 
-                // Si el último mensaje es del usuario actual, no lo incluimos en la lista de mensajes a mostrar
-        if (mensajesNuevos[mensajesNuevos.length - 1].usuario1_id == '{{ session('user_id') }}') {
-            mensajesNuevos.pop();
-        }
-                // Usamos un slice para obtener los mensajes nuevos
-                data.slice(-nuevosMensajes).forEach(mensaje => {
-                    if(mensaje.usuario1_id == '{{ session('user_id') }}'){
+            // Usamos un slice para obtener los mensajes nuevos
+            mensajesParaMostrar.forEach(mensaje => {
+                if(mensaje.usuario1_id == '{{ session('user_id') }}'){
                     var div = document.createElement('div');
                     div.className = 'flex items-center justify-end';
                     var div2 = document.createElement('div');
@@ -158,9 +159,7 @@
                     div2.appendChild(p);
                     div.appendChild(div2);
                     document.querySelector('.messages').appendChild(div);
-
-                    }
-                    else{
+                } else {
                     var div = document.createElement('div');
                     div.className = 'flex items-center justify-start';
                     var div2 = document.createElement('div');
@@ -170,19 +169,17 @@
                     div2.appendChild(p);
                     div.appendChild(div2);
                     document.querySelector('.messages').appendChild(div);
-                    }
-                });
-                // Actualizamos el número de mensajes
-                numeroMensajesActual = data.length;
+                }
+            });
 
-
-            }
-            
-
-        });
+            // Actualizamos el número de mensajes
+            numeroMensajesActual = data.length;
         }
+    });
+}
 
-        setInterval(getNuevosMensajes, 2000);
+setInterval(getNuevosMensajes, 2000);
+
 
 
 
