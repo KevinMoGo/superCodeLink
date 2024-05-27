@@ -64,7 +64,9 @@
             </div>
 
 
-            <div id="errorMessage" class="hidden text-red-500 mt-2">Error: Debes seleccionar una foto de perfil</div>
+            <div id="errorMessageFoto" class="hidden text-red-500 mt-2">Selecciona una foto de perfil</div>
+            
+            <div id="successMessageFoto" class="hidden text-green-500 mt-2">Foto de perfil guardada</div>
         </div>
     </div>
 </div>
@@ -206,11 +208,13 @@
 
 
     function subirFotoPerfil() {
+        // Esconde los mensajes de error
+        document.getElementById('errorMessageFoto').classList.add('hidden');
+
         var fotoPerfil = document.getElementById('fotoPerfil').files[0];
         // primero comprobamos si esta vacio
         if (fotoPerfil == null) {
-            document.getElementById('errorMessage').classList.remove('hidden');
-            return;
+            document.getElementById('errorMessageFoto').classList.remove('hidden');
         }
         else{
             var formData = new FormData();
@@ -225,7 +229,13 @@
             .then(response => response.json())
             .then(data => {
                 console.log(data);
-
+                // Mostar mensaje de éxito
+                document.getElementById('successMessageFoto').classList.remove('hidden');
+                // Recargamos la página en 1 segundo
+                setTimeout(() => {
+                    location.reload();
+                }, 1000);
+                
             });
 
         }
@@ -337,14 +347,11 @@
                     document.getElementById('errorMessage3').classList.remove('hidden');
                 }
                 else{
-                    document.getElementById('successMessage').classList.remove('hidden');
+                    document.getElementById('successMessageFoto').classList.remove('hidden');
                     setTimeout(() => {
-                        document.getElementById('successMessage').classList.add('hidden');
+                        document.getElementById('successMessageFoto').classList.add('hidden');
                     }, 2000);
-                    // Recargamos la página en 2 segundos
-                    setTimeout(() => {
-                        location.reload();
-                    }, 2000);
+
                     
                     
                 }

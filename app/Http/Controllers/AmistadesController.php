@@ -106,4 +106,14 @@ class AmistadesController extends Controller
 
         return response()->json(['success' => true]);
     }
+
+
+
+    public function chatAmigo($id)
+{
+    // Buscamos al usuario
+    $usuario = Usuarios::where('id', $id)->first();
+    return view('chat', ['usuario' => $usuario]);
+}
+
 }

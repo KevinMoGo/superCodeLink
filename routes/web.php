@@ -78,6 +78,7 @@ Route::get('/api_amigos', [AmistadesController::class, 'api_amigos']);
 // AMIGOS  -----------------------------------------------------------------------------------------------------
 
 Route::get('amigos', [AmistadesController::class, 'MostrarAmigos']);
+Route::get('/chatAmigo/{id}', [AmistadesController::class, 'chatAmigo']);
 
 
 

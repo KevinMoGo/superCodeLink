@@ -54,6 +54,10 @@
                     <input type="text" name="username" id="username" class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500">
                 </div>
                 <div class="mt-4">
+                    <label for="nombre" class="block text-sm font-bold text-gray-700">Nombre</label>
+                    <input type="text" name="nombre" id="nombre" class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500">
+                </div>
+                <div class="mt-4">
                     <label for="sexo" class="block text-sm font-bold text-gray-700">Sexo</label>
                     <select name="sexo" id="sexo" class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500">
                         <option value="Hombre">Hombre</option>
