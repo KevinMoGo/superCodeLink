@@ -140,7 +140,7 @@
             .then(response => response.json())
             .then(
                 data => {
-                    console.log(data);
+                    
                     document.getElementById('nombreUsuarioBarra').innerText = data.nombre;
                     document.getElementById('usernameBarra').innerText = '@' + data.username;
                     document.getElementById('fotoUsuarioBarra').src = data.PP;
@@ -176,7 +176,7 @@
             fetch('/getDatosPerfil')
             .then(response => response.json())
             .then(data => {
-                console.log(data);
+                
                 document.getElementById('username').value = data.username;
                 document.getElementById('nombre').value = data.nombre;
                 document.getElementById('edad').value = data.edad;
@@ -228,7 +228,7 @@
             })
             .then(response => response.json())
             .then(data => {
-                console.log(data);
+                
                 // Mostar mensaje de éxito
                 document.getElementById('successMessageFoto').classList.remove('hidden');
                 // Recargamos la página en 1 segundo
@@ -341,7 +341,7 @@
             })
             .then(response => response.json())
             .then(data => {
-                console.log(data);
+                
                 // Si data.error es true, mostramos el mensaje de error de que el nombre de usuario ya está en uso
                 if (data.error) {
                     document.getElementById('errorMessage3').classList.remove('hidden');

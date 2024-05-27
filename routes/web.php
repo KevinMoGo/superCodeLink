@@ -5,6 +5,7 @@ use App\Http\Controllers\UsuariosController;
 use App\Http\Controllers\SolicitudController;
 use App\Http\Controllers\AmistadesController;
 use App\Http\Controllers\FotosController;
+use App\Http\Controllers\ChatController;
 
 
 
@@ -79,6 +80,10 @@ Route::get('/api_amigos', [AmistadesController::class, 'api_amigos']);
 
 Route::get('amigos', [AmistadesController::class, 'MostrarAmigos']);
 Route::get('/chatAmigo/{id}', [AmistadesController::class, 'chatAmigo']);
+
+// CHAT  -------------------------------------------------------------------------------------------------------
+Route::post('/enviarMensaje', [ChatController::class, 'enviarMensaje']);
+Route::post('/getMensajes', [ChatController::class, 'getMensajes']);
 
 
 
