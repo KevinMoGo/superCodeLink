@@ -19,7 +19,8 @@
         .messages {
             flex: 1;
             overflow-y: auto;
-            padding: 1rem;
+            padding: 1.5rem;
+            margin-bottom: 1rem; /* Ajustar según la altura del input de mensaje */
         }
         .message-input {
             position: sticky;
@@ -28,43 +29,36 @@
             padding: 1rem;
             border-top: 1px solid #e2e8f0; /* Tailwind's border-gray-300 */
         }
+        .enunciado {
+            top: 0;
+        }
+
+
     </style>
 </head>
-<body class="bg-gray-100">
+<body class="bg-gray-100 fixed w-full h-full">
 
 @include('nav.navbar')
 
-<div class="chat-container mx-auto px-4 py-8 max-w-4xl"> <!-- Cambia 'max-w-xl' a 'max-w-2xl' -->
-    <h1 class="text-2xl font-semibold mb-4">Chat con {{ $usuario->nombre }}</h1>
+<div class="chat-container mx-auto px-4 py-8 max-w-4xl">
+    
+    <div class="flex items-center space-x-4 enunciado absolute">
+        <h1 class="text-2xl font-semibold">Chat con {{ $usuario->nombre }}</h1>
+    </div>
     <div class="messages space-y-4">
         <!-- Mensajes -->
-        <div class="flex items-center justify-start">
-            <div class="bg-blue-500 text-white rounded-lg py-2 px-4 max-w-xs mensaje">
-                <p>Soy ajeno</p>
-            </div>
-        </div>
-        <div class="flex items-center justify-start">
-            <div class="bg-blue-500 text-white rounded-lg py-2 px-4 max-w-xs mensaje">
-                <p>Soy ajenooooooooooooo</p>
-            </div>
-        </div>
-        <div class="flex items-center justify-end">
-            <div class="bg-gray-200 rounded-lg py-2 px-4 max-w-xs mensaje">
-                <p>Pues yo soy propioooooooooooooooooooooooooooooooooooooooooooooooooooooooo</p>
-            </div>
-        </div>
-        <div class="flex items-center justify-end">
-            <div class="bg-gray-200 rounded-lg py-2 px-4 max-w-xs mensaje">
-                <p>Y aquí estoy</p>
-            </div>
-        </div>
+
     </div>
     <!-- Input de mensaje -->
-    <div class="message-input flex">
+    <div class="message-input fixed bottom-0 left-0 right-0 flex">
         <input type="text" placeholder="Escribe tu mensaje" class="flex-1 border border-gray-300 rounded-l-md px-4 py-2 focus:outline-none focus:ring focus:ring-blue-500" id="mensaje">
         <a href="javascript:void(0)" class="bg-blue-500 text-white px-4 py-2 rounded-r-md hover:bg-blue-600 focus:outline-none focus:ring focus:ring-blue-500" onclick="enviarMensaje('{{ $usuario->id }}')">Enviar</a>
     </div>
 </div>
+
+</body>
+</html>
+
 
 <script>
 
@@ -169,6 +163,12 @@
                     div2.appendChild(p);
                     div.appendChild(div2);
                     document.querySelector('.messages').appendChild(div);
+
+                    // Nos vamos al final del contenedor de mensajes para no tener que hacer scroll
+                    document.querySelector('.messages').scrollTo({
+                        top: document.querySelector('.messages').scrollHeight,
+                        behavior: 'smooth'
+                    });
                 }
             });
 
@@ -217,11 +217,14 @@ setInterval(getNuevosMensajes, 2000);
                 div.appendChild(div2);
                 document.querySelector('.messages').appendChild(div);
                 document.getElementById('mensaje').value = '';
+                // Nos vamos al final del contenedor de mensajes para no tener que hacer scroll
+                document.querySelector('.messages').scrollTo({
+                    top: document.querySelector('.messages').scrollHeight,
+                    behavior: 'smooth'
+                });
                 
             });
         }
     }
 </script>
 
-</body>
-</html>

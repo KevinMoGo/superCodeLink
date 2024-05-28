@@ -13,14 +13,15 @@
 
 <body>
 
-    <form action="/buscar" method="POST"  class="flex justify-center mt-10">
+    <form action="/buscar" method="POST" class="flex justify-center mt-10">
         @csrf
         <div class="w-4/5 flex">
             <input type="text" name="search" id="search" class="flex-grow border-2 border-gray-300 bg-white h-10 px-5 pr-16 rounded-l-lg text-sm focus:outline-none"
                 placeholder="Buscar">
-            <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-r-lg">Buscar</button>
+            <button type="submit" class="bg-black hover:bg-gray-700 text-white font-bold py-2 px-4 rounded-r-lg">Buscar</button>
         </div>
     </form>
+    
 
 </body>
 
