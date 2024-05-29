@@ -19,7 +19,7 @@
         .messages {
             flex: 1;
             overflow-y: auto;
-            padding: 3.5rem;
+            padding-bottom: 3rem; /* Ajustar según la altura del input de mensaje */
             margin-bottom: 1rem; /* Ajustar según la altura del input de mensaje */
         }
         .message-input {
