@@ -19,7 +19,7 @@
         .messages {
             flex: 1;
             overflow-y: auto;
-            padding: 1.5rem;
+            padding: 3.5rem;
             margin-bottom: 1rem; /* Ajustar según la altura del input de mensaje */
         }
         .message-input {
@@ -109,6 +109,12 @@
                 }
     
     
+    });
+
+    // Nos vamos al final del contenedor de mensajes para no tener que hacer scroll
+    document.querySelector('.messages').scrollTo({
+        top: document.querySelector('.messages').scrollHeight,
+        behavior: 'smooth'
     });
             
 
