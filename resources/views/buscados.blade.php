@@ -26,16 +26,15 @@
                     <img src="{{ $usuario->PP }}" alt="{{ $usuario->nombre }}" class="w-32 h-32 object-cover rounded-full mx-auto mb-4 border-4 border-orange-500">
                     <h2 class="text-lg font-bold text-center">{{ $usuario->nombre }}</h2>
                     <p class="text-sm text-center">{{ $usuario->username }}</p>
-                    <input type="hidden" name="id_receptor" id="id_receptor" value="{{ $usuario->id }}">
                     <div class="flex justify-center mt-4 space-x-4">
                         @if ($solicitudes->contains('usuario_receptor_id', $usuario->id))
                             <button class="btn btn-primary bg-yellow-700 text-white font-bold py-2 px-4 rounded-lg border border-yellow-700" disabled>Enviada</button>
                         @elseif ($amistades->contains('usuario1_id', $usuario->id) || $amistades->contains('usuario2_id', $usuario->id))
+                            <button class="btn btn-primary bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-lg border border-green-500 hover:border-green-700">Mensaje</button>
                             <button class="btn btn-danger bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-lg border border-red-500 hover:border-red-700">Eliminar</button>
                         @else
-                            <button class="btn btn-primary bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg border border-blue-500 hover:border-blue-700 enviar">Enviar</button>
+                            <button class="btn btn-primary bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg border border-blue-500 hover:border-blue-700" onclick = "enviarSolicitud(' {{ $usuario->id }}')">Enviar<button>
                         @endif
-                        <button class="btn btn-primary bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-lg border border-green-500 hover:border-green-700">Mensaje</button>
                     </div>
                 </div>
             @endforeach
@@ -89,44 +88,21 @@
 
 
 <script>
-    let enviar = document.querySelectorAll('.enviar');
-    // Referenciamos a la clase buscado
-    let buscado = document.querySelectorAll('.buscado');
-    // Y haremos que cuando se pulse el botón enviar, se deshabilite y extraiga el id del receptor
-    enviar.forEach((enviar, index) => {
-        enviar.addEventListener('click', () => {
-            // El color azul de fondo, borde y hovers cambiara a amarillo oscuro
-            enviar.classList.remove('bg-blue-500', 'hover:bg-blue-700', 'border-blue-500', 'hover:border-blue-700');
-            enviar.classList.add('bg-yellow-800', 'hover:bg-yellow-900', 'border-yellow-800', 'hover:border-yellow-900');
-            enviar.textContent = 'Enviada';
-            
-            enviar.disabled = true;
-            let id_receptor = buscado[index].querySelector('#id_receptor').value;
-            console.log(id_receptor);
-
-            // Haremos una petición AJAX para enviar la solicitud
-            fetch('/enviar_solicitud', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
-                },
-                body: JSON.stringify({
-                    id_receptor: id_receptor
-                })
-            }).then(response => response.json())
-            .then(data => {
-                console.log(data);
-                // Aquí puedes manejar la respuesta y realizar las acciones necesarias
+    function enviarSolicitud(id) {
+        // Hacemos una llamada a la API para enviar la solicitud mediante una peticion POST y ruta /nuevaSolicitud
+        fetch('/nuevaSolicitud', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+            },
+            body: JSON.stringify({
+                usuario_receptor_id: id
             })
-            .catch(error => {
-                console.log(error);
-                // Aquí puedes manejar el error en caso de que ocurra
-            });
-        });
-    });
-    
+        })
+    }
 </script>
+
 
 <script>
         // Media queries para pantallas de 768px de ancho y 600px de alto hacemos la lupa más grande

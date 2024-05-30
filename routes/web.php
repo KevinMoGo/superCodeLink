@@ -7,9 +7,15 @@ use App\Http\Controllers\AmistadesController;
 use App\Http\Controllers\FotosController;
 use App\Http\Controllers\ChatController;
 
+// Route::middleware(['verificarTokenUsuario'])->group(function () {
+//     Route::get('/inicio', [UsuariosController::class, 'mostrarInicio']);
+// });
+// apuntamos al middleware para que verifique si el usuario tiene un token con use 
+use App\Http\Middleware\VerificarTokenUsuario;
 
 
-Route::get('registroSubir', function () {
+
+Route::middleware(['verificarTokenUsuario'])->get('registroSubir', function () {
     return view('registroSubir');
 });
 
@@ -48,12 +54,18 @@ Route::post('/registro', [UsuariosController::class, 'registro']);
 
 // INICIO  ----------------------------------------------------------------------------------------------------
 Route::post('/buscar', [UsuariosController::class, 'buscar']);
-Route::get('/inicio', [UsuariosController::class, 'mostrarInicio']);
+
+
+Route::middleware(['verificarTokenUsuario'])->group(function () {
+    Route::get('/inicio', [UsuariosController::class, 'mostrarInicio']);
+});
+
 
 
 // BUSCADOS  ---------------------------------------------------------------------------------------------------
 
-Route::post('/enviar_solicitud', [AmistadesController::class, 'enviar_solicitud']);
+
+Route::post('/nuevaSolicitud', [AmistadesController::class, 'nuevaSolicitud']);
 
 // IMAGENES  ---------------------------------------------------------------------------------------------------
 
@@ -73,7 +85,7 @@ Route::get('/api_amigos', [AmistadesController::class, 'api_amigos']);
 
 // AMIGOS  -----------------------------------------------------------------------------------------------------
 
-Route::get('amigos', [AmistadesController::class, 'MostrarAmigos']);
+Route::middleware(['verificarTokenUsuario'])->get('amigos', [AmistadesController::class, 'MostrarAmigos']);
 Route::get('/chatAmigo/{id}', [AmistadesController::class, 'chatAmigo']);
 
 // CHAT  -------------------------------------------------------------------------------------------------------
@@ -94,7 +106,7 @@ Route::post('/getMensajes', [ChatController::class, 'getMensajes']);
 
 
 Route::post('agregar-solicitud/{id}', [SolicitudController::class, 'agregarSolicitud']);
-Route::get('notis', [SolicitudController::class, 'MostrarSolicitudes']);
+Route::middleware(['verificarTokenUsuario'])->get('notis', [SolicitudController::class, 'MostrarSolicitudes']);
 Route::post('aceptar-solicitud/{id}', [AmistadesController::class, 'aceptarSolicitud']);
 Route::post('rechazar-solicitud/{id}', [AmistadesController::class, 'rechazarSolicitud']);
 
@@ -102,7 +114,7 @@ Route::post('rechazar-solicitud/{id}', [AmistadesController::class, 'rechazarSol
 Route::post('subir', [FotosController::class, 'subirFoto']);
 Route::post('subirPerfil', [FotosController::class, 'subirFotoPerfil']);
 
-Route::get('misimagenes', [UsuariosController::class, 'mostrarMisImagenes'])->name('misimagenes');
+Route::middleware(['verificarTokenUsuario'])->get('misimagenes', [UsuariosController::class, 'mostrarMisImagenes'])->name('misimagenes');
 
 
 

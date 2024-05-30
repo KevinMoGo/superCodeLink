@@ -3,6 +3,9 @@
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
+use Illuminate\Foundation\Http\Kernel;
+use Illuminate\Routing\Router;
+
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -11,7 +14,11 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
-        //
+        $middleware->alias([
+            'verificarTokenUsuario' => \App\Http\Middleware\VerificarTokenUsuario::class,
+        ]);
+        
+
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //

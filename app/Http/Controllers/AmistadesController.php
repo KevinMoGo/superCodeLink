@@ -6,44 +6,28 @@ use App\Models\Solicitudes;
 use App\Models\Usuarios;
 use App\Models\Amistades;
 use Illuminate\Http\Request;
-use App\Http\Controllers\TokenController;
 
 class AmistadesController extends Controller
 {
-    // Creamos una instancia de TokenController para poder usar sus métodos
-    private $tokenController;
-    public function __construct()
-    {
-        $this->tokenController = new TokenController();
-    }
 
-    public function enviar_solicitud(Request $request)
-    {
-        // Extraemos la información de todo el json
-        $datos = $request->json()->all();
-        // Extraemos el id del usuario receptor
-        $id = $datos['id_receptor'];
-        $sessionID = session('user_id');
-        // Busamos si existe el usuario receptor
-        $usuario = Usuarios::where('id', $id)->first();
-        if (!$usuario) {
-            return response()->json(['error' => 'El usuario no existe']);
-        }
-        // Verificamos si ya existe una solicitud comprobando si sessionID es el usuario emisor y id es el usuario receptor o al reves, ya que estarian en distinto orden pero seguirian siendo la misma solicitud
-        if (Solicitudes::where('usuario_emisor_id', $sessionID)->where('usuario_receptor_id', $id)->first() || Solicitudes::where('usuario_emisor_id', $id)->where('usuario_receptor_id', $sessionID)->first()) {
-            return response()->json(['error' => 'Ya existe una solicitud']);
-        }
-        else{
-            // Creamos la solicitud
-            $solicitud = new Solicitudes();
-            $solicitud->usuario_emisor_id = $sessionID;
-            $solicitud->usuario_receptor_id = $id;
-            $solicitud->save();
-            return response()->json(['success' => 'Solicitud enviada']);
-        }
 
-        
-        
+    public function nuevaSolicitud(Request $request){
+        // function enviarSolicitud(id) {
+        //     // Hacemos una llamada a la API para enviar la solicitud mediante una peticion POST y ruta /nuevaSolicitud
+        //     fetch('/nuevaSolicitud', {
+        //         method: 'POST',
+        //         headers: {
+        //             'Content-Type': 'application/json',
+        //             'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+        //         },
+        //         body: JSON.stringify({
+        //             usuario_receptor_id: id
+        //         })
+        //     })
+        // }
+
+        // Comprobamos si el usuario receptor ya ha enviado una solicitud al usuario emisor
+
     }
 
 

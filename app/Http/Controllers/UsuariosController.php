@@ -82,13 +82,10 @@ class UsuariosController extends Controller
             session(['user_id' => $usuario->id]);
             // Comprobamos si la contraseña es correcta
             if ($usuario->contrasena == hash('sha256', $contrasena.$salt)) {
-                // Creamos un token que contendo que ponga logeado y lo ponemos en la cookie
+                // Creamos un token que contenga que ponga logeado y lo ponemos en la cookie
                 $token = hash('sha256', $usuario->id.$salt);
-                setcookie('tokenUsuarioCodeLink', $token, time() + 3600, '/');
-                // Guardamos el username del usuario en una variable de sesión
-                session(['username' => $usuario->username]);
-                
-                return response()->json(['success' => 'Usuario logueado']);
+                return response()->json(['success' => 'Usuario logueado'])
+                    ->cookie('tokenUsuarioCodeLink', $token, 3600, '/', '', false, true); // La última true es para hacer la cookie httponly
             }
             else{
                 return response()->json(['error' => 'Ha habido un error al loguear el usuario']);
@@ -98,6 +95,7 @@ class UsuariosController extends Controller
             return response()->json(['error' => 'Ha habido un error al loguear el usuario']);
         }
     }
+    
     public function mostrarInicio()
     {
         // Obtener el ID del usuario desde la sesión
