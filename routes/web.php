@@ -18,6 +18,11 @@ Route::get('buscados', function () {
 });
 
 Route::get('/datosBarra', [UsuariosController::class, 'datosBarra']);
+Route::get('/datosEditar', [UsuariosController::class, 'datosEditar']);
+Route::put('/editarPerfil1', [UsuariosController::class, 'editarPerfil1']);
+Route::put('/editarPerfil2', [UsuariosController::class, 'editarPerfil2']);
+Route::get('/logout', [UsuariosController::class, 'logout']);
+
 Route::post('/subirFotoPerfil', [FotosController::class, 'subirFotoPerfil']);
 
 // Ruta para guardar nuevo perfil
@@ -30,31 +35,21 @@ Route::get('/getDatosPerfil', [UsuariosController::class, 'getDatosPerfil']);
 Route::get('/', function () {
     return view('login');
 });
-
 Route::post('/login', [UsuariosController::class, 'login']);
-
-Route::get('/registro', function () {
-    return view('registro');
-});
-
-Route::get('/inicio', [UsuariosController::class, 'mostrarInicio']);
 
 
 // REGISTRO  ----------------------------------------------------------------------------------------------------
 Route::get('/registro', function () {
     return view('registro');
 });
-
-Route::post('/registroUsername', [UsuariosController::class, 'registroUsername']);
-
-Route::get('/cancelarRegistro', [UsuariosController::class, 'cancelarRegistro']);
-
-Route::post('/registroDatos', [UsuariosController::class, 'registroDatos']);
+Route::get('/validarUsername/{username}', [UsuariosController::class, 'validarUsername']);
+Route::post('/registro', [UsuariosController::class, 'registro']);
 
 
 // INICIO  ----------------------------------------------------------------------------------------------------
-
 Route::post('/buscar', [UsuariosController::class, 'buscar']);
+Route::get('/inicio', [UsuariosController::class, 'mostrarInicio']);
+
 
 // BUSCADOS  ---------------------------------------------------------------------------------------------------
 

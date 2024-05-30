@@ -8,76 +8,52 @@
     <title>Registro de usuarios</title>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="{{ asset('css/animaciones.css') }}">
+
 
 </head>
 <body class="bg-gray-800 flex justify-center items-center h-screen">
 
-    <!-- Div para el formulario de nombre de usuario -->
-    <div class="container max-w-lg w-full p-8 bg-white shadow-md rounded-md md:border-l md:border-r md:rounded-lg" style="margin: 0 20px;" id="usernameDiv">
+    <!-- Div para el formulario de registro de usuarios -->
+    <div class="container max-w-lg w-full p-8 bg-white shadow-md rounded-md md:border-l md:border-r md:rounded-lg" style="margin: 0 20px;" id="registroDiv">
+    @csrf
         <h1 class="text-center text-3xl mb-8 text-gray-800">Registro de usuarios</h1>
-        <div class="space-y-4" id="usernameForm">
-            @csrf
+        <div class="space-y-4" id="registroForm">
+            <!-- Nombre de usuario -->
             <div>
-                <p class="text-gray-800">Nombre de usuario:</p>
-                <input type="text" id="usernameID" name="usernameID" autocomplete="new-password" class="w-full px-4 py-2 border rounded-md focus:outline-none focus:border-black" maxlength="21">
+                <p class="text-gray-800 username">Nombre de usuario</p>
+                <input type="text" id="usernameID" name="usernameID" autocomplete="off" class="w-full px-4 py-2 border border-gray-500 rounded-md focus:outline-none focus:border-black" maxlength="25" autofocus>
             </div>
-            <button type="button" class="w-full px-4 py-2 bg-black text-white rounded-md transition duration-300 hover:bg-gray-900" onclick="registrarUsername()">Guardar</button>
-        </div>
-        <p id="mensajeUsername" class="mensajeError1 text-red-500 hidden">Este nombre ya existe</p>
-        <p id="mensajeSuccessUsername" class="mensajeSuccess text-green-500 hidden">Nombre guardado</p>
-        <p id="mensajeErrorDatos" class="mensajeError2 text-red-500 hidden">introduce algo</p>
-    </div>
-
-
-    
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    <div class="container max-w-lg w-full p-8 bg-white shadow-md rounded-md md:border-l md:border-r md:rounded-lg hidden" style="margin: 0 20px;" id="datosDiv">
-    <h1 class="text-center text-3xl mb-8 text-gray-800">Registro de usuarios</h1>
-    <div class="space-y-4" id="datosForm">
-        <div>
-            <p class="text-gray-800">Nombre:</p>
-            <input type="text" id="nombreID" name="nombreID" autocomplete="off" class="w-full px-4 py-2 border rounded-md focus:outline-none focus:border-black" autofocus maxlength="21">
-        </div>
-        <div>
-            <p class="text-gray-800">Contraseña:</p>
-            
-            <input type="password" id="contrasenaID" name="contrasenaID" autocomplete="off" class="w-full px-4 py-2 border rounded-md focus:outline-none focus:border-black" maxlength="21">
-        </div>
-        <div>
-            <p class="text-gray-800">Edad:</p>
-            <input type="number" id="edadID" name="edadID" autocomplete="off" class="w-full px-4 py-2 border rounded-md focus:outline-none focus:border-black" min="10" max="122">
-        </div>
-        <div>
-            <p class="text-gray-800">Sexo:</p>
-            <select id="sexo" name="sexo" class="w-full px-4 py-2 border rounded-md focus:outline-none focus:border-black">
-                <option value="Hombre">Hombre</option>
-                <option value="Mujer">Mujer</option>
-                <option value="Otro">Otro</option>
-            </select>
-        </div>
-        <div>
-            <p class="text-gray-800">País:</p>
-            <select id="pais" name="pais" class="w-full px-4 py-2 border rounded-md focus:outline-none focus:border-black">
-                <option value="">Selecciona un país</option>
-                // Ponemos todos los paises en orden alfabético
-                <option value="Afganistán">Afganistán</option>
+            <!-- Nombre -->
+            <div>
+                <p class="text-gray-800">Nombre</p>
+                <input type="text" id="nombreID" name="nombreID" autocomplete="off" class="w-full px-4 py-2 border border-gray-500 rounded-md focus:outline-none focus:border-black" maxlength="25">
+            </div>
+            <!-- Contraseña -->
+            <div>
+                <p class="text-gray-800">Contraseña</p>
+                <input type="password" id="contrasenaID" name="contrasenaID" autocomplete="off" class="w-full px-4 py-2 border border-gray-500 rounded-md focus:outline-none focus:border-black" maxlength="21">
+            </div>
+            <!-- Edad y Sexo -->
+            <div class="flex space-x-4">
+                <div class="w-1/2">
+                    <p class="text-gray-800">Edad</p>
+                    <input type="number" id="edadID" name="edadID" autocomplete="off" class="w-full px-4 py-2 border border-gray-500 rounded-md focus:outline-none focus:border-black" min="18" max="122">
+                </div>
+                <div class="w-1/2">
+                    <p class="text-gray-800">Sexo</p>
+                    <select id="sexo" name="sexo" class="w-full px-4 py-2 border border-gray-500 rounded-md focus:outline-none focus:border-black">
+                        <option value="Hombre">Hombre</option>
+                        <option value="Mujer">Mujer</option>
+                        <option value="Otro">Otro</option>
+                    </select>
+                </div>
+            </div>
+            <!-- País -->
+            <div>
+                <p class="text-gray-800">País</p>
+                <select id="pais" name="pais" class="w-full px-4 py-2 border border-gray-500 rounded-md focus:outline-none focus:border-black">
+                    <option value="">Selecciona un país</option>
+                    <option value="Afganistán">Afganistán</option>
                 <option value="Albania">Albania</option>
                 <option value="Alemania">Alemania</option>
                 <option value="Andorra">Andorra</option>
@@ -272,249 +248,297 @@
                 <option value="Yibuti">Yibuti</option>
                 <option value="Zambia">Zambia</option>
                 <option value="Zimbabue">Zimbabue</option>
-            </select>
+                </select>
+            </div>
+            <!-- Botones -->
+            <div class="flex space-x-4">
+                <button type="button" class="w-full px-4 py-2 bg-black text-white rounded-md transition duration-300 hover:bg-gray-900" onclick="registrarDatos()">Guardar</button>
+                <button type="button" class="w-full px-4 py-2 bg-red-600 text-white rounded-md transition duration-300 hover:bg-red-700" onclick="cancelarRegistro()">Cancelar</button>
+            </div>
+            <!-- Mensajes de error y éxito -->
+            <p id="rellenarError" class="mensajeError2 text-red-500 hidden">Rellene los campos</p>
+            <p id="edadError" class="mensajeError2 text-red-500 hidden">Edad mínima 18 y máxima 122</p>
+            <p id="min3" class="mensajeError text-red-500 hidden">Introduce al menos 4 caracteres</p>
+            <p id="sucess" class="mensajeSuccess text-green-500 hidden">Datos guardados</p>
+            <p id="creacionError" class="mensajeError text-red-500 hidden">Error en la creación</p>
+            <p id="successCreation" class="mensajeSuccess text-green-500 hidden">Usuario creado</p>
+            <p id="usernameError" class="mensajeError text-red-500 hidden">Nombre de usuario no disponible</p>
         </div>
-        <div class="flex space-x-4">
-            <button type="button" class="w-full px-4 py-2 bg-black text-white rounded-md transition duration-300 hover:bg-gray-900" onclick="registrarDatos()">Guardar</button>
-            <button type="button" class="w-full px-4 py-2 bg-red-600 text-white rounded-md transition duration-300 hover:bg-red-700" onclick="cancelarRegistro()">Cancelar</button>
-        </div>
-            <p id="ErrorRegistro" class="mensajeError2 text-red-500 hidden">Introduce todos los datos</p>
-            <p id="ErrorRegistro2" class="mensajeError2 text-red-500 hidden">Introduce una edad coherente (min 10, max 122)</p>
-            <p id="mensajeSuccessDatos" class="mensajeSuccess text-green-500 hidden">Datos guardados</p>
     </div>
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-        
-    
-
 
 </body>
+
+
+
+
 </html>
 
 
-
-
 <script>
-    
-    
-    // Evitar que el formulario se envíe
-    document.getElementById('usernameForm').addEventListener('submit', function(e) {
-        e.preventDefault();
-    });
+    // Cada vez que se cambie el valor del input de nombre de usuario, se ejecutará la función comprobarUsername, usaremos algo que detecte los cambios del valor del input
+    document.getElementById('usernameID').addEventListener('input', comprobarUsername);
 
-    function registrarUsername() {
-        document.getElementById('mensajeUsername').classList.add('hidden');
-    document.getElementById('mensajeSuccessUsername').classList.add('hidden');
-    document.getElementById('mensajeErrorDatos').classList.add('hidden');
-        let username = document.getElementById('usernameID').value;
-        console.log(username);
-        // Si el usuario está vacío, mostrar mensaje de error en consola
-        if (username === '') {
-            
-            document.getElementById('mensajeErrorDatos').classList.remove('hidden');
-            // Hacemos un focus al input para que el usuario lo vea y lo ponemos en rojo durante 3 segundos y luego vuelve a su color original
-            document.getElementById('usernameID').focus();
-            document.getElementById('usernameID').style.borderColor = 'red';
-            setTimeout(() => {
-                document.getElementById('usernameID').style.borderColor = 'black';
-            }, 3000);
+    function comprobarUsername(){
+        escondeMensajes();
+        // Comprobamos que no esté vacío el input
+        if(document.getElementById('usernameID').value !== '' && document.getElementById('usernameID').value.length >= 4){
+            escondeMensajes();
+           // Comprobamos que tenga más de 3 caracteres, en caso de no tenerlos muestra un mensaje de error
+            if(document.getElementById('usernameID').value.length < 4){
+                document.getElementById('min3').classList.remove('hidden');
+                // Hacemos un focus al input para que el usuario lo vea y lo ponemos un outline rojo durante 3 segundos y luego vuelve a su color original
+                document.getElementById('usernameID').focus();
+                document.getElementById('usernameID').style.borderColor = 'red';
+                setTimeout(() => {
+                    // Le quitamos el outline rojo y le ponemos un none
+                    document.getElementById('usernameID').style.borderColor = 'gray';
+                    // Ocultamos los mensajes de error
+                    escondeMensajes();
+                }, 3000);
+            }
+            else{
+                // Cogemos el elemento p con clase username y le dejamos el texto Nombre de usuario
+                document.querySelector('.username').innerHTML = 'Nombre de usuario';
+                // Route::get('/validarUsername/{username}', [UsuariosController::class, 'validarUsername']); y mostramos data en la consola
+                fetch('/validarUsername/' + document.getElementById('usernameID').value)
+                .then(response => response.json())
+                .then(data => {
+                    // si es success ponemos el mensaje de nombre de usuario disponible y si no ponemos el mensaje de nombre de usuario no disponible
+                    if(data.success){
+                        // Cogemos el elemento p con clase username y le agregamos un texto verde de Disponible
+                        document.querySelector('.username').innerHTML = 'Nombre de usuario <span class="text-green-500">disponible</span>';
+                    }
+                    else{
+                        // Cogemos el elemento p con clase username y le agregamos un texto rojo de No disponible
+                        document.querySelector('.username').innerHTML = 'Nombre de usuario <span class="text-red-500">no disponible</span>';
+                        // Le quitamos la funcion onclick al botón de guardar
+                        document.querySelector('.w-full').removeAttribute('onclick');
+                    }
+                });
+            }
         }
         else{
-                    // Hacer una petición POST a la ruta /registroUsername 
-        fetch('/registroUsername', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
-            },
-            body: JSON.stringify({
-                username: username
-            }),
-        })
-        .then(response => response.json())
-        .then(data => {
-            // Si el nombre de usuario ya existe, mostrar un mensaje de error y animar el elemento
-            if (data.error) {
-                document.getElementById('mensajeUsername').classList.remove('hidden');
-                document.getElementById('mensajeSuccessUsername').classList.add('hidden');
-
-        
-
-            
-} 
- else {
-                // Si el nombre de usuario no existe, mostrar un mensaje de éxito
-                document.getElementById('mensajeSuccessUsername').classList.remove('hidden');
-                document.getElementById('mensajeUsername').classList.add('hidden');
-
-                // Le agregamos la clase animate__slideOutLeft al div para animarlo
-                setTimeout(() => {
-                    document.getElementById('usernameDiv').classList.add('animate__slideOutLeft');
-                    // Despues de la animacion le damos al body un overflow auto
-                    document.body.style.overflow = 'auto';
-                }, 500);
-
-                setTimeout(() => {
-                    
-                    document.getElementById('datosDiv').classList.remove('hidden');
-                    document.getElementById('datosDiv').classList.add('animate__slideInRight');
-                }, 1100);
-                
-                
-            }
-        });
-    }
+            // Cogemos el elemento p con clase username y le dejamos el texto Nombre de usuario
+            document.querySelector('.username').innerHTML = 'Nombre de usuario';
         }
+    }
 
 
     function cancelarRegistro() {
-        // Llamamos a la ruta /cancelarRegistro
-        fetch('/cancelarRegistro', {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
-            },
-        })
-        .then(response => response.json())
-        .then(data => {
-            // Si la respuesta es success, redirigimos al usuario a la página de inicio
-            if (data.success) {
-                window.location.href = '/';
-            }
-        });
+        // Redirigir a la página de inicio
+        window.location.href = '/';
     }
 
 
     function registrarDatos(){
-
-        // Ocultamos los mensajes de error y éxito
         escondeMensajes();
-
-        // los referenciamos en variables
-        let mensajeErrorDatos = document.getElementById('ErrorRegistro');
-        let mensajeErrorDatos2 = document.getElementById('ErrorRegistro2');
-        let mensajeSuccessDatos = document.getElementById('mensajeSuccessDatos');
-
-        let nombre = document.getElementById('nombreID').value;
-        let contrasena = document.getElementById('contrasenaID').value;
-        let edad = document.getElementById('edadID').value;
-        let sexo = document.getElementById('sexo').value;
-        let pais = document.getElementById('pais').value;
-
-        // Verificamos que todos los campos estén llenos
-        if (nombre === '' || contrasena === '' || edad === '' || pais === '') {
-            document.getElementById('mensajeErrorDatos').classList.remove('hidden');
-            // Hacemos un focus al input para que el usuario lo vea y lo ponemos en rojo durante 3 segundos y luego vuelve a su color original
-            if (nombre === '') {
-                // Ocultamos todos los mensajes de error y éxito
+        // Primero comprobamos que el username no esté vacío y en caso de no estarlo comprobamos que tenga más de 3 caracteres
+        if(document.getElementById('usernameID').value === ''){
+            // Mostramos el mensaje de error de que el campo está vacío
+            document.getElementById('rellenarError').classList.remove('hidden');
+            // Hacemos un focus al input para que el usuario lo vea y lo ponemos un outline rojo durante 3 segundos y luego vuelve a su color original
+            document.getElementById('usernameID').focus();
+            document.getElementById('usernameID').style.borderColor = 'red';
+            setTimeout(() => {
+                // Le quitamos el outline rojo y le ponemos un none
+                document.getElementById('usernameID').style.borderColor = 'gray';
+                // Ocultamos los mensajes de error
                 escondeMensajes();
-
-                document.getElementById('nombreID').focus();
-                document.getElementById('nombreID').style.borderColor = 'red';
-                setTimeout(() => {
-                    document.getElementById('nombreID').style.borderColor = 'black';
-                }, 3000);
-                // Mostar mensaje de error
-                mensajeErrorDatos.classList.remove('hidden');
-
-            } else if (contrasena === '') {
-                escondeMensajes();
-
-                document.getElementById('contrasenaID').focus();
-                document.getElementById('contrasenaID').style.borderColor = 'red';
-                setTimeout(() => {
-                    document.getElementById('contrasenaID').style.borderColor = 'black';
-                }, 3000);
-                // Mostar mensaje de error
-                mensajeErrorDatos.classList.remove('hidden');
-            } else if (edad === '') {
-                escondeMensajes();
-
-                document.getElementById('edadID').focus();
-                document.getElementById('edadID').style.borderColor = 'red';
-                setTimeout(() => {
-                    document.getElementById('edadID').style.borderColor = 'black';
-                }, 3000);
-                // Mostar mensaje de error
-                mensajeErrorDatos.classList.remove('hidden');
-            } else if (pais === '') {
-                escondeMensajes();
-
-                document.getElementById('pais').focus();
-                document.getElementById('pais').style.borderColor = 'red';
-                setTimeout(() => {
-                    document.getElementById('pais').style.borderColor = 'black';
-                }, 3000);
-                // Mostar mensaje de error
-                mensajeErrorDatos.classList.remove('hidden');
-            }
+            }, 3000);
         }
-        else if(parseInt(edad) > 122){
-            // Comprobamos si edad es superior a 122 pasandolo a entero 
-            
-                document.getElementById('edadID').focus();
-                document.getElementById('edadID').style.borderColor = 'red';
-                setTimeout(() => {
-                    document.getElementById('edadID').style.borderColor = 'black';
-                }, 3000);
-                // Mostar mensaje de error
-                mensajeErrorDatos2.classList.remove('hidden');
-            
-
+        // Comprobamos que tenga al menos 4 caracteres
+        else if(document.getElementById('usernameID').value.length < 4){
+            // Mostramos el mensaje de error de que el campo está vacío
+            document.getElementById('min3').classList.remove('hidden');
+            // Hacemos un focus al input para que el usuario lo vea y lo ponemos un outline rojo durante 3 segundos y luego vuelve a su color original
+            document.getElementById('usernameID').focus();
+            document.getElementById('usernameID').style.borderColor = 'red';
+            setTimeout(() => {
+                // Le quitamos el outline rojo y le ponemos un none
+                document.getElementById('usernameID').style.borderColor = 'gray';
+                // Ocultamos los mensajes de error
+                escondeMensajes();
+            }, 3000);
         }
-        else{
-            // Hacer una petición POST a la ruta /registroDatos
-            fetch('/registroDatos', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
-                },
-                body: JSON.stringify({
-                    nombre: nombre,
-                    contrasena: contrasena,
-                    edad: edad,
-                    sexo: sexo,
-                    pais: pais
-                }),
-            })
-            .then(response => response.json())
-            .then(data => {
-                // Si es un success, mostrar mensaje de éxito, inhabilitamos los 2 botones y mostramos esperamos 1s y redirigimos a la página de inicio
-                if (data.success) {
-                    mensajeSuccessDatos.classList.remove('hidden');
-                    document.getElementById('datosForm').querySelectorAll('button').forEach(boton => {
-                        boton.disabled = true;
-                    });
-                    setTimeout(() => {
-                        window.location.href = '/';
-                    }, 1000);
-                }
 
-            });
+        else if(document.getElementById('nombreID').value === ''){
+            // Mostramos el mensaje de error de que el campo está vacío
+            document.getElementById('rellenarError').classList.remove('hidden');
+            // Hacemos un focus al input para que el usuario lo vea y lo ponemos un outline rojo durante 3 segundos y luego vuelve a su color original
+            document.getElementById('nombreID').focus();
+            document.getElementById('nombreID').style.borderColor = 'red';
+            setTimeout(() => {
+                // Le quitamos el outline rojo y le ponemos un none
+                document.getElementById('nombreID').style.borderColor = 'gray';
+                // Ocultamos los mensajes de error
+                escondeMensajes();
+            }, 3000);
+        }
+        // Comprobamos que tenga al menos 4 caracteres
+        else if(document.getElementById('nombreID').value.length < 4){
+            // Mostramos el mensaje de error de que el campo está vacío
+            document.getElementById('min3').classList.remove('hidden');
+            // Hacemos un focus al input para que el usuario lo vea y lo ponemos un outline rojo durante 3 segundos y luego vuelve a su color original
+            document.getElementById('nombreID').focus();
+            document.getElementById('nombreID').style.borderColor = 'red';
+            setTimeout(() => {
+                // Le quitamos el outline rojo y le ponemos un none
+                document.getElementById('nombreID').style.borderColor = 'gray';
+                // Ocultamos los mensajes de error
+                escondeMensajes();
+            }, 3000);
+        }
+        else if(document.getElementById('contrasenaID').value === ''){
+            // Mostramos el mensaje de error de que el campo está vacío
+            document.getElementById('rellenarError').classList.remove('hidden');
+            // Hacemos un focus al input para que el usuario lo vea y lo ponemos un outline rojo durante 3 segundos y luego vuelve a su color original
+            document.getElementById('contrasenaID').focus();
+            document.getElementById('contrasenaID').style.borderColor = 'red';
+            setTimeout(() => {
+                // Le quitamos el outline rojo y le ponemos un none
+                document.getElementById('contrasenaID').style.borderColor = 'gray';
+                // Ocultamos los mensajes de error
+                escondeMensajes();
+            }, 3000);
+        }
+        // Comprobamos que tenga al menos 4 caracteres
+        else if(document.getElementById('contrasenaID').value.length < 4){
+            // Mostramos el mensaje de error de que el campo está vacío
+            document.getElementById('min3').classList.remove('hidden');
+            // Hacemos un focus al input para que el usuario lo vea y lo ponemos un outline rojo durante 3 segundos y luego vuelve a su color original
+            document.getElementById('contrasenaID').focus();
+            document.getElementById('contrasenaID').style.borderColor = 'red';
+            setTimeout(() => {
+                // Le quitamos el outline rojo y le ponemos un none
+                document.getElementById('contrasenaID').style.borderColor = 'gray';
+                // Ocultamos los mensajes de error
+                escondeMensajes();
+            }, 3000);
+        }
+        else if(document.getElementById('edadID').value === ''){
+            // Mostramos el mensaje de error de que el campo está vacío
+            document.getElementById('rellenarError').classList.remove('hidden');
+            // Hacemos un focus al input para que el usuario lo vea y lo ponemos un outline rojo durante 3 segundos y luego vuelve a su color original
+            document.getElementById('edadID').focus();
+            document.getElementById('edadID').style.borderColor = 'red';
+            setTimeout(() => {
+                // Le quitamos el outline rojo y le ponemos un none
+                document.getElementById('edadID').style.borderColor = 'gray';
+                // Ocultamos los mensajes de error
+                escondeMensajes();
+            }, 3000);
+        }
+        else if(document.getElementById('edadID').value < 18 || document.getElementById('edadID').value > 122){
+            // Mostramos el mensaje de error de que el campo está vacío
+            document.getElementById('edadError').classList.remove('hidden');
+            // Hacemos un focus al input para que el usuario lo vea y lo ponemos un outline rojo durante 3 segundos y luego vuelve a su color original
+            document.getElementById('edadID').focus();
+            document.getElementById('edadID').style.borderColor = 'red';
+            setTimeout(() => {
+                // Le quitamos el outline rojo y le ponemos un none
+                document.getElementById('edadID').style.borderColor = 'gray';
+                // Ocultamos los mensajes de error
+                escondeMensajes();
+            }, 3000);
+        }
+        // Ahora nos aseguramos de que se haya elegido un país
+        else if(document.getElementById('pais').value === ''){
+            // Mostramos el mensaje de error de que el campo está vacío
+            document.getElementById('rellenarError').classList.remove('hidden');
+            // Hacemos un focus al input para que el usuario lo vea y lo ponemos un outline rojo durante 3 segundos y luego vuelve a su color original
+            document.getElementById('pais').focus();
+            document.getElementById('pais').style.borderColor = 'red';
+            setTimeout(() => {
+                // Le quitamos el outline rojo y le ponemos un none
+                document.getElementById('pais').style.borderColor = 'gray';
+                // Ocultamos los mensajes de error
+                escondeMensajes();
+            }, 3000);
+        }
+        // Analizamos que en el p username no ponga no disponible
+        else if(document.querySelector('.username').innerHTML.includes('no disponible')){
+            // Hace un focus al input de username
+            document.getElementById('usernameID').focus();
+            // Pone un outline rojo al input de username durante 3 segundos
+            document.getElementById('usernameID').style.borderColor = 'red';
+            // Muestra un mensaje de error de que el nombre de usuario no está disponible
+            document.getElementById('usernameError').classList.remove('hidden');
+
+            setTimeout(() => {
+                // Quita el outline rojo al input de username
+                document.getElementById('usernameID').style.borderColor = 'gray';
+                // Oculta los mensajes de error
+                escondeMensajes();
+            }, 3000);
         
         }
+        else {
+    // Si todo está correcto, guardamos los datos
+    fetch('/registro', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+        },
+        body: JSON.stringify({
+            username: document.getElementById('usernameID').value,
+            nombre: document.getElementById('nombreID').value,
+            contrasena: document.getElementById('contrasenaID').value,
+            edad: document.getElementById('edadID').value,
+            sexo: document.getElementById('sexo').value,
+            pais: document.getElementById('pais').value
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        // Si es success muestra mensaje de bienvenida y en 1s redirige a la página de inicio
+        if (data.success) {
+            document.getElementById('successCreation').classList.remove('hidden');
+            setTimeout(() => {
+                window.location.href = '/';
+            }, 1000);
+        } else {
+            document.getElementById('creacionError').classList.remove('hidden');
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        // Mostrar un mensaje de error genérico
+        document.getElementById('creacionError').classList.remove('hidden');
+    });
+}
 
+
+
+
+
+
+    
+
+
+        
     }
+
+
+
 
     function escondeMensajes() {
-        document.getElementById('ErrorRegistro').classList.add('hidden');
-        document.getElementById('ErrorRegistro2').classList.add('hidden');
-        document.getElementById('mensajeSuccessDatos').classList.add('hidden');
+
+        document.getElementById('rellenarError').classList.add('hidden');
+        document.getElementById('edadError').classList.add('hidden');
+        document.getElementById('min3').classList.add('hidden');
+        document.getElementById('sucess').classList.add('hidden');
+        document.getElementById('creacionError').classList.add('hidden');
+        document.getElementById('successCreation').classList.add('hidden');
+        document.getElementById('usernameError').classList.add('hidden');
+
     }
+
+
+
+
 
     
 </script>
+
+

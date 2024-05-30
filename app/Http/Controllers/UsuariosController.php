@@ -22,60 +22,53 @@ class UsuariosController extends Controller
 
 
 
-    public function registroUsername(Request $request)
-    {
-    $username = $request->json()->get('username');
-    $username = (string)$username;
-
-    // Buscamos el usuario en la base de datos
-    $usuario = Usuarios::where('username', $username)->first();
-    if ($usuario) {
-        return response()->json(['error' => 'El usuario ya existe']);
-    }
-    else{
-        // Guardamos el nombre en una variable de sesión
-        session(['username' => $username]);
-        $nuevoUsuario = new Usuarios();
-        $nuevoUsuario->username = $username;
-        $nuevoUsuario->save();
-        return response()->json(['success' => 'Usuario creado']);
-    }
-    }
-    
-    public function cancelarRegistro()
-    {
-        try {
-            Usuarios::where('username', session('username'))->delete();
-            session()->forget('username');
-            return response()->json(['success' => 'Usuario eliminado']);
-        } catch (\Exception $e) {
-            return response()->json(['error' => 'Error al eliminar el usuario']);
+    public function validarUsername($username){
+        // Buscamos el usuario en la base de datos
+        $usuario = Usuarios::where('username', $username)->first();
+        // Si el usuario existe devolvemos un error
+        if ($usuario) {
+            return response()->json(['error' => 'El usuario ya existe']);
+        }
+        // Si el usuario no existe devolvemos un success
+        else{
+            return response()->json(['success' => 'El usuario no existe']);
         }
     }
-
-    public function registroDatos(Request $request){
+    public function registro(Request $request){
         // Extraemos los datos del json
-        try {
-            $datos = $request->json()->all();
-            
-            // Extraemos los datos por separado retranformandolos a string para evitar inyecciones de código
-            $nombre = (string)$datos['nombre'];
-            $contrasena = (string)$datos['contrasena'];
-            $edad = (string)$datos['edad'];
-            $sexo = (string)$datos['sexo'];
-            $pais = (string)$datos['pais'];
+        $datos = $request->json()->all();
+        $nombre = (string)$datos['nombre'];
+        $username = (string)$datos['username'];
+        $contrasena = (string)$datos['contrasena'];
+        $edad = (string)$datos['edad'];
+        $sexo = (string)$datos['sexo'];
+        $pais = (string)$datos['pais'];
+        // Buscamos el usuario en la base de datos
+        $usuario = Usuarios::where('username', $username)->first();
+        // Si el usuario existe devolvemos un error
+        if ($usuario) {
+            return response()->json(['error' => 'Ha habido un error al crear el usuario']);
+        }
+        // Si el usuario no existe lo creamos
+        else{
+            // Creamos un objeto de la clase Usuarios
+            $usuario = new Usuarios();
+            // Creamos un salt aleatorio
+            $salt = bin2hex(random_bytes(32));
+            // Guardamos los datos en el objeto
+            $usuario->nombre = $nombre;
+            $usuario->username = $username;
+            $usuario->contrasena = hash('sha256', $contrasena.$salt);
+            $usuario->edad = $edad;
+            $usuario->sexo = $sexo;
+            $usuario->pais = $pais;
+            $usuario->salt = $salt;
+            // Guardamos el objeto en la base de datos
+            $usuario->save();
+            return response()->json(['success' => 'Usuario creado']);
 
-            $salt = bin2hex(random_bytes(20));
-            // Con 20 digitos aleatorios es más probable que yo gane el nobel 50 veces seguidas a que dos contraseñas sean iguales
-
-            // Terminamos de guardar los datos en la base de datos incluyen el salt
-            Usuarios::where('username', session('username'))->update(['nombre' => $nombre, 'contrasena' => hash('sha256', $contrasena.$salt), 'edad' => $edad, 'sexo' => $sexo, 'pais' => $pais, 'salt' => $salt]);
-            return response()->json(['success' => $salt]);
-        } catch (\Exception $e) {
-            return response()->json(['error' => 'Error al actualizar los datos']);
         }
     }
-
     public function login(Request $request){
         // Extraemos los datos del json
         $datos = $request->json()->all();
@@ -105,13 +98,32 @@ class UsuariosController extends Controller
             return response()->json(['error' => 'Ha habido un error al loguear el usuario']);
         }
     }
+    public function mostrarInicio()
+    {
+        // Obtener el ID del usuario desde la sesión
+        $userId = session('user_id');
 
+        // Obtener todas las amistades donde el usuario es usuario1_id o usuario2_id
+        $amistades = Amistades::where('usuario1_id', $userId)
+                              ->orWhere('usuario2_id', $userId)
+                              ->get();
 
-    public function mostrarInicio(){
-        // Llamamos a la funcion comprobarToken del TokenController para comprobar si hay un token en la cookie
-        return view('inicio');
-        
-        
+        // Crear un array para almacenar las IDs de los amigos
+        $amigosIds = [];
+
+        foreach ($amistades as $amistad) {
+            if ($amistad->usuario1_id == $userId) {
+                // Si el usuario1_id es el usuario de la sesión, agregar usuario2_id
+                $amigosIds[] = $amistad->usuario2_id;
+            } else {
+                // Si el usuario2_id es el usuario de la sesión, agregar usuario1_id
+                $amigosIds[] = $amistad->usuario1_id;
+            }
+        }
+
+        // Ahora extraemos los el nombre, username, edad, pais, sexo y PP de los amigos
+        $amigos = Usuarios::whereIn('id', $amigosIds)->get();
+        return view('inicio', ['amigos' => $amigos]);
     }
 
 
@@ -124,39 +136,81 @@ class UsuariosController extends Controller
         $amistades = Amistades::where('usuario1_id', session('user_id'))->get();
 
         return view('buscados', ['usuarios' => $usuarios, 'solicitudes' => $solicitudes, 'amistades' => $amistades]);
-        
     }
+
 
     public function datosBarra(){
         $usuario = Usuarios::where('id', session('user_id'))->first();
-        return response()->json(['nombre' => $usuario->nombre, 'username' => $usuario->username, 'PP' => $usuario->PP]);
+        // retornamos el username, nombre, edad, sexo, pais y PP del usuario
+        return response()->json(['username' => $usuario->username, 'nombre' => $usuario->nombre, 'edad' => $usuario->edad, 'sexo' => $usuario->sexo, 'pais' => $usuario->pais, 'PP' => $usuario->PP]);
+    }
 
+    public function datosEditar(){
+        $usuario = Usuarios::where('id', session('user_id'))->first();
+        // retornamos el nombre, username, edad, sexo, pais y PP del usuario
+        return response()->json(['nombre' => $usuario->nombre, 'username' => $usuario->username, 'edad' => $usuario->edad, 'sexo' => $usuario->sexo, 'pais' => $usuario->pais]);
     }
 
     public function getDatosPerfil(){
         $usuario = Usuarios::where('id', session('user_id'))->first();
-        return response()->json(['nombre' => $usuario->nombre, 'username' => $usuario->username, 'edad' => $usuario->edad, 'sexo' => $usuario->sexo, 'pais' => $usuario->pais]);
+        // Retorna solo el nombre, username y PP
+        return response()->json(['nombre' => $usuario->nombre, 'username' => $usuario->username, 'PP' => $usuario->PP]);
     }
 
-    public function guardarPerfil(Request $request){
+    public function editarPerfil1(Request $request){
+        // Extraemos los datos del json
         $datos = $request->json()->all();
         $nombre = (string)$datos['nombre'];
-        $username = (string)$datos['username'];
         $edad = (string)$datos['edad'];
         $sexo = (string)$datos['sexo'];
         $pais = (string)$datos['pais'];
-
         // Buscamos el usuario en la base de datos
+        $usuario = Usuarios::where('id', session('user_id'))->first();
+        // Guardamos los datos en el objeto y actualizamos la base de datos menos el username
+        $usuario->nombre = $nombre;
+        $usuario->edad = $edad;
+        $usuario->sexo = $sexo;
+        $usuario->pais = $pais;
+        $usuario->save();
+        return response()->json(['success' => 'Usuario actualizado']);
+
+    }
+
+    public function editarPerfil2(Request $request){
+        // Extraemos los datos del json
+        $datos = $request->json()->all();
+        $username = (string)$datos['username'];
+        $nombre = (string)$datos['nombre'];
+        $edad = (string)$datos['edad'];
+        $sexo = (string)$datos['sexo'];
+        $pais = (string)$datos['pais'];
+        // Comprobamos si ya existe el username
         $usuario = Usuarios::where('username', $username)->first();
         if ($usuario) {
             return response()->json(['error' => 'El usuario ya existe']);
         }
         else{
-            // actualizamos los datos del usuario y usamos la variable de session user_id para facilitar la busqueda
-            Usuarios::where('id', session('user_id'))->update(['nombre' => $nombre, 'username' => $username, 'edad' => $edad, 'sexo' => $sexo, 'pais' => $pais]);
+            // Buscamos el usuario en la base de datos
+            $usuario = Usuarios::where('id', session('user_id'))->first();
+            // Guardamos los datos en el objeto y actualizamos la base de datos
+            $usuario->username = $username;
+            $usuario->nombre = $nombre;
+            $usuario->edad = $edad;
+            $usuario->sexo = $sexo;
+            $usuario->pais = $pais;
+            $usuario->save();
             return response()->json(['success' => 'Usuario actualizado']);
-            
         }
+    }
+
+    public function logout(){
+        // Borramos la cookie
+        setcookie('tokenUsuarioCodeLink', '', time() - 3600, '/');
+        // Borramos la variable de sesión
+        session()->forget('user_id');
+        session()->forget('username');
+        // respondemos con un success
+        return response()->json(['success' => 'Usuario deslogueado']);
     }
 
 

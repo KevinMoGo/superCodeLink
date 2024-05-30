@@ -18,7 +18,7 @@
         <div class="flex items-center space-x-4 p-2">
             <div class="relative">
                 <img src="{{ asset('assets/fotosPerfil/usuario_defecto.svg') }}" alt="User Photo" class="h-16 w-16 rounded-full object-cover" id="fotoUsuarioBarra">
-                <a href="javascript:void(0)" class="absolute bottom-0 right-0 bg-blue-500 rounded-full p-1" id="botonEditarPPModal">
+                <a href="javascript:void(0)" class="absolute bottom-0 right-0 bg-blue-500 rounded-full p-1" id="botonEditarPerfil">
                     <img src="{{ asset('svg/editarFoto.svg') }}" alt="Editar Foto" class="h-4 w-4" id="editarPP">
                 </a>
             </div>
@@ -36,7 +36,7 @@
             </li>
 
             <li>
-                <a href="#" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700">
+                <a href="#" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700" onclick="logout()">
                     Cerrar Sesión
                 </a>
             </li>
@@ -61,7 +61,7 @@
 
 
             <div id="errorMessageFoto" class="hidden text-red-500 mt-2">Selecciona una foto de perfil</div>
-            
+            <div id="errorPesoFoto" class="hidden text-red-500 mt-2">La foto de perfil debe pesar menos de 1MB</div>
             <div id="successMessageFoto" class="hidden text-green-500 mt-2">Foto de perfil guardada</div>
         </div>
     </div>
@@ -75,13 +75,211 @@
             <div id="editProfileForm">
                 <input type="text" id="username" name="username" placeholder="Nombre de Usuario" class="block w-full mt-2 mb-4 px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500" maxlength="20">
                 <input type="text" id="nombre" name="nombre" placeholder="Nombre" class="block w-full mt-2 mb-4 px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500" maxlength="20">
-                <input type="number" id="edad" name="edad" placeholder="Edad" class="block w-full mt-2 mb-4 px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500" min="1" max="120">
+                <input type="number" id="edad" name="edad" placeholder="Edad" class="block w-full mt-2 mb-4 px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500" min="18" max="122">
                 <select id="sexo" name="sexo" placeholder="Sexo" class="block w-full mt-2 mb-4 px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
                     <option value="hombre">Hombre</option>
                     <option value="mujer">Mujer</option>
+                    <option value="otro">Otro</option>
                 </select>
+
                 <select id="pais" name="pais" placeholder="País" class="block w-full mt-2 mb-4 px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
+                    <option value="Afganistán">Afganistán</option>
+                <option value="Albania">Albania</option>
+                <option value="Alemania">Alemania</option>
+                <option value="Andorra">Andorra</option>
+                <option value="Angola">Angola</option>
+                <option value="Antigua y Barbuda">Antigua y Barbuda</option>
+                <option value="Arabia Saudita">Arabia Saudita</option>
+                <option value="Argelia">Argelia</option>
+                <option value="Argentina">Argentina</option>
+                <option value="Armenia">Armenia</option>
+                <option value="Australia">Australia</option>
+                <option value="Austria">Austria</option>
+                <option value="Azerbaiyán">Azerbaiyán</option>
+                <option value="Bahamas">Bahamas</option>
+                <option value="Bangladés">Bangladés</option>
+                <option value="Barbados">Barbados</option>
+                <option value="Baréin">Baréin</option>
+                <option value="Bélgica">Bélgica</option>
+                <option value="Belice">Belice</option>
+                <option value="Benín">Benín</option>
+                <option value="Bielorrusia">Bielorrusia</option>
+                <option value="Birmania">Birmania</option>
+                <option value="Bolivia">Bolivia</option>
+                <option value="Bosnia y Herzegovina">Bosnia y Herzegovina</option>
+                <option value="Botsuana">Botsuana</option>
+                <option value="Brasil">Brasil</option>
+                <option value="Brunéi">Brunéi</option>
+                <option value="Bulgaria">Bulgaria</option>
+                <option value="Burkina Faso">Burkina Faso</option>
+                <option value="Burundi">Burundi</option>
+                <option value="Bután">Bután</option>
+                <option value="Cabo Verde">Cabo Verde</option>
+                <option value="Camboya">Camboya</option>
+                <option value="Camerún">Camerún</option>
+                <option value="Canadá">Canadá</option>
+                <option value="Catar">Catar</option>
+                <option value="Chad">Chad</option>
+                <option value="Chile">Chile</option>
+                <option value="China">China</option>
+                <option value="Chipre">Chipre</option>
+                <option value="Ciudad del Vaticano">Ciudad del Vaticano</option>
+                <option value="Colombia">Colombia</option>
+                <option value="Comoras">Comoras</option>
+                <option value="Corea del Norte">Corea del Norte</option>
+                <option value="Corea del Sur">Corea del Sur</option>
+                <option value="Costa de Marfil">Costa de Marfil</option>
+                <option value="Costa Rica">Costa Rica</option>
+                <option value="Croacia">Croacia</option>
+                <option value="Cuba">Cuba</option>
+                <option value="Dinamarca">Dinamarca</option>
+                <option value="Dominica">Dominica</option>
+                <option value="Ecuador">Ecuador</option>
+                <option value="Egipto">Egipto</option>
+                <option value="El Salvador">El Salvador</option>
+                <option value="Emiratos Árabes Unidos">Emiratos Árabes Unidos</option>
+                <option value="Eritrea">Eritrea</option>
+                <option value="Eslovaquia">Eslovaquia</option>
+                <option value="Eslovenia">Eslovenia</option>
+                <option value="España">España</option>
+                <option value="Estados Unidos">Estados Unidos</option>
+                <option value="Estonia">Estonia</option>
+                <option value="Eswatini">Eswatini</option>
+                <option value="Etiopía">Etiopía</option>
+                <option value="Filipinas">Filipinas</option>
+                <option value="Finlandia">Finlandia</option>
+                <option value="Fiyi">Fiyi</option>
+                <option value="Francia">Francia</option>
+                <option value="Gabón">Gabón</option>
+                <option value="Gambia">Gambia</option>
+                <option value="Georgia">Georgia</option>
+                <option value="Ghana">Ghana</option>
+                <option value="Granada">Granada</option>
+                <option value="Grecia">Grecia</option>
+                <option value="Guatemala">Guatemala</option>
+                <option value="Guyana">Guyana</option>
+                <option value="Guinea">Guinea</option>
+                <option value="Guinea-Bisáu">Guinea-Bisáu</option>
+                <option value="Guinea Ecuatorial">Guinea Ecuatorial</option>
+                <option value="Haití">Haití</option>
+                <option value="Honduras">Honduras</option>
+                <option value="Hungría">Hungría</option>
+                <option value="India">India</option>
+                <option value="Indonesia">Indonesia</option>
+                <option value="Irak">Irak</option>
+                <option value="Irán">Irán</option>
+                <option value="Irlanda">Irlanda</option>
+                <option value="Islandia">Islandia</option>
+                <option value="Islas Marshall">Islas Marshall</option>
+                <option value="Islas Salomón">Islas Salomón</option>
+                <option value="Israel">Israel</option>
+                <option value="Italia">Italia</option>
+                <option value="Jamaica">Jamaica</option>
+                <option value="Japón">Japón</option>
+                <option value="Jordania">Jordania</option>
+                <option value="Kazajistán">Kazajistán</option>
+                <option value="Kenia">Kenia</option>
+                <option value="Kirguistán">Kirguistán</option>
+                <option value="Kiribati">Kiribati</option>
+                <option value="Kuwait">Kuwait</option>
+                <option value="Laos">Laos</option>
+                <option value="Lesoto">Lesoto</option>
+                <option value="Letonia">Letonia</option>
+                <option value="Líbano">Líbano</option>
+                <option value="Liberia">Liberia</option>
+                <option value="Libia">Libia</option>
+                <option value="Liechtenstein">Liechtenstein</option>
+                <option value="Lituania">Lituania</option>
+                <option value="Luxemburgo">Luxemburgo</option>
+                <option value="Macedonia del Norte">Macedonia del Norte</option>
+                <option value="Madagascar">Madagascar</option>
+                <option value="Malasia">Malasia</option>
+                <option value="Malaui">Malaui</option>
+                <option value="Maldivas">Maldivas</option>
+                <option value="Malí">Malí</option>
+                <option value="Malta">Malta</option>
+                <option value="Marruecos">Marruecos</option>
+                <option value="Mauricio">Mauricio</option>
+                <option value="Mauritania">Mauritania</option>
+                <option value="México">México</option>
+                <option value="Micronesia">Micronesia</option>
+                <option value="Moldavia">Moldavia</option>
+                <option value="Mónaco">Mónaco</option>
+                <option value="Mongolia">Mongolia</option>
+                <option value="Montenegro">Montenegro</option>
+                <option value="Mozambique">Mozambique</option>
+                <option value="Namibia">Namibia</option>
+                <option value="Nauru">Nauru</option>
+                <option value="Nepal">Nepal</option>
+                <option value="Nicaragua">Nicaragua</option>
+                <option value="Níger">Níger</option>
+                <option value="Nigeria">Nigeria</option>
+                <option value="Noruega">Noruega</option>
+                <option value="Nueva Zelanda">Nueva Zelanda</option>
+                <option value="Omán">Omán</option>
+                <option value="Países Bajos">Países Bajos</option>
+                <option value="Pakistán">Pakistán</option>
+                <option value="Palaos">Palaos</option>
+                <option value="Panamá">Panamá</option>
+                <option value="Papúa Nueva Guinea">Papúa Nueva Guinea</option>
+                <option value="Paraguay">Paraguay</option>
+                <option value="Perú">Perú</option>
+                <option value="Polonia">Polonia</option>
+                <option value="Portugal">Portugal</option>
+                <option value="Reino Unido">Reino Unido</option>
+                <option value="República Centroafricana">República Centroafricana</option>
+                <option value="República Checa">República Checa</option>
+                <option value="República del Congo">República del Congo</option>
+                <option value="República Democrática del Congo">República Democrática del Congo</option>
+                <option value="República Dominicana">República Dominicana</option>
+                <option value="Ruanda">Ruanda</option>
+                <option value="Rumania">Rumania</option>
+                <option value="Rusia">Rusia</option>
+                <option value="Samoa">Samoa</option>
+                <option value="San Cristóbal y Nieves">San Cristóbal y Nieves</option>
+                <option value="San Marino">San Marino</option>
+                <option value="San Vicente y las Granadinas">San Vicente y las Granadinas</option>
+                <option value="Santa Lucía">Santa Lucía</option>
+                <option value="Santo Tomé y Príncipe">Santo Tomé y Príncipe</option>
+                <option value="Senegal">Senegal</option>
+                <option value="Serbia">Serbia</option>
+                <option value="Seychelles">Seychelles</option>
+                <option value="Sierra Leona">Sierra Leona</option>
+                <option value="Singapur">Singapur</option>
+                <option value="Siria">Siria</option>
+                <option value="Somalia">Somalia</option>
+                <option value="Sri Lanka">Sri Lanka</option>
+                <option value="Suazilandia">Suazilandia</option>
+                <option value="Sudáfrica">Sudáfrica</option>
+                <option value="Sudán">Sudán</option>
+                <option value="Sudán del Sur">Sudán del Sur</option>
+                <option value="Suecia">Suecia</option>
+                <option value="Suiza">Suiza</option>
+                <option value="Surinam">Surinam</option>
+                <option value="Tailandia">Tailandia</option>
+                <option value="Tanzania">Tanzania</option>
+                <option value="Tayikistán">Tayikistán</option>
+                <option value="Timor Oriental">Timor Oriental</option>
+                <option value="Togo">Togo</option>
+                <option value="Tonga">Tonga</option>
+                <option value="Trinidad y Tobago">Trinidad y Tobago</option>
+                <option value="Túnez">Túnez</option>
+                <option value="Turkmenistán">Turkmenistán</option>
+                <option value="Turquía">Turquía</option>
+                <option value="Tuvalu">Tuvalu</option>
+                <option value="Ucrania">Ucrania</option>
+                <option value="Uganda">Uganda</option>
+                <option value="Uruguay">Uruguay</option>
+                <option value="Uzbekistán">Uzbekistán</option>
+                <option value="Vanuatu">Vanuatu</option>
+                <option value="Venezuela">Venezuela</option>
+                <option value="Vietnam">Vietnam</option>
+                <option value="Yemen">Yemen</option>
+                <option value="Yibuti">Yibuti</option>
+                <option value="Zambia">Zambia</option>
+                <option value="Zimbabue">Zimbabue</option>
                 </select>
+
                 <div class="flex justify-center"> <!-- Centra los botones -->
                     <button type="button" class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 mr-2" onclick = "guardarCambios()">Guardar</button>
                     <button type="button" class="bg-gray-200 text-gray-700 py-2 px-4 rounded hover:bg-gray-300" onclick="closeEditar()">Cancelar</button>
@@ -89,8 +287,9 @@
                 <!-- Mensajes de error -->
                 <div id="errorMessages" class="text-red-500 mt-4">
                     <p id="errorMessage1" class="hidden">Error: Debes llenar todos los campos</p>
-                    <p id="errorMessage2" class="hidden">Ingrese una edad válida.</p>
-                    <p id="errorMessage3" class="hidden">El nombre de usuario ya en uso</p>
+                    <p id="errorMessage2" class="hidden">Ingrese una edad válida. (18-122) </p>
+                    <p id="errorMessage3" class="hidden">Username ya en uso</p>
+                    <p id="errorMessage4" class="hidden">Introduce al menos 4 letras</p>
                 </div>
                 
                 <div id="successMessage" class="text-green-500 mt-4 hidden">Perfil guardado</div>
@@ -131,55 +330,28 @@
 </style>
 
 <script>
+    let usernameOriginal = '';
     document.addEventListener('DOMContentLoaded', function() {
-        fetch('/datosBarra')
-            .then(response => response.json())
-            .then(
-                data => {
-                    
-                    document.getElementById('nombreUsuarioBarra').innerText = data.nombre;
-                    document.getElementById('usernameBarra').innerText = '@' + data.username;
-                    document.getElementById('fotoUsuarioBarra').src = data.PP;
-                }
-            )   
+        fetchDatos();
 
-
-            
-
-        let paisesArray = [];
-        // Hacemos una petición a la API de países
-        fetch('https://restcountries.com/v3.1/all')
-            .then(response => response.json())
-            .then(data => {
-                // Extraemos solo el nombre de los países en español y los agregamos al array
-                data.forEach(pais => {
-                    paisesArray.push(pais.translations.spa.common);
-                });
-
-                // Ordenamos el array alfabéticamente
-                paisesArray.sort();
-
-                // Llenamos el select con los países ordenados
-                let select = document.getElementById('pais');
-                paisesArray.forEach(pais => {
-                    select.innerHTML += `<option value="${pais}">${pais}</option>`;
-                });
-            })
-            .catch(error => {
-                console.error('Hubo un problema al obtener los países:', error);
-            });
-
-            fetch('/getDatosPerfil')
-            .then(response => response.json())
-            .then(data => {
-                
-                document.getElementById('username').value = data.username;
-                document.getElementById('nombre').value = data.nombre;
-                document.getElementById('edad').value = data.edad;
-                document.getElementById('sexo').value = data.sexo;
-                document.getElementById('pais').value = data.pais;
-            });
     });
+
+    function fetchDatos(){
+        fetch('/datosBarra')
+        .then(response => response.json())
+        .then(data => {
+
+            document.getElementById('nombreUsuarioBarra').textContent = data.nombre;
+            document.getElementById('usernameBarra').textContent = data.username;
+            usernameOriginal = data.username;
+            document.getElementById('fotoUsuarioBarra').src = data.PP;
+
+
+        });
+    }
+
+
+
     function abrirMenu() {
     
         var sidebar = document.getElementById('sidebar');
@@ -190,7 +362,8 @@
         }
     }
 
-    document.getElementById('botonEditarPPModal').addEventListener('click', function() {
+    document.getElementById('botonEditarPerfil').addEventListener('click', function() {
+        esconderMensaje();
         var modal = document.getElementById('editarPPModal');
         // Le quitamos la clase hidden
         modal.classList.remove('hidden');
@@ -204,15 +377,14 @@
 
 
     function subirFotoPerfil() {
-        // Esconde los mensajes de error
-        document.getElementById('errorMessageFoto').classList.add('hidden');
-
+        esconderMensaje();
         var fotoPerfil = document.getElementById('fotoPerfil').files[0];
         // primero comprobamos si esta vacio
         if (fotoPerfil == null) {
             document.getElementById('errorMessageFoto').classList.remove('hidden');
-        }
-        else{
+        } else if (fotoPerfil.size > 1048576) { // 1MB = 1048576 bytes
+            document.getElementById('errorPesoFoto').classList.remove('hidden');
+        } else {
             var formData = new FormData();
             formData.append('fotoPerfil', fotoPerfil);
             fetch('/subirFotoPerfil', {
@@ -224,135 +396,290 @@
             })
             .then(response => response.json())
             .then(data => {
-                
                 // Mostar mensaje de éxito
                 document.getElementById('successMessageFoto').classList.remove('hidden');
                 // Recargamos la página en 1 segundo
                 setTimeout(() => {
-                    location.reload();
+                    fetch('/datosBarra')
+                    .then(response => response.json())
+                    .then(data => {
+                        document.getElementById('nombreUsuarioBarra').textContent = data.nombre;
+                        document.getElementById('usernameBarra').textContent = data.username;
+                        document.getElementById('fotoUsuarioBarra').src = data.PP;
+                    });
+                    // Escondemos el modal
+                    var modal = document.getElementById('editarPPModal');
+                    modal.classList.add('hidden');
                 }, 1000);
-                
             });
-
         }
-
     }
+    
+
+
+
+
+
+
+
+
 
     document.getElementById('editarPerfil').addEventListener('click', function() {
-        var modal = document.getElementById('editarPerfilModal');
-        // Le quitamos la clase hidden
-        modal.classList.remove('hidden');
+        esconderMensaje();
+        // Hacemos fetch de los datos del usuario
+        fetch('/datosEditar')
+        .then(response => response.json())
+        .then(data => {
+            // Llenamos los campos del formulario
+            document.getElementById('username').value = data.username;
+            usernameOriginal = data.username;
+            document.getElementById('nombre').value = data.nombre;
+            document.getElementById('edad').value = data.edad;
+            // Buscamos en la lista de opciones del select el valor que coincide con el sexo del usuario con un forEach
+            document.getElementById('sexo').querySelectorAll('option').forEach(option => {
+                if (option.value == data.sexo) {
+                    option.selected = true;
+                }
+            });
+            // Buscamos en la lista de opciones del select el valor que coincide con el país del usuario con un forEach
+            document.getElementById('pais').querySelectorAll('option').forEach(option => {
+                if (option.value == data.pais) {
+                    option.selected = true;
+                }
+            });
+            var modal = document.getElementById('editarPerfilModal');
+            modal.classList.remove('hidden');
 
+        });
 
     });
 
     function closeEditar() {
         var modal = document.getElementById('editarPerfilModal');
-        // Le agregamos la clase hidden
         modal.classList.add('hidden');
     }
 
+    function guardarCambios(){
+        esconderMensaje();
+        if(usernameOriginal == document.getElementById('username').value){
+            // Nos aseguramos de que todos los campos estén llenos
+            if( document.getElementById('nombre').value == '' ){
+                // Mostramos mensaje de error y ponemos un borde rojo al input durante 2 segundos con autofocus
+                document.getElementById('errorMessage1').classList.remove('hidden');
+                document.getElementById('nombre').classList.add('border-red-500');
+                document.getElementById('nombre').focus();
+                setTimeout(() => {
+                    document.getElementById('nombre').classList.remove('border-red-500');
+                    // Quitamos el mensaje de error
+                    document.getElementById('errorMessage1').classList.add('hidden');
+                }, 2000);
+
+            }
+            // Ahora comprobamos si tiene al menos 4 caracteres
+            else if(document.getElementById('nombre').value.length < 4){
+                document.getElementById('errorMessage4').classList.remove('hidden');
+                document.getElementById('nombre').classList.add('border-red-500');
+                document.getElementById('nombre').focus();
+                setTimeout(() => {
+                    document.getElementById('nombre').classList.remove('border-red-500');
+                    // Quitamos el mensaje de error
+                    document.getElementById('errorMessage4').classList.add('hidden');
+                }, 2000);
+            }
+            else if(document.getElementById('edad').value == ''){
+                document.getElementById('errorMessage2').classList.remove('hidden');
+                document.getElementById('edad').classList.add('border-red-500');
+                document.getElementById('edad').focus();
+                setTimeout(() => {
+                    document.getElementById('edad').classList.remove('border-red-500');
+                    // Quitamos el mensaje de error
+                    document.getElementById('errorMessage2').classList.add('hidden');
+                }, 2000);
+            }
+            else if(document.getElementById('edad').value < 18 || document.getElementById('edad').value > 122){
+                document.getElementById('errorMessage2').classList.remove('hidden');
+                document.getElementById('edad').classList.add('border-red-500');
+                document.getElementById('edad').focus();
+                setTimeout(() => {
+                    document.getElementById('edad').classList.remove('border-red-500');
+                    // Quitamos el mensaje de error
+                    document.getElementById('errorMessage2').classList.add('hidden');
+                }, 2000);
+            }
+            else{
+                // Hacmos una peticio PUT a editarPerfil1 con los datos menos el username
+                fetch('/editarPerfil1', {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                    },
+                    body: JSON.stringify({
+                        nombre: document.getElementById('nombre').value,
+                        edad: document.getElementById('edad').value,
+                        sexo: document.getElementById('sexo').value,
+                        pais: document.getElementById('pais').value
+                    })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    // Si es succes mostramos mensaje de exito
+                    if(data.success){
+                        document.getElementById('successMessage').classList.remove('hidden');
+                        setTimeout(() => {
+                            fetchDatos();
+                            var modal = document.getElementById('editarPerfilModal');
+                            modal.classList.add('hidden');
+                        }, 1000);
+                    }
+                });
+            }
+
+            
+        }
+
+        else{
+            // Verificamos que todos los campos estén llenos de la misma manera que antes uno por uno
+            if( document.getElementById('username').value == '' ){
+                // Mostramos mensaje de error y ponemos un borde rojo al input durante 2 segundos con autofocus
+                document.getElementById('errorMessage1').classList.remove('hidden');
+                document.getElementById('username').classList.add('border-red-500');
+                document.getElementById('username').focus();
+                setTimeout(() => {
+                    document.getElementById('username').classList.remove('border-red-500');
+                    // Quitamos el mensaje de error
+                    document.getElementById('errorMessage1').classList.add('hidden');
+                }, 2000);
+
+            }
+            // Ahora comprobamos que tenga al menos 4 caracteres
+            else if (document.getElementById('username').value.length < 4) {
+                document.getElementById('errorMessage4').classList.remove('hidden');
+                document.getElementById('username').classList.add('border-red-500');
+                document.getElementById('username').focus();
+                setTimeout(() => {
+                    document.getElementById('username').classList.remove('border-red-500');
+                    // Quitamos el mensaje de error
+                    document.getElementById('errorMessage4').classList.add('hidden');
+                }, 2000);
+            }
+            else if(document.getElementById('nombre').value == '' ){
+                // Mostramos mensaje de error y ponemos un borde rojo al input durante 2 segundos con autofocus
+                document.getElementById('errorMessage1').classList.remove('hidden');
+                document.getElementById('nombre').classList.add('border-red-500');
+                document.getElementById('nombre').focus();
+                setTimeout(() => {
+                    document.getElementById('nombre').classList.remove('border-red-500');
+                    // Quitamos el mensaje de error
+                    document.getElementById('errorMessage1').classList.add('hidden');
+                }, 2000);
+
+            }
+            else if(document.getElementById('nombre').value.length < 4){
+                document.getElementById('errorMessage4').classList.remove('hidden');
+                document.getElementById('nombre').classList.add('border-red-500');
+                document.getElementById('nombre').focus();
+                setTimeout(() => {
+                    document.getElementById('nombre').classList.remove('border-red-500');
+                    // Quitamos el mensaje de error
+                    document.getElementById('errorMessage4').classList.add('hidden');
+                }, 2000);
+            }
+            else if(document.getElementById('edad').value == ''){
+                document.getElementById('errorMessage2').classList.remove('hidden');
+                document.getElementById('edad').classList.add('border-red-500');
+                document.getElementById('edad').focus();
+                setTimeout(() => {
+                    document.getElementById('edad').classList.remove('border-red-500');
+                    // Quitamos el mensaje de error
+                    document.getElementById('errorMessage2').classList.add('hidden');
+                }, 2000);
+            }
+            else if(document.getElementById('edad').value < 18 || document.getElementById('edad').value > 122){
+                document.getElementById('errorMessage2').classList.remove('hidden');
+                document.getElementById('edad').classList.add('border-red-500');
+                document.getElementById('edad').focus();
+                setTimeout(() => {
+                    document.getElementById('edad').classList.remove('border-red-500');
+                    // Quitamos el mensaje de error
+                    document.getElementById('errorMessage2').classList.add('hidden');
+                }, 2000);
+            }
+            else{
+                // Hacemos una peticion POST a editarPerfil con los datos
+                fetch('/editarPerfil2', {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                    },
+                    body: JSON.stringify({
+                        username: document.getElementById('username').value,
+                        nombre: document.getElementById('nombre').value,
+                        edad: document.getElementById('edad').value,
+                        sexo: document.getElementById('sexo').value,
+                        pais: document.getElementById('pais').value
+                    })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    // Si es succes mostramos mensaje de exito
+                    if(data.success){
+                        document.getElementById('successMessage').classList.remove('hidden');
+                        setTimeout(() => {
+                            fetchDatos();
+                            var modal = document.getElementById('editarPerfilModal');
+                            modal.classList.add('hidden');
+                        }, 1000);
+                    }
+                    else{
+                        document.getElementById('errorMessage3').classList.remove('hidden');
+                        document.getElementById('username').classList.add('border-red-500');
+                        document.getElementById('username').focus();
+                        setTimeout(() => {
+                            document.getElementById('username').classList.remove('border-red-500');
+                            // Quitamos el mensaje de error
+                            document.getElementById('errorMessage3').classList.add('hidden');
+                        }, 2000);
+                    }
+                });
+
+                
+        }
+
+    }
+}
+
+
+
+
+
+
+
+
+    function esconderMensaje() {
+
+        document.getElementById('errorMessage1').classList.add('hidden');
+        document.getElementById('errorMessage2').classList.add('hidden');
+        document.getElementById('errorMessage3').classList.add('hidden');
+        document.getElementById('successMessage').classList.add('hidden');
+        document.getElementById('errorMessageFoto').classList.add('hidden');
+        document.getElementById('errorPesoFoto').classList.add('hidden');
+        document.getElementById('successMessageFoto').classList.add('hidden');
+
+
+    }
+
+    function logout(){
+        fetch('/logout')
+        .then(response => response.json())
+        .then(data => {
+            if(data.success){
+                window.location.href = '/';
+            }
+        });
+    }
 
     
 </script>
 
-
-<script>
-    function guardarCambios() {
-        // Esconde los mensajes de error
-        document.getElementById('errorMessage1').classList.add('hidden');
-        document.getElementById('errorMessage2').classList.add('hidden');
-        document.getElementById('errorMessage3').classList.add('hidden');
-        var username = document.getElementById('username').value;
-        var nombre = document.getElementById('nombre').value;
-        var edad = document.getElementById('edad').value;
-        var sexo = document.getElementById('sexo').value;
-        var pais = document.getElementById('pais').value;
-
-        // Comprobamos si alguno de los campos está vacío
-        if (username == '' ){
-            // Hacemos un focus al input y mostrar el mensaje de error y le ponemos un border rojo durante 2 segundos
-            document.getElementById('username').focus();
-            document.getElementById('errorMessage1').classList.remove('hidden');
-            document.getElementById('username').style.border = '1px solid red';
-            setTimeout(() => {
-                document.getElementById('username').style.border = '1px solid #D1D5DB';
-            }, 2000);
-        }
-        else if(nombre == ''){
-            document.getElementById('nombre').focus();
-            document.getElementById('errorMessage1').classList.remove('hidden');
-            document.getElementById('nombre').style.border = '1px solid red';
-            setTimeout(() => {
-                document.getElementById('nombre').style.border = '1px solid #D1D5DB';
-            }, 2000);
-        }
-        else if(edad == ''){
-            document.getElementById('edad').focus();
-            document.getElementById('errorMessage1').classList.remove('hidden');
-            document.getElementById('edad').style.border = '1px solid red';
-            setTimeout(() => {
-                document.getElementById('edad').style.border = '1px solid #D1D5DB';
-            }, 2000);
-        }
-        else if(sexo == ''){
-            document.getElementById('sexo').focus();
-            document.getElementById('errorMessage1').classList.remove('hidden');
-            document.getElementById('sexo').style.border = '1px solid red';
-            setTimeout(() => {
-                document.getElementById('sexo').style.border = '1px solid #D1D5DB';
-            }, 2000);
-        }
-        else if(pais == ''){
-            document.getElementById('pais').focus();
-            document.getElementById('errorMessage1').classList.remove('hidden');
-            document.getElementById('pais').style.border = '1px solid red';
-            setTimeout(() => {
-                document.getElementById('pais').style.border = '1px solid #D1D5DB';
-            }, 2000);
-        }
-        else if(edad < 18 || edad > 120){
-            document.getElementById('edad').focus();
-            document.getElementById('errorMessage2').classList.remove('hidden');
-            document.getElementById('edad').style.border = '1px solid red';
-            setTimeout(() => {
-                document.getElementById('edad').style.border = '1px solid #D1D5DB';
-            }, 2000);
-        }
-        else{
-            // Hacemos un fetch posta  /guardarPerfil y manejamos data con .then
-            fetch('/guardarPerfil', {
-                method: 'POST',
-                body: JSON.stringify({
-                    username: username,
-                    nombre: nombre,
-                    edad: edad,
-                    sexo: document.getElementById('sexo').value,
-                    pais: document.getElementById('pais').value
-                }),
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
-                }
-            })
-            .then(response => response.json())
-            .then(data => {
-                
-                // Si data.error es true, mostramos el mensaje de error de que el nombre de usuario ya está en uso
-                if (data.error) {
-                    document.getElementById('errorMessage3').classList.remove('hidden');
-                }
-                else{
-                    document.getElementById('successMessageFoto').classList.remove('hidden');
-                    setTimeout(() => {
-                        document.getElementById('successMessageFoto').classList.add('hidden');
-                    }, 2000);
-
-                    
-                    
-                }
-
-            });
-        }
-    }
-</script>

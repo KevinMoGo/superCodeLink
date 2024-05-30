@@ -37,17 +37,12 @@
         esconderMensajes();
         let username = document.getElementById('username').value;
         let contrasena = document.getElementById('contrasena').value;
-        console.log(username, contrasena);
-
         if (username === '' || contrasena === '') {
             esconderMensajes();
-            
             document.getElementById('mensajeError2').classList.remove('hidden');
             document.getElementById('mensajeError').classList.add('hidden');
             document.getElementById('mensajeSuccess').classList.add('hidden');
-            return;
         }
-
         document.getElementById('mensajeError2').classList.add('hidden');
 
         fetch('/login', {
