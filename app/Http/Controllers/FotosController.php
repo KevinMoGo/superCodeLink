@@ -38,43 +38,35 @@ public function subirFoto(Request $request)
 
 
 public function subirImagen(Request $request) {
+
     $filename = "";
-    // Verifica si se ha subido un archivo con el nombre 'foto'
     if ($request->hasFile('foto')) {
-        // Genera un ID único para el nombre del archivo
         $uniqID = uniqid();
-        // Construye la ruta del archivo con la extensión original
         $filename = '/assets/fotos/' . $uniqID . '.' . $request->foto->getClientOriginalExtension();
-        // Mueve el archivo subido a la ruta pública especificada
         $request->foto->move(public_path('/assets/fotos'), $filename);
 
-        // Comprueba que el archivo subido es una imagen mediante mime_content_type
+        // ahora hacemos un mime_content_type para comprobar que es una imagen
         $mime = mime_content_type(public_path($filename));
         if (strpos($mime, 'image') === false) {
-            // Si el archivo no es una imagen, elimínalo y devuelve un error
             unlink(public_path($filename));
             return response()->json(['error' => 'El archivo no es una imagen']);
         } else {
-            // Extrae el ID del usuario de la sesión
-            $userId = session('user_id');
-            // Guarda la ruta de la foto y la información adicional en la base de datos
+            // Extraemos el id del usuario y guardamos la ruta de la foto en la base de datos
             $foto = new Fotos();
             $foto->id_foto = $uniqID;
-            $foto->id_usuario = $userId;
+            $foto->id_usuario = session('user_id');
             $foto->titulo = $request->titulo;
             $foto->descripcion = $request->descripcion;
             $foto->ruta = $filename;
-            $foto->fecha = now(); // Usa el helper now() para la fecha y hora actual
+            $foto->fecha = date('Y-m-d H:i:s');
             $foto->save();
-            // Devuelve la vista 'registroSubir' sin cambiar de página
+            // No hacemos nada, nos quedamos en la misma página
             return view('registroSubir');
         }
     } else {
-        // Si no se ha subido ningún archivo, devuelve un error
         return response()->json(['error' => 'No se ha subido ningún archivo']);
     }
 }
-
 
 
 
@@ -123,25 +115,26 @@ public function subirFotoPerfil(Request $request)
         
     }
 
-    public function getpost(Request $request)
+
+    // Route::get('/getpost/{id_foto}', [FotosController::class, 'getpost']);
+    public function getpost($id_foto)
     {
-        // Obtenemos el id de la foto
-        $id = $request->input('id_foto');
-        // Buscamos la foto en la base de datos y obtenemos el titulo y la descripción
-        $foto = Fotos::where('id_foto', $id)->first();
-        // Devolvemos el titulo y la descripción en formato JSON
-        return response()->json(['titulo' => $foto->titulo, 'descripcion' => $foto->descripcion, 'id_foto' => $foto->id_foto]);
+        // Obtenemos la foto con el id_foto
+        $foto = Fotos::where('id_foto', $id_foto)->first();
+        // Retornammos unicamente el titulo y la descripción
+        return response()->json(['titulo' => $foto->titulo, 'descripcion' => $foto->descripcion]);
     }
 
     public function editpost(Request $request)
     {
-        // Recogemos el titulo y la descripción del request
+        // Recogemos la info pasada por el body
+        $id_foto = $request->input('id_foto');
         $titulo = $request->input('titulo');
         $descripcion = $request->input('descripcion');
 
-        
-        // Actualizamos la foto en la base de datos 
-        Fotos::where('id_foto', $request->input('id_foto'))->update(['titulo' => $titulo, 'descripcion' => $descripcion]);
+        // Actualizamos la foto teniendo en cuenta gestionar los errores
+        Fotos::where('id_foto', $id_foto)->update(['titulo' => $titulo, 'descripcion' => $descripcion]);
+        return response()->json(['success' => 'Foto actualizada correctamente']);
         
     }
     

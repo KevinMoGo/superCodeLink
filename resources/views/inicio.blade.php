@@ -68,7 +68,7 @@
 
 
 <!-- <div class="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50 hidden" id="formulario"> -->
-<div id="perfilUsuario" class="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50 hidden">
+<div id="perfilUsuario" class="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50 hidden" style="z-index: 501;">
     <div class="w-full max-w-2xl mx-auto p-6 bg-white rounded-lg shadow-lg">
         <div class="flex justify-between items-center mb-4">
             <h1 class="text-3xl font-bold">Perfil de usuario</h1>

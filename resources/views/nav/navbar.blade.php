@@ -13,7 +13,7 @@
 
 <div id="sidebar" class="bg-gray-100 hidden">
     <!-- Right Sidebar -->
-    <div class="fixed top-0 right-0 h-full bg-gray-800 text-white w-64 md:w-80 lg:w-96 space-y-6 py-7 px-2" style="margin-top: 12vh; z-index: 9999;">
+    <div class="fixed top-0 right-0 h-full bg-gray-800 text-white w-64 md:w-80 lg:w-96 space-y-6 py-7 px-2" style="margin-top: 12vh; z-index: 500;">
         <!-- User Info -->
         <div class="flex items-center space-x-4 p-2">
             <div class="relative">

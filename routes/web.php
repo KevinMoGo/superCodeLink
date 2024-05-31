@@ -73,7 +73,8 @@ Route::post('/subirImagen', [FotosController::class, 'subirImagen']);
 // MIS IMAGENES  -----------------------------------------------------------------------------------------------
 
 Route::delete('/deletepost', [FotosController::class, 'deletepost']);
-Route::post('/getpost', [FotosController::class, 'getpost']);
+
+Route::get('/getpost/{id_foto}', [FotosController::class, 'getpost']);
 // Ruta para actualizar la foto de perfil
 Route::put('/editpost', [FotosController::class, 'editpost']);
 
