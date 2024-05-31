@@ -37,38 +37,45 @@ public function subirFoto(Request $request)
 }
 
 
-public function subirImagen(Request $request){
-       $filename = "";
-       if ($request->hasFile('foto')) {
-        // Ahora vamos a verificar la composición de la imagen de modo que sepamos si es una imagen o no. asi evitamos que introduzcan ejecutables con formato de imagen
-        $info = getimagesize($request->foto);
-        if ($info === FALSE) {
+public function subirImagen(Request $request) {
+    $filename = "";
+    // Verifica si se ha subido un archivo con el nombre 'foto'
+    if ($request->hasFile('foto')) {
+        // Genera un ID único para el nombre del archivo
+        $uniqID = uniqid();
+        // Construye la ruta del archivo con la extensión original
+        $filename = '/assets/fotos/' . $uniqID . '.' . $request->foto->getClientOriginalExtension();
+        // Mueve el archivo subido a la ruta pública especificada
+        $request->foto->move(public_path('/assets/fotos'), $filename);
+
+        // Comprueba que el archivo subido es una imagen mediante mime_content_type
+        $mime = mime_content_type(public_path($filename));
+        if (strpos($mime, 'image') === false) {
+            // Si el archivo no es una imagen, elimínalo y devuelve un error
+            unlink(public_path($filename));
             return response()->json(['error' => 'El archivo no es una imagen']);
-        }
-        else{
-            // $filename = '/assets/fotos/'. $request->foto->getClientOriginalName();
-            $uniqID = uniqid();
-            $filename = '/assets/fotos/'. $uniqID . '.' . $request->foto->getClientOriginalExtension();
-            
-            $request->foto->move(public_path('/assets/fotos'), $filename);
+        } else {
+            // Extrae el ID del usuario de la sesión
+            $userId = session('user_id');
+            // Guarda la ruta de la foto y la información adicional en la base de datos
             $foto = new Fotos();
             $foto->id_foto = $uniqID;
-            $foto->id_usuario = session('user_id');
+            $foto->id_usuario = $userId;
             $foto->titulo = $request->titulo;
             $foto->descripcion = $request->descripcion;
             $foto->ruta = $filename;
-            $foto->fecha = date('Y-m-d H:i:s');
+            $foto->fecha = now(); // Usa el helper now() para la fecha y hora actual
             $foto->save();
-            // No hacemos nada, nos quedamos en la misma página
+            // Devuelve la vista 'registroSubir' sin cambiar de página
             return view('registroSubir');
         }
-                
-    
-    
+    } else {
+        // Si no se ha subido ningún archivo, devuelve un error
+        return response()->json(['error' => 'No se ha subido ningún archivo']);
     }
-
-
 }
+
+
 
 
 public function subirFotoPerfil(Request $request)
@@ -84,7 +91,6 @@ public function subirFotoPerfil(Request $request)
 
         // ahora hacemos un mime_content_type para comprobar que es una imagen
         $mime = mime_content_type(public_path($filename));
-        // Si no es una imagen, eliminamos la foto de la carpeta y devolvemos un error
         if (strpos($mime, 'image') === false) {
             unlink(public_path($filename));
             return response()->json(['error' => 'El archivo no es una imagen']);

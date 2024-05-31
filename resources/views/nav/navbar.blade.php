@@ -63,6 +63,7 @@
 
             <div id="errorMessageFoto" class="hidden text-red-500 mt-2">Selecciona una foto de perfil</div>
             <div id="errorPesoFoto" class="hidden text-red-500 mt-2">La foto de perfil debe pesar menos de 1MB</div>
+            <div id="errorTypeFoto" class="hidden text-red-500 mt-2">La foto de perfil debe ser .jpg o .png</div>
             <div id="successMessageFoto" class="hidden text-green-500 mt-2">Foto de perfil guardada</div>
         </div>
     </div>
@@ -398,21 +399,18 @@
             })
             .then(response => response.json())
             .then(data => {
-                // Mostar mensaje de éxito
-                document.getElementById('successMessageFoto').classList.remove('hidden');
-                // Recargamos la página en 1 segundo
-                setTimeout(() => {
-                    fetch('/datosBarra')
-                    .then(response => response.json())
-                    .then(data => {
-                        document.getElementById('nombreUsuarioBarra').textContent = data.nombre;
-                        document.getElementById('usernameBarra').textContent = data.username;
-                        document.getElementById('fotoUsuarioBarra').src = data.PP;
-                    });
-                    // Escondemos el modal
-                    var modal = document.getElementById('editarPPModal');
-                    modal.classList.add('hidden');
-                }, 1000);
+
+                if(data.error){
+                    document.getElementById('errorTypeFoto').classList.remove('hidden');
+                }
+                else{
+                    document.getElementById('successMessageFoto').classList.remove('hidden');
+                    setTimeout(() => {
+                        fetchDatos();
+                        var modal = document.getElementById('editarPPModal');
+                        modal.classList.add('hidden');
+                    }, 1000);
+                }
             });
         }
     }
@@ -668,6 +666,7 @@
         document.getElementById('errorMessageFoto').classList.add('hidden');
         document.getElementById('errorPesoFoto').classList.add('hidden');
         document.getElementById('successMessageFoto').classList.add('hidden');
+        document.getElementById('errorTypeFoto').classList.add('hidden');
 
 
     }
