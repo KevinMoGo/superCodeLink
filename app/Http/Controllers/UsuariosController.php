@@ -12,13 +12,7 @@ use App\Http\Controllers\TokenController;
 
 class UsuariosController extends Controller
 {
-    private $tokenController;
-
-    public function __construct()
-    {
-        $this->tokenController = new TokenController();
-    }
-
+    // Creamos una variable de sesion llamada secreto
 
 
 
@@ -86,6 +80,7 @@ class UsuariosController extends Controller
                 $token = hash('sha256', $usuario->id.$salt);
                 return response()->json(['success' => 'Usuario logueado'])
                     ->cookie('tokenUsuarioCodeLink', $token, 3600, '/', '', false, true); // La última true es para hacer la cookie httponly
+                echo $token;
             }
             else{
                 return response()->json(['error' => 'Ha habido un error al loguear el usuario']);
@@ -95,20 +90,22 @@ class UsuariosController extends Controller
             return response()->json(['error' => 'Ha habido un error al loguear el usuario']);
         }
     }
+
+
     
     public function mostrarInicio()
     {
         // Obtener el ID del usuario desde la sesión
         $userId = session('user_id');
-
+    
         // Obtener todas las amistades donde el usuario es usuario1_id o usuario2_id
         $amistades = Amistades::where('usuario1_id', $userId)
                               ->orWhere('usuario2_id', $userId)
                               ->get();
-
+    
         // Crear un array para almacenar las IDs de los amigos
         $amigosIds = [];
-
+    
         foreach ($amistades as $amistad) {
             if ($amistad->usuario1_id == $userId) {
                 // Si el usuario1_id es el usuario de la sesión, agregar usuario2_id
@@ -118,11 +115,22 @@ class UsuariosController extends Controller
                 $amigosIds[] = $amistad->usuario1_id;
             }
         }
-
-        // Ahora extraemos los el nombre, username, edad, pais, sexo y PP de los amigos
+    
+        // Debug: Verificar que amigosIds contiene los datos esperados
+        
+        
+        // Extraer las fotos de los amigos
+        $fotosAmigos = Fotos::whereIn('id_usuario', $amigosIds)->get();
+    
+        // Debug: Verificar que fotosAmigos contiene los datos esperados
+        
+    
+        // Extraer los detalles de los amigos
         $amigos = Usuarios::whereIn('id', $amigosIds)->get();
-        return view('inicio', ['amigos' => $amigos]);
+        
+        return view('inicio', ['amigos' => $amigos, 'fotosAmigos' => $fotosAmigos]);
     }
+    
 
 
     public function buscar(Request $request)
@@ -134,6 +142,10 @@ class UsuariosController extends Controller
         $amistades = Amistades::where('usuario1_id', session('user_id'))->get();
 
         return view('buscados', ['usuarios' => $usuarios, 'solicitudes' => $solicitudes, 'amistades' => $amistades]);
+    }
+
+    public function error404(){
+        return view('error404');
     }
 
 

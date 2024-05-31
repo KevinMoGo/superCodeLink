@@ -14,12 +14,12 @@
         .chat-container {
             display: flex;
             flex-direction: column;
-            height: calc(100vh - 4rem); /* Ajustar según la altura del navbar */
+            height: 86%;
         }
         .messages {
             flex: 1;
             overflow-y: auto;
-            padding-bottom: 3rem; /* Ajustar según la altura del input de mensaje */
+            
             margin-bottom: 1rem; /* Ajustar según la altura del input de mensaje */
         }
         .message-input {

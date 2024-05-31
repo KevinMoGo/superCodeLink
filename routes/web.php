@@ -7,11 +7,8 @@ use App\Http\Controllers\AmistadesController;
 use App\Http\Controllers\FotosController;
 use App\Http\Controllers\ChatController;
 
-// Route::middleware(['verificarTokenUsuario'])->group(function () {
-//     Route::get('/inicio', [UsuariosController::class, 'mostrarInicio']);
-// });
-// apuntamos al middleware para que verifique si el usuario tiene un token con use 
 use App\Http\Middleware\VerificarTokenUsuario;
+
 
 
 
@@ -53,7 +50,9 @@ Route::post('/registro', [UsuariosController::class, 'registro']);
 
 
 // INICIO  ----------------------------------------------------------------------------------------------------
-Route::post('/buscar', [UsuariosController::class, 'buscar']);
+Route::middleware(['verificarTokenUsuario'])->post('/buscar', [UsuariosController::class, 'buscar']);
+Route::get('/buscar', [UsuariosController::class, 'error404']);
+
 
 
 Route::middleware(['verificarTokenUsuario'])->group(function () {
@@ -91,7 +90,6 @@ Route::get('/chatAmigo/{id}', [AmistadesController::class, 'chatAmigo']);
 // CHAT  -------------------------------------------------------------------------------------------------------
 Route::post('/enviarMensaje', [ChatController::class, 'enviarMensaje']);
 Route::post('/getMensajes', [ChatController::class, 'getMensajes']);
-
 
 
 

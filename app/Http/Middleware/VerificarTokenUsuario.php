@@ -18,6 +18,8 @@ class VerificarTokenUsuario
         
         // Si tiene una cookie con el token, lo dejamos pasar
         if ($request->cookie('tokenUsuarioCodeLink')) {
+            // Extraemos su contenido
+            $token = $request->cookie('tokenUsuarioCodeLink');
             return $next($request);
         }
         // Si no tiene una cookie con el token, lo redirigimos al login

@@ -17,6 +17,7 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->alias([
             'verificarTokenUsuario' => \App\Http\Middleware\VerificarTokenUsuario::class,
         ]);
+
         
 
     })
