@@ -70,7 +70,7 @@
 </div>
 
 
-<div class="fixed top-0 left-0 w-full h-full flex justify-center items-center bg-black bg-opacity-50 z-50 hidden" id="editarPerfilModal">
+<div class="fixed top-0 left-0 w-full h-full flex justify-center items-center bg-black bg-opacity-50 z-50 hidden" id="editarPerfilModal" style = "z-index: 501;">
     <div class="mx-4 md:mx-auto"> <!-- Contenedor con margen -->
         <div class="bg-white rounded-lg shadow-lg p-8 md:max-w-2xl mx-4"> <!-- Ancho máximo y márgenes -->
             <h2 class="text-2xl font-semibold mb-4">Editar Perfil</h2>
