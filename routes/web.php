@@ -53,11 +53,11 @@ Route::post('/registro', [UsuariosController::class, 'registro']);
 Route::middleware(['verificarTokenUsuario'])->post('/buscar', [UsuariosController::class, 'buscar']);
 Route::get('/buscar', [UsuariosController::class, 'error404']);
 
-
-
 Route::middleware(['verificarTokenUsuario'])->group(function () {
     Route::get('/inicio', [UsuariosController::class, 'mostrarInicio']);
 });
+
+Route::middleware(['verificarTokenUsuario'])->get('/perfilUsuario/{id}', [UsuariosController::class, 'perfilUsuario']);
 
 
 

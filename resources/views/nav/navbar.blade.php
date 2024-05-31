@@ -13,7 +13,7 @@
 
 <div id="sidebar" class="bg-gray-100 hidden">
     <!-- Right Sidebar -->
-    <div class="fixed top-0 right-0 h-full bg-gray-800 text-white w-64 space-y-6 py-7 px-2" style="margin-top: 12vh;">
+    <div class="fixed top-0 right-0 h-full bg-gray-800 text-white w-64 md:w-80 lg:w-96 space-y-6 py-7 px-2" style="margin-top: 12vh; z-index: 9999;">
         <!-- User Info -->
         <div class="flex items-center space-x-4 p-2">
             <div class="relative">
@@ -30,11 +30,10 @@
         <!-- Navigation -->
         <ul class="space-y-2">
             <li>
-                <a href="javascript:void(0)" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700" id = "editarPerfil">
+                <a href="javascript:void(0)" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700" id="editarPerfil">
                     Editar Perfil
                 </a>
             </li>
-
             <li>
                 <a href="#" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700" onclick="logout()">
                     Cerrar Sesión
@@ -43,6 +42,8 @@
         </ul>
     </div>
 </div>
+
+
 
 <div class="fixed top-0 left-0 w-full h-full flex justify-center items-center bg-black bg-opacity-50 z-50 hidden" id="editarPPModal">
     <div class="mx-4 md:mx-auto"> <!-- Contenedor con margen -->
@@ -321,6 +322,7 @@
     #listaNav {
         justify-content: space-around;
     }
+
     @media (min-width: 768px) and (min-height: 600px) {
     .icono {
         max-width: 60px;

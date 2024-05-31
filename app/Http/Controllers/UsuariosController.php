@@ -122,7 +122,8 @@ class UsuariosController extends Controller
         // Extraer las fotos de los amigos
         $fotosAmigos = Fotos::whereIn('id_usuario', $amigosIds)->get();
     
-        // Debug: Verificar que fotosAmigos contiene los datos esperados
+        // ordenar las fotos por fecha de creación
+        $fotosAmigos = $fotosAmigos->sortByDesc('created_at');
         
     
         // Extraer los detalles de los amigos
@@ -136,13 +137,25 @@ class UsuariosController extends Controller
     public function buscar(Request $request)
     {
         $buscar = $request->input('search');
-        // Buscamos los usuarios que contengan el nombre que se ha introducido en el input menos el usuario que ha hecho la busqueda que esta en session username
-        $usuarios = Usuarios::where('username', 'like', '%'.$buscar.'%')->where('username', '!=', session('username'))->get();
-        $solicitudes = Solicitudes::where('usuario_emisor_id', session('user_id'))->get();
-        $amistades = Amistades::where('usuario1_id', session('user_id'))->get();
-
+        $userId = session('user_id');
+        $username = session('username');
+    
+        // Buscamos los usuarios que contengan el nombre que se ha introducido en el input menos el usuario que ha hecho la búsqueda
+        $usuarios = Usuarios::where('username', 'like', '%' . $buscar . '%')
+                            ->where('id', '!=', $userId)
+                            ->get();
+    
+        $solicitudes = Solicitudes::where('usuario_emisor_id', $userId)->get();
+    
+        // Buscamos amistades donde el usuario puede ser usuario1_id o usuario2_id
+        $amistades = Amistades::where('usuario1_id', $userId)
+                              ->orWhere('usuario2_id', $userId)
+                              ->get();
+    
         return view('buscados', ['usuarios' => $usuarios, 'solicitudes' => $solicitudes, 'amistades' => $amistades]);
     }
+    
+    
 
     public function error404(){
         return view('error404');
@@ -223,6 +236,22 @@ class UsuariosController extends Controller
         return response()->json(['success' => 'Usuario deslogueado']);
     }
 
+    // Route::get('/perfilUsuario/{id}', [UsuariosController::class, 'perfilUsuario']);
+
+    public function perfilUsuario($id)
+    {
+        // Buscamos el usuario en la base de datos
+        $usuario = Usuarios::where('id', $id)->first();
+        // Si el usuario no existe devolvemos un error
+        if (!$usuario) {
+            return response()->json(['error' => 'El usuario no existe']);
+        }
+        // Si el usuario existe devolvemos un success
+        else{
+            // retornamos el username, nombre, edad, sexo, pais y PP del usuario
+            return response()->json(['username' => $usuario->username, 'nombre' => $usuario->nombre, 'edad' => $usuario->edad, 'sexo' => $usuario->sexo, 'pais' => $usuario->pais, 'PP' => $usuario->PP]);
+        }
+    }
 
 
 

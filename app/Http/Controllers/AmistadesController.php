@@ -12,23 +12,27 @@ class AmistadesController extends Controller
 
 
     public function nuevaSolicitud(Request $request){
-        // function enviarSolicitud(id) {
-        //     // Hacemos una llamada a la API para enviar la solicitud mediante una peticion POST y ruta /nuevaSolicitud
-        //     fetch('/nuevaSolicitud', {
-        //         method: 'POST',
-        //         headers: {
-        //             'Content-Type': 'application/json',
-        //             'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-        //         },
-        //         body: JSON.stringify({
-        //             usuario_receptor_id: id
-        //         })
-        //     })
-        // }
-
-        // Comprobamos si el usuario receptor ya ha enviado una solicitud al usuario emisor
-
+        $miID = session('user_id');
+        $id = $request->id;
+        $solicitud = Solicitudes::where('usuario_emisor_id', $miID)
+                      ->where('usuario_receptor_id', $id)
+                      ->orWhere(function ($query) use ($miID, $id) {
+                          $query->where('usuario_emisor_id', $id)
+                                ->where('usuario_receptor_id', $miID);
+                      })->first();
+        if (!$solicitud) {
+            $nuevaSolicitud = new Solicitudes();
+            $nuevaSolicitud->usuario_emisor_id = $miID;
+            $nuevaSolicitud->usuario_receptor_id = $id;
+            $nuevaSolicitud->save();
+            
+            return response()->json(['success' => 'Solicitud enviada con éxito.']);
+        }
+    
+        return response()->json(['error' => 'Ya existe una solicitud entre estos usuarios.']);
     }
+    
+    
 
 
     public function aceptarSolicitud($id)

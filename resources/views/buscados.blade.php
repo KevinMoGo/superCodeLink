@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Resultados de la búsqueda</title>
     <meta name="csrf-token" content="{{ csrf_token() }}" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <style>
         .lupaBuscar {
@@ -13,7 +12,6 @@
             background-color: black;
             border-radius: 10px;
         }
-
     </style>
 </head>
 
@@ -30,10 +28,9 @@
                         @if ($solicitudes->contains('usuario_receptor_id', $usuario->id))
                             <button class="btn btn-primary bg-yellow-700 text-white font-bold py-2 px-4 rounded-lg border border-yellow-700" disabled>Enviada</button>
                         @elseif ($amistades->contains('usuario1_id', $usuario->id) || $amistades->contains('usuario2_id', $usuario->id))
-                            <button class="btn btn-primary bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-lg border border-green-500 hover:border-green-700">Mensaje</button>
-                            <button class="btn btn-danger bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-lg border border-red-500 hover:border-red-700">Eliminar</button>
+                            <button class="btn btn-primary bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-lg border border-green-500 hover:border-green-700" disabled>Amigo</button>
                         @else
-                            <button class="btn btn-primary bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg border border-blue-500 hover:border-blue-700" onclick = "enviarSolicitud(' {{ $usuario->id }}')">Enviar<button>
+                            <button class="btn btn-primary bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg border border-blue-500 hover:border-blue-700" onclick="enviarSolicitud({{ $usuario->id }})" id="usuario{{ $usuario->id }}">Enviar solicitud</button>
                         @endif
                     </div>
                 </div>
@@ -44,48 +41,41 @@
         <img src="{{ asset('/svg/buscar.svg') }}" alt="Lupa" class="w-11 h-11 lupa">
     </div>
 
-
-        <div class="absolute top-0 left-0 w-full h-full bg-gray-900 bg-opacity-50 hidden" id="formulario">
-            <div class="w-11/12 sm:w-3/4 md:w-1/2 lg:w-1/3 xl:w-1/4 bg-white p-4 rounded-lg shadow-md mx-auto mt-24">
-                <h2 class="text-2xl font-bold text-center">Buscar</h2>
-                <div class="mt-4">
-                    <label for="username" class="block text-sm font-bold text-gray-700">Username</label>
-                    <input type="text" name="username" id="username" class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500">
-                </div>
-                <div class="mt-4">
-                    <label for="nombre" class="block text-sm font-bold text-gray-700">Nombre</label>
-                    <input type="text" name="nombre" id="nombre" class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500">
-                </div>
-                <div class="mt-4">
-                    <label for="sexo" class="block text-sm font-bold text-gray-700">Sexo</label>
-                    <select name="sexo" id="sexo" class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500">
-                        <option value="Hombre">Hombre</option>
-                        <option value="Mujer">Mujer</option>
-                    </select>
-                </div>
-                <div class="mt-4">
-                    <label for="edad" class="block text-sm font-bold text-gray-700">Edad</label>
-                    <input type="number" name="edad" id="edad" class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500">
-                </div>
-                <div class="mt-4">
-                    <label for="pais" class="block text-sm font-bold text-gray-700">País</label>
-                    <input type="text" name="pais" id="pais" class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500">
-                </div>
-                <div class="mt-4 flex justify-around">
-                    <button class="btn btn-primary bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg border border-blue-500 hover:border-blue-700">Buscar</button>
-                    <button class="btn btn-primary bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-lg border border-red-500 hover:border-red-700 cerrarBusqueda">Cerrar</button>
-                </div>
+    <div class="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50 hidden" id="formulario">
+        <div class="w-11/12 sm:w-3/4 md:w-1/2 lg:w-1/3 xl:w-1/4 bg-white p-4 rounded-lg shadow-md">
+            <h2 class="text-2xl font-bold text-center">Buscar</h2>
+            <div class="mt-4">
+                <label for="username" class="block text-sm font-bold text-gray-700">Username</label>
+                <input type="text" name="username" id="username" class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500">
             </div>
+            <div class="mt-4">
+                <label for="nombre" class="block text-sm font-bold text-gray-700">Nombre</label>
+                <input type="text" name="nombre" id="nombre" class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500">
             </div>
+            <div class="mt-4">
+                <label for="sexo" class="block text-sm font-bold text-gray-700">Sexo</label>
+                <select name="sexo" id="sexo" class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500">
+                    <option value="Hombre">Hombre</option>
+                    <option value="Mujer">Mujer</option>
+                </select>
+            </div>
+            <div class="mt-4">
+                <label for="edad" class="block text-sm font-bold text-gray-700">Edad</label>
+                <input type="number" name="edad" id="edad" class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500">
+            </div>
+            <div class="mt-4">
+                <label for="pais" class="block text-sm font-bold text-gray-700">País</label>
+                <input type="text" name="pais" id="pais" class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500">
+            </div>
+            <div class="mt-4 flex justify-around">
+                <button class="btn btn-primary bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg border border-blue-500 hover:border-blue-700">Buscar</button>
+                <button class="btn btn-primary bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-lg border border-red-500 hover:border-red-700 cerrarBusqueda">Cerrar</button>
+            </div>
+        </div>
+    </div>
 
 </body>
-
-
-
 </html>
-
-
-
 
 <script>
     function enviarSolicitud(id) {
@@ -97,28 +87,40 @@
                 'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
             },
             body: JSON.stringify({
-                usuario_receptor_id: id
+                id: id
             })
         })
+        .then(response => response.json())
+        .then(data => {
+            // Si la respuesta es correcta mostramos un mensaje de éxito
+            if (data.success) {
+                // le cambiamos el estilo al boton que hemos pulsado
+                document.getElementById('usuario' + id).classList.remove('bg-blue-500', 'hover:bg-blue-700', 'border-blue-500', 'hover:border-blue-700');
+                document.getElementById('usuario' + id).classList.add('bg-yellow-700', 'border-yellow-700');
+                document.getElementById('usuario' + id).innerHTML = 'Enviada';
+                document.getElementById('usuario' + id).disabled = true;
+                
+
+
+            }
+            else{
+                // Mostramos un confirm de el usuario ya tiene una solicitud enviada, quieres ir a notificaciones
+                if (confirm('Ya tienes una solicitud de este usuario, ¿quieres ir a notificaciones?')) {
+                    window.location.href = '/notis';
+                }
+            }
+        });
     }
 </script>
 
-
 <script>
-        // Media queries para pantallas de 768px de ancho y 600px de alto hacemos la lupa más grande
-        if (window.matchMedia('(min-width: 768px) and (min-height: 600px)').matches) {
-            document.querySelector('.lupa').classList.add('w-18', 'h-18');
-        }
+    // addevetListener para que cuando se pulse la lupa se muestre el formulario
+    document.querySelector('.lupaBuscar').addEventListener('click', () => {
+        document.querySelector('#formulario').classList.remove('hidden');
+    });
 
-        // addevetListener para que cuando se pulse la lupa se muestre el formulario
-        document.querySelector('.lupaBuscar').addEventListener('click', () => {
-            document.querySelector('#formulario').classList.remove('hidden');
-        });
-
-        // addevetListener para que cuando se pulse el botón cerrar se cierre el formulario
-        document.querySelector('.cerrarBusqueda').addEventListener('click', () => {
-            document.querySelector('#formulario').classList.add('hidden');
-        });
-
-        
+    // addevetListener para que cuando se pulse el botón cerrar se cierre el formulario
+    document.querySelector('.cerrarBusqueda').addEventListener('click', () => {
+        document.querySelector('#formulario').classList.add('hidden');
+    });
 </script>

@@ -6,9 +6,18 @@
     <meta name="csrf-token" content="{{ csrf_token() }}" />
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <title>Lista de Amigos</title>
-
+    <style>
+        .cuerpoPagina {
+            overflow: auto;
+            height: 80vh;
+            
+        }
+        body.hardcore{
+            overflow: hidden;
+        }
+    </style>
 </head>
-<body class="bg-gray-100 flex justify-center">
+<body class="bg-gray-100 flex justify-center hardcore">
     @include('nav.navbar')
     <div class="cuerpoPagina p-8 max-w-7xl w-full mx-auto bg-white shadow-md">
         

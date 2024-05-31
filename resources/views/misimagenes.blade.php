@@ -143,11 +143,7 @@
                     <a href="javascript:void(0)" class="eliminarFoto" onclick="deletepost('{{ $foto->id_foto }}')">
                         <img src="{{ asset('svg/eliminar.svg') }}" alt="Delete" class="eliminarImagen">
                     </a>
-                    <!-- Botón de Compartir -->
-                    <a href="javascript:void(0)" class="compartirFoto">
-                        <img src="{{ asset('svg/compartir.svg') }}" alt="Share" class="compartirImagen">
-                    </a>
-                    
+
                     <input type="hidden" name="id_foto" value="{{ $foto->id_foto }}">
                 </div>
             </div> 
@@ -191,8 +187,7 @@
         })
         document.querySelector('#imagen' + id_foto).remove();
         }
-        // Eliminamos la foto del DOM
-        
+
     }
 
     function abrirEdit(id_foto) {
